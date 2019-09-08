@@ -289,6 +289,9 @@
 
 <div class="flex flex-wrap" data-cy="icons">
   {#each ids as id, i}
-    <Icon {id} fill={['#c6f6d5', '#fed7d7', '#edf2f7', 'none'][i % 4]} color={['#38a169', '#e53e3e', '#cbd5e0', '#2d3748'][i % 4]}/>
+    <Icon
+      {id}
+      fill={['#c6f6d5', '#fed7d7', '#edf2f7', 'none'][i % 4]}
+      color={['#38a169', '#e53e3e', '#cbd5e0', '#2d3748'][i % 4]} />
   {/each}
 </div>

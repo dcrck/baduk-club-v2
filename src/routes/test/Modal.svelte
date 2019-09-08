@@ -1,7 +1,7 @@
 <script>
   import Modal from '/components/Modal'
   let open = false
-  const toggle = () => open ^= true
+  const toggle = () => (open ^= true)
 </script>
 
 <button on:click={toggle} data-cy="show-modal">Open Modal</button>
