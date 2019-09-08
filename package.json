@@ -6,7 +6,7 @@
     "start:dev": "sapper dev",
     "prep:dev": "[ -d \"test\" ] && mv -vn test src/routes/test || true",
     "dev": "run-s prep:dev start:dev",
-    "prettier": "prettier --write src/client.js src/server.js 'src/{routes,components}/**/*.{js,css,svelte}' 'static/*.css' rollup.config.js",
+    "prettier": "prettier --write src/client.js src/server.js 'src/{routes,components}/**/*.{js,css,svelte}' rollup.config.js",
     "start:build": "sapper build --legacy",
     "prep:build": "[ -d \"src/routes/test\" ] && mv -vn src/routes/test test || true",
     "build:dev": "NODE_ENV=development run-s prep:build start:build",
