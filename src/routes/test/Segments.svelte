@@ -1,6 +1,11 @@
 <script>
   import Segments from '/components/Segments'
   let choices = ['first', 'second', 'third']
+  let other_choices = [
+    { name: 'fifth', icon: 'heart' },
+    { name: 'sixth', icon: 'moon' },
+    { name: 'seventh', icon: 'at-sign' },
+  ]
   let tab
 
   const choose = ({ detail: { choice } }) => (tab = choice)
@@ -19,3 +24,5 @@
     <span>default</span>
   {/if}
 </div>
+
+<Segments choices={other_choices} on:change={choose} />

@@ -11,11 +11,12 @@
 
   choices = choices.map(c => ({ id: c.name || c, icon: c.icon || '' }))
   const change = () => dispatch('change', { choice: group })
+  const color = (g, i) => (g === i ? 'white' : '#2d3748')
 </script>
 
 <style>
   .segments label {
-    @apply border border-gray-800 border-r-0 bg-white px-4 py-2 flex cursor-pointer;
+    @apply border border-gray-800 border-r-0 bg-white px-4 py-2 flex cursor-pointer items-center;
   }
 
   .segments label:first-child {
@@ -44,7 +45,7 @@
         on:change={change} />
       {#if icon}
         <div class="mr-2">
-          <Icon id={icon} color={group === id ? 'white' : '#2d3748'} />
+          <Icon id={icon} size="18" color={color(group, id)} />
         </div>
       {/if}
       <span>{id}</span>
