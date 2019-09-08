@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
+import rootImport from 'rollup-plugin-root-import'
 import dotenv from 'dotenv'
 import config from 'sapper/config/rollup.js'
 import alias from 'rollup-plugin-alias'
@@ -35,9 +36,14 @@ const envKeys = Object.keys(env).reduce(
   {}
 )
 
+const imports = {
+  root: path.resolve(__dirname, 'src'),
+  useEntry: 'prepend',
+  extensions: ['.svelte', '.js'],
+}
+
 const clientAliases = {
-  resolve: ['', '.svelte', '.js'],
-  cmp: path.resolve(__dirname, 'src/components'),
+  resolve: ['.svelte', '.js'],
 }
 
 const serverAliases = {
@@ -90,6 +96,7 @@ export default {
         ...envKeys,
       }),
       alias(clientAliases),
+      rootImport(imports),
       svelte({
         dev,
         hydratable: true,
@@ -145,6 +152,7 @@ export default {
         ...envKeys,
       }),
       alias(serverAliases),
+      rootImport(imports),
       svelte({
         generate: 'ssr',
         dev,
