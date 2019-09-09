@@ -35,7 +35,7 @@ describe('User Card test', () => {
       .should('exist')
       .should('have.class', 'opacity-100')
     cy.get('[data-cy="attendance-card"]')
-      .find('[data-cy="user-card-checked-in"]')
+      .find('[data-cy="user-card-checked_in"]')
       .should('exist')
       .should('have.class', 'opacity-25')
   })

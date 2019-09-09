@@ -2,7 +2,7 @@
   import Icon from '/components/Icon'
   import parse from './parsing'
   export let name, rank, id
-  export let attendance = ''
+  export let attendance = {}
   export let last_updated = ''
   export let bio = ''
   export let picture = ''
@@ -11,12 +11,15 @@
   export let isOrganizer = false
   export let border = false
 
+  let icons = { confirmed: 'check', paid: 'dollar-sign', checked_in: 'map-pin' }
+
   $: _rank = rank < 0 ? '' + rank * -1 + 'k' : rank + 'd'
   $: _picture = picture ? picture : 'default.png'
   $: parsed = parse({ address, last_updated })
 </script>
 
 <div
+  data-cy="user-card"
   class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
   p-4 pt-3 flex justify-between {address ? 'items-start' : 'items-center'}">
   <div class="flex">
@@ -46,21 +49,13 @@
       {/if}
       {#if attendance}
         <div class="flex">
-          <div
-            class="{attendance.confirmed ? 'opacity-100' : 'opacity-25'} mr-6"
-            data-cy="user-card-confirmed">
-            <Icon id="check" />
-          </div>
-          <div
-            class="{attendance.paid ? 'opacity-100' : 'opacity-25'} mr-6"
-            data-cy="user-card-paid">
-            <Icon id="dollar-sign" />
-          </div>
-          <div
-            class={attendance.checked_in ? 'opacity-100' : 'opacity-25'}
-            data-cy="user-card-checked-in">
-            <Icon id="map-pin" />
-          </div>
+          {#each Object.keys(attendance) as k}
+            <div
+              class="{attendance[k] ? 'opacity-100' : 'opacity-25'} mr-6"
+              data-cy="user-card-{k}">
+              <Icon id={icons[k]} />
+            </div>
+          {/each}
         </div>
       {/if}
       {#if last_updated}
