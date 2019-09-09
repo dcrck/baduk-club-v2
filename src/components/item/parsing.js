@@ -1,11 +1,11 @@
 import fromNow from 'date-fns/formatDistanceToNow'
-import { rrule } from '/utils/rrule'
+import { parse } from '/utils/rrule'
 
 const address_object = ([main, ...rest]) => ({ main, rest: rest.join(', ') })
 
 const address = a => address_object(a.split(', '))
 const last_updated = t => fromNow(new Date(t))
-const times = ts => ts.map(rrule.parse)
+const times = ts => ts.map(parse)
 
 export const parsers = {
   address,
