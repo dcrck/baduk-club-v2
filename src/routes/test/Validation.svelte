@@ -1,17 +1,7 @@
 <script>
   import Validation from '/components/input/Validation'
   let name = ''
-  let state = { status: 'initial' }
-  function validate(n, first = false) {
-    if (first || state.status !== 'initial') {
-      const error = !n ? 'Please enter a name for your meetup' : ''
-      state = { status: error ? 'error' : 'ok', error }
-      return !error
-    }
-    return true
-  }
-
-  $: validate(name)
+  const validate = n => !n ? 'Please enter a name for your meetup' : ''
 </script>
 
 <style>
@@ -26,13 +16,13 @@
 
 <label for="name" class="form-label">
   Name
-  <Validation {...state}>
+  <Validation value={name} {validate} let:check >
     <input
       type="text"
       id="name"
       data-cy="name-input"
       class="form-input w-full"
-      on:blur={() => validate(name, true)}
+      on:blur={() => check(name, true)}
       bind:value={name} />
   </Validation>
 </label>

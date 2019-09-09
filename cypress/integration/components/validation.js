@@ -9,7 +9,6 @@ describe('Validation component', () => {
       .clear()
       .focus()
       .blur()
-    cy.wait(500)
     cy.get('[data-cy="validation-error"]')
       .should('exist')
       .contains('Please enter a name')
