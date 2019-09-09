@@ -1,7 +1,6 @@
 <script>
   import Icon from '/components/Icon'
   export let border = false
-
   export let winner, black, white, komi, handicap
   export let event
 
@@ -28,6 +27,7 @@
 </style>
 
 <div
+  data-cy="game-card"
   class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
   p-4 flex flex-wrap items-center">
   <div class="flex-1 flex flex-col items-center justify-center">

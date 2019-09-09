@@ -12,7 +12,7 @@
 </script>
 
 <div
-  data-cy="card"
+  data-cy="event-card"
   class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
   p-4 pt-3">
   <h2
