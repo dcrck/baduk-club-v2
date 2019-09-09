@@ -1,7 +1,7 @@
 <script>
   import Validation from '/components/input/Validation'
   let name = ''
-  const validate = n => !n ? 'Please enter a name for your meetup' : ''
+  const validate = n => (!n ? 'Please enter a name for your meetup' : '')
 </script>
 
 <style>
@@ -16,7 +16,7 @@
 
 <label for="name" class="form-label">
   Name
-  <Validation value={name} {validate} let:check >
+  <Validation value={name} {validate} let:check>
     <input
       type="text"
       id="name"

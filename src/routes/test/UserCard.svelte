@@ -4,9 +4,9 @@
   let base = { name: 'Derek', rank: -25, id: 1 }
   let markerCard = {
     ...base,
-    address: "15198 Hook Hollow Road, Novelty, OH USA",
+    address: '15198 Hook Hollow Road, Novelty, OH USA',
     bio: "Give me a call before you come, I'm usually around. 4406224096",
-    last_updated: "2019-09-09T05:30:00.000Z"
+    last_updated: '2019-09-09T05:30:00.000Z',
   }
 
   let attendanceCard = {
@@ -15,8 +15,8 @@
     attendance: {
       confirmed: true,
       paid: true,
-      checked_in: false
-    }
+      checked_in: false,
+    },
   }
 </script>
 

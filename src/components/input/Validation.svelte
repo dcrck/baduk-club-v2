@@ -13,12 +13,10 @@
 
   let state = { status: 'initial' }
 
-  const setState = e => state = { status: e ? 'error' : 'ok', error: e }
+  const setState = e => (state = { status: e ? 'error' : 'ok', error: e })
 
   const check = (v, trigger = false) =>
-    trigger || state.status !== 'initial'
-    ? setState(validate(v))
-    : true
+    trigger || state.status !== 'initial' ? setState(validate(v)) : true
 
   $: check(value)
 </script>
@@ -39,14 +37,16 @@
 
 <div class="relative">
   <div class="relative" class:error={state.error}>
-    <slot {check}/>
+    <slot {check} />
     <span class="inset-icon">
       <Icon {...icons[state.status]} />
     </span>
   </div>
 
   {#if state.error}
-    <span data-cy="validation-error" class="absolute text-red-500 text-xs italic">
+    <span
+      data-cy="validation-error"
+      class="absolute text-red-500 text-xs italic">
       {state.error}
     </span>
   {/if}

@@ -14,15 +14,15 @@
 
   const blackWins = {
     ...whiteWins,
-    winner: false
+    winner: false,
   }
 
   const withEventInfo = {
     ...blackWins,
     event: {
       name: 'Go Event Name',
-      id: '1'
-    }
+      id: '1',
+    },
   }
 </script>
 

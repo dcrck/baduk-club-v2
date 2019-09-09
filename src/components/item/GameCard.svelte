@@ -49,9 +49,19 @@
         class="flex-0 flex flex-col {isWinner('white') ? 'justify-start' : 'justify-end'}
         ml-4 my-4">
         {#if winner}
-          <span class="winner" data-cy="winner-white" style="margin-top: -0.4rem">winner</span>
+          <span
+            class="winner"
+            data-cy="winner-white"
+            style="margin-top: -0.4rem">
+            winner
+          </span>
         {:else}
-          <span class="winner" data-cy="winner-black" style="margin-bottom: -0.4rem">winner</span>
+          <span
+            class="winner"
+            data-cy="winner-black"
+            style="margin-bottom: -0.4rem">
+            winner
+          </span>
         {/if}
       </div>
     </div>

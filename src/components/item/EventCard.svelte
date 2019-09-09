@@ -8,7 +8,7 @@
   export let expanded = false
   export let showTime = false
 
-  $: parsed = parse({times, address, last_updated})
+  $: parsed = parse({ times, address, last_updated })
 </script>
 
 <div
@@ -21,7 +21,9 @@
     {name}
   </h2>
   {#if showTime}
-    <p class="text-sm text-gray-500" data-cy="event-card-updated">last updated: {parsed.last_updated} ago</p>
+    <p class="text-sm text-gray-500" data-cy="event-card-updated">
+      last updated: {parsed.last_updated} ago
+    </p>
   {/if}
   <div class="{expanded ? 'text-xl' : 'text-lg'} my-5">
     {#each parsed.times as { rrule, start, end }}
@@ -49,7 +51,9 @@
     class={expanded ? 'text-2xl font-semibold' : 'text-lg font-medium'}>
     {parsed.address.main}
   </h4>
-  <p data-cy="event-card-address-rest" class:text-lg={expanded}>{parsed.address.rest}</p>
+  <p data-cy="event-card-address-rest" class:text-lg={expanded}>
+    {parsed.address.rest}
+  </p>
   {#if expanded}
     <hr class="my-6" />
     <div data-cy="event-card-description">

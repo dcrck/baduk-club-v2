@@ -18,9 +18,13 @@
 
 <div
   class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
-          p-4 pt-3 flex justify-between {address ? 'items-start' : 'items-center'}">
+  p-4 pt-3 flex justify-between {address ? 'items-start' : 'items-center'}">
   <div class="flex">
-    <img src={_picture} alt={name} class="w-24 h-24 rounded-full" data-cy="user-card-picture" />
+    <img
+      src={_picture}
+      alt={name}
+      class="w-24 h-24 rounded-full"
+      data-cy="user-card-picture" />
     <div class="flex flex-col ml-4 justify-between items-start">
       <span class="font-medium text-lg" data-cy="user-card-name">{name}</span>
       {#if isOrganizer}
@@ -41,14 +45,20 @@
         <p class="mt-4" data-cy="user-card-bio">{bio}</p>
       {/if}
       {#if attendance}
-        <div class="flex" >
-          <div class="{attendance.confirmed ? 'opacity-100' : 'opacity-25'} mr-6" data-cy="user-card-confirmed">
+        <div class="flex">
+          <div
+            class="{attendance.confirmed ? 'opacity-100' : 'opacity-25'} mr-6"
+            data-cy="user-card-confirmed">
             <Icon id="check" />
           </div>
-          <div class="{attendance.paid ? 'opacity-100' : 'opacity-25'} mr-6" data-cy="user-card-paid">
+          <div
+            class="{attendance.paid ? 'opacity-100' : 'opacity-25'} mr-6"
+            data-cy="user-card-paid">
             <Icon id="dollar-sign" />
           </div>
-          <div class={attendance.checked_in ? 'opacity-100' : 'opacity-25'} data-cy="user-card-checked-in">
+          <div
+            class={attendance.checked_in ? 'opacity-100' : 'opacity-25'}
+            data-cy="user-card-checked-in">
             <Icon id="map-pin" />
           </div>
         </div>
