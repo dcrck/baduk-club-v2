@@ -3,32 +3,34 @@
   import { debounce } from '/utils/index'
   import * as mapbox from '/api/mapbox'
   import Validation from '/components/input/Validation'
+  import check, { initialize, load } from './validate'
   export let id = 'location'
   export let placeholder = 'search term'
   export let initial = ''
-  let results
+  let results, searching
   let location = {}
-  let searching = false
   const dispatch = createEventDispatcher()
 
-  let state = initial ? { status: 'ok' } : { status: 'initial' }
+  const error = ({ address, geolocation }) =>
+    (address && !geolocation) || !address
+      ? 'Please make sure to select your address from the results list'
+      : ''
+
+  let state = initialize(location, error)
+  $: state = load(searching)
 
   function search() {
     dispatch('clear')
+    location.geolocation = null
     mapbox.search(location.address).then(r => {
       searching = false
-      state = { status: 'initial' }
       results = r
     })
   }
 
   function showError() {
     results = undefined
-    if ((location.address && state.status !== 'ok') || !location.address)
-      state = {
-        status: 'error',
-        error: 'Please make sure to select your address from the results list',
-      }
+    state = check(true, error, location)
   }
 
   const debouncedSearch = debounce(search, 500)
@@ -36,18 +38,12 @@
 
   function onInput() {
     searching = !!location.address
-    if (searching) {
-      state = { status: 'loading' }
-      debouncedSearch()
-    } else {
-      results = undefined
-    }
+    return searching ? debouncedSearch() : (results = undefined)
   }
 
   function setInput({ place_name, center: [lng, lat] }) {
     location = { address: place_name, geolocation: { lat, lng } }
     results = undefined
-    state = { status: 'ok' }
     dispatch('select', location)
   }
 

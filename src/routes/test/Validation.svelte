@@ -1,15 +1,13 @@
 <script>
   import Validation from '/components/input/Validation'
+  import check, { initialize } from '/components/input/validate'
+
   let name = ''
+  const error = n => (!n ? 'Please enter a name for your meetup' : '')
+  let state = initialize(name, error)
 
-  let state = { status: 'initial' }
-
-  function validate(n, first = false) {
-    if (first || state.status !== 'initial') {
-      const error = !n ? 'Please enter a name for your meetup' : ''
-      state = { error, status: error ? 'error' : 'ok' }
-    }
-  }
+  const validate = (n, first = false) =>
+    (state = check(first || state.status !== 'initial', error, n) || state)
 
   $: validate(name)
 </script>
