@@ -1,6 +1,18 @@
+function getRoot() {
+  if (typeof window !== 'undefined') {
+    return window
+  } else if (typeof global !== 'undefined') {
+    return global
+  } else if (typeof self !== 'undefined') {
+    return self
+  } else {
+    return {}
+  }
+}
+
 export function debounce(callback, wait) {
   let timeout = null
-  const root = window
+  const root = getRoot()
 
   const useRAF =
     !wait && wait !== 0 && typeof root.requestAnimationFrame === 'function'
