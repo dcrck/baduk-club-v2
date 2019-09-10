@@ -3,7 +3,7 @@
 
   let evt = {
     address: '',
-    geolocation: undefined
+    geolocation: undefined,
   }
   const onSelect = ({ detail }) => (evt = { ...evt, ...detail })
   const clearLocation = () =>

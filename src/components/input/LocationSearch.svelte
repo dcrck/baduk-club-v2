@@ -6,8 +6,8 @@
   export let id = 'location'
   export let placeholder = 'search term'
   export let initial = ''
-  let results, geolocation
-  let address = ''
+  let results
+  let location = {}
   let searching = false
   const dispatch = createEventDispatcher()
 
@@ -15,7 +15,7 @@
 
   function search() {
     dispatch('clear')
-    mapbox.search(address).then(r => {
+    mapbox.search(location.address).then(r => {
       searching = false
       state = { status: 'initial' }
       results = r
@@ -24,7 +24,7 @@
 
   function showError() {
     results = undefined
-    if ((address && state.status !== 'ok') || !address)
+    if ((location.address && state.status !== 'ok') || !location.address)
       state = {
         status: 'error',
         error: 'Please make sure to select your address from the results list',
@@ -35,7 +35,7 @@
   const debouncedError = debounce(showError, 200)
 
   function onInput() {
-    searching = !!address
+    searching = !!location.address
     if (searching) {
       state = { status: 'loading' }
       debouncedSearch()
@@ -45,14 +45,13 @@
   }
 
   function setInput({ place_name, center: [lng, lat] }) {
-    address = place_name
+    location = { address: place_name, geolocation: { lat, lng } }
     results = undefined
-    geolocation = { lat, lng }
     state = { status: 'ok' }
-    dispatch('select', { address, geolocation })
+    dispatch('select', location)
   }
 
-  onMount(() => (address = initial || ''))
+  onMount(() => (location = { address: initial || '', geolocation: null }))
 </script>
 
 <style>
@@ -77,7 +76,7 @@
       {placeholder}
       class="border-gray-400 focus:border-gray-800 w-full border rounded py-2
       px-3"
-      bind:value={address}
+      bind:value={location.address}
       on:input={onInput}
       on:blur={debouncedError} />
   </Validation>
@@ -85,7 +84,7 @@
     <ul class="absolute z-20 w-full bg-white shadow-md">
       {#if searching}
         <li>Searching...</li>
-      {:else if address && !results.length}
+      {:else if location.address && !results.length}
         <li class="text-gray-600 italic text-sm">
           No results. Is your address missing? please
           <a
@@ -95,7 +94,7 @@
           </a>
           .
         </li>
-      {:else if address}
+      {:else if location.address}
         {#each results as result}
           <li data-cy="search-result" on:click={() => setInput(result)}>
             {result.place_name}

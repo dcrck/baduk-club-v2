@@ -4,7 +4,7 @@
   export let error = ''
   export let icon = ''
   let icons = {
-    initial: {id: icon, color: '#2d3748'},
+    initial: { id: icon, color: '#2d3748' },
     loading: { id: 'loader', color: '#cbd5e0' },
     ok: { id: 'check', color: '#68d391' },
     error: { id: 'x', color: '#e53e3e' },
@@ -34,6 +34,10 @@
   </div>
 
   {#if error}
-    <span class="absolute text-red-500 text-xs italic" data-cy="validation-error">{error}</span>
+    <span
+      class="absolute text-red-500 text-xs italic"
+      data-cy="validation-error">
+      {error}
+    </span>
   {/if}
 </div>
