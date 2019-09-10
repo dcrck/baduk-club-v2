@@ -1,0 +1,43 @@
+describe('Location Search Component', () => {
+  before(() => {
+    cy.visit('test/LocationSearch')
+  })
+
+  it('prevents invalid address', () => {
+    cy.get('#address')
+      .type('15198')
+      .focus()
+    cy.get('[data-cy="validation-status-initial"]').should('exist')
+    cy.get('#address')
+      .focus()
+      .blur()
+    cy.get('[data-cy="validation-error"]').should('exist')
+    cy.get('[data-cy="validation-status-error"]').should('exist')
+  })
+  it('prevents clearing a valid address', () => {
+    cy.get('#address')
+      .clear()
+      .type('15198')
+    cy.get('[data-cy="search-result"]')
+      .first()
+      .click()
+    cy.get('[data-cy="validation-status-ok"]').should('exist')
+    cy.get('#address')
+      .type('{backspace}')
+      .wait(500)
+      .blur()
+    cy.get('[data-cy="validation-error"]').should('exist')
+    cy.get('[data-cy="validation-status-error"]').should('exist')
+  })
+
+  it('accepts a valid address', () => {
+    cy.get('#address')
+      .clear()
+      .type('15198 Hook Hollow Road, Novelty')
+    cy.get('[data-cy="search-result"]')
+      .contains('15198 Hook Hollow')
+      .click()
+    cy.get('[data-cy="validation-error"]').should('not.exist')
+    cy.get('[data-cy="validation-status-ok"]').should('exist')
+  })
+})

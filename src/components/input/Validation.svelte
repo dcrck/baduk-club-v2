@@ -1,24 +1,14 @@
 <script>
   import Icon from '/components/Icon'
+  export let status = ''
+  export let error = ''
   export let icon = ''
-  export let validate = () => {}
-  export let value
-
   let icons = {
-    initial: { id: icon, color: '#2d3748' },
+    initial: {id: icon, color: '#2d3748'},
     loading: { id: 'loader', color: '#cbd5e0' },
     ok: { id: 'check', color: '#68d391' },
     error: { id: 'x', color: '#e53e3e' },
   }
-
-  let state = { status: 'initial' }
-
-  const setState = e => (state = { status: e ? 'error' : 'ok', error: e })
-
-  const check = (v, trigger = false) =>
-    trigger || state.status !== 'initial' ? setState(validate(v)) : true
-
-  $: check(value)
 </script>
 
 <style>
@@ -36,18 +26,14 @@
 </style>
 
 <div class="relative">
-  <div class="relative" class:error={state.error}>
-    <slot {check} />
-    <span class="inset-icon">
-      <Icon {...icons[state.status]} />
+  <div class="relative{error ? ' error' : ''}">
+    <slot />
+    <span class="inset-icon" data-cy="validation-status-{status}">
+      <Icon {...icons[status]} />
     </span>
   </div>
 
-  {#if state.error}
-    <span
-      data-cy="validation-error"
-      class="absolute text-red-500 text-xs italic">
-      {state.error}
-    </span>
+  {#if error}
+    <span class="absolute text-red-500 text-xs italic" data-cy="validation-error">{error}</span>
   {/if}
 </div>
