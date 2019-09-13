@@ -1,13 +1,12 @@
 <script>
   import Icon from '/components/Icon'
   import { createEventDispatcher } from 'svelte'
-  import produce from 'immer'
 
   export let choices = []
   export let initial = ''
 
   const dispatch = createEventDispatcher()
-  let group = produce(initial, () => {})
+  $: group = initial
 
   choices = choices.map(c => ({
     _id: `__${c.name || c}__`,
