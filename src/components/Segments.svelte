@@ -9,7 +9,11 @@
   const dispatch = createEventDispatcher()
   let group = produce(initial, () => {})
 
-  choices = choices.map(c => ({ id: c.name || c, icon: c.icon || '' }))
+  choices = choices.map(c => ({
+    _id: `__${c.name || c}__`,
+    id: c.name || c,
+    icon: c.icon || '',
+  }))
   const change = () => dispatch('change', { choice: group })
   const color = (g, i) => (g === i ? 'white' : '#2d3748')
 </script>
@@ -34,14 +38,14 @@
 </style>
 
 <div class="segments flex mx-auto justify-center">
-  {#each choices as { id, icon }}
-    <label class:selected={group === id} for={id}>
+  {#each choices as { _id, id, icon }}
+    <label class:selected={group === id} for={_id}>
       <input
         type="radio"
         class="hidden"
         bind:group
         value={id}
-        {id}
+        id={_id}
         on:change={change} />
       {#if icon}
         <div class="mr-2">
