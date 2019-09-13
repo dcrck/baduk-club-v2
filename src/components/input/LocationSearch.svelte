@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher, onMount } from 'svelte'
+  import { createEventDispatcher } from 'svelte'
   import { debounce } from '/utils/index'
   import * as mapbox from '/api/mapbox'
   import Validation from '/components/input/Validation'
@@ -7,7 +7,8 @@
   export let id = 'location'
   export let placeholder = 'search term'
   export let initial = ''
-  let results, searching
+  export let refresh = false
+  let results, searching, state
   let location = {}
   const dispatch = createEventDispatcher()
 
@@ -16,8 +17,15 @@
       ? 'Please make sure to select your address from the results list'
       : ''
 
-  let state = initialize(location, error)
+  function reset(refresh) {
+    location = { address: initial || '', geolocation: null }
+    state = initialize(location, error)
+  }
+
+  reset(true)
+
   $: state = load(searching)
+  $: reset(refresh)
 
   function search() {
     dispatch('clear')
@@ -46,8 +54,6 @@
     results = undefined
     dispatch('select', location)
   }
-
-  onMount(() => (location = { address: initial || '', geolocation: null }))
 </script>
 
 <style>

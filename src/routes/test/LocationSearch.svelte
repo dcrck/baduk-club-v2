@@ -3,11 +3,11 @@
 
   let evt = {
     address: '',
-    geolocation: undefined,
+    geolocation: null,
   }
   const onSelect = ({ detail }) => (evt = { ...evt, ...detail })
   const clearLocation = () =>
-    (evt = { ...evt, address: undefined, geolocation: undefined })
+    (evt = { ...evt, address: '', geolocation: null })
 </script>
 
 <label for="address" class="form-label">
