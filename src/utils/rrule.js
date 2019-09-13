@@ -73,13 +73,12 @@ export function parse({ rrule, start, end }, tz) {
 // string representation of an rrule
 export function toString(timeObj, tz = false) {
   const { rrule, start, end } = parse(timeObj, tz)
-  if (rrule === '') return ''
   return rrule ? `${rrule}, ${start} - ${end}` : `${start} - ${end}`
 }
 
 // convert frequency and day positions to an RRule String
 export function toRRuleString(freq, positions) {
-  return positions.length
+  return Array.isArray(positions)
     ? `FREQ=${freq.toUpperCase()};BYDAY=${positions.join(',')}`
     : ''
 }
