@@ -84,3 +84,19 @@ export function toRRuleString(freq, positions) {
 }
 export const utcTimestamp = (dt, time) =>
   `${dt || '2019-04-01'}T${time}:00.000Z`
+
+/*function deconstructTime([,date,time]) {
+  return date === '2019-04-01' ? { time } : { date, time }
+}
+
+function deconstructRRule([,freq, positions]) {
+  return { freq: freq.toLowerCase(), positions: positions.split(',') }
+}
+
+function toObject({ start, end, rrule }) {
+  return {
+    start: deconstructTime(start.match(/(\S+)T(\S+):00.000Z/)),
+    end: deconstructTime(end.match(/(\S+)T(\S+):00.000Z/)),
+    ...(rrule ? deconstructRRule(rrule.match(/FREQ=(\w+);BYDAY=(\S+)/)) : { freq: 'once' })
+  }
+}*/
