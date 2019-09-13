@@ -5,7 +5,7 @@
 
   export let initial = {
     location: { address: '', geolocation: null },
-    bio: ''
+    bio: '',
   }
   let current, state
   let refresh = false
@@ -14,10 +14,10 @@
   export let submit = () => Promise.resolve()
   export let cancel = () => Promise.resolve()
   function error(v) {
-    return (!v ? 'Please enter a description for your meeting place' : '')
+    return !v ? 'Please enter a description for your meeting place' : ''
   }
 
-  function reset () {
+  function reset() {
     current = JSON.parse(JSON.stringify(initial))
     state = initialize(current.bio, error)
     refresh ^= true
@@ -28,23 +28,27 @@
 
   $: validate(current.bio)
 
-  $: disabled = !(current && JSON.stringify(current) !== JSON.stringify(initial)
-     && current.bio && current.location.geolocation)
+  $: disabled = !(
+    current &&
+    JSON.stringify(current) !== JSON.stringify(initial) &&
+    current.bio &&
+    current.location.geolocation
+  )
 
-  const onSelect = ({ detail }) => current.location = { ...detail }
+  const onSelect = ({ detail }) => (current.location = { ...detail })
 
-  const clearLocation = () => current.location = { address: '', geolocation: null }
+  const clearLocation = () =>
+    (current.location = { address: '', geolocation: null })
 
   const clickSubmit = () => submit(current).then(reset)
   const clickCancel = () => cancel().then(reset)
-
 </script>
 
 <label for="address" class="form-label">
   Address
   <LocationSearch
     id="address"
-        initial={current.location.address}
+    initial={current.location.address}
     on:select={onSelect}
     on:clear={clearLocation}
     {refresh}
@@ -56,16 +60,25 @@
     <textarea
       bind:value={current.bio}
       id="description"
-      class="border-gray-400 w-full border focus:border-gray-800 rounded py-2 px-3"
+      class="border-gray-400 w-full border focus:border-gray-800 rounded py-2
+      px-3"
       placeholder="How can people set up a time to play Go with you?"
       on:blur={() => validate(current.bio, true)} />
   </Validation>
 </label>
 <div class="flex items-center justify-between">
-  <button on:click={clickCancel} data-cy="cancel-user-location">
+  <button
+    data-cy="cancel-user-location"
+    class="bg-white border-2 border-gray-800 rounded px-4 py-2 mr-2"
+    on:click={clickCancel}>
     Cancel
   </button>
-  <button on:click={clickSubmit} {disabled} data-cy="submit-user-location">
+  <button
+    {disabled}
+    data-cy="submit-user-location"
+    on:click={clickSubmit}
+    class="my-4 {disabled ? 'opacity-25 cursor-not-allowed ' : ''}px-4 py-2
+    bg-gray-800 rounded text-white">
     Submit
   </button>
 </div>
