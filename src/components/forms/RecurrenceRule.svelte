@@ -6,8 +6,8 @@
   const dispatch = createEventDispatcher()
   // clones from defaults instead of binding the same reference and having
   // it modified when the boxes are checked
-  const changeGroup = async group => {
-    const selected = defaults[group]
+  const changeGroup = async (group, reset = false) => {
+    const selected = reset ? _initial : defaults[group]
     // we also need to wait for the new checkboxes to have rendered
     await tick()
     start = { ...selected.start }
@@ -31,9 +31,12 @@
     once: [],
   }
 
-  export let initial = { ...defaults.weekly, freq: 'weekly' }
-  let { positions, start, end } = defaults.weekly
-  let freq = initial.freq
+  export let initial = null
+
+  let _initial = initial
+    ? { ...initial }
+    : { ...defaults.weekly, freq: 'weekly' }
+  let { positions, start, end, freq } = _initial
 
   $: disabled = !(
     start.time &&
@@ -49,21 +52,27 @@
   const setGroup = ({ detail: { choice } }) => (freq = choice)
 
   $: changeGroup(freq)
-  $: preview = utils.toString(toDB({ positions, start, end, freq }))
+  $: preview = utils.toString(
+    toDB({ positions, start, end, freq }),
+    freq === 'once'
+  )
 
-  function toDB({ start, end, freq, positions }) {
-    return {
-      start: utils.utcTimestamp(start.date, start.time),
-      end: utils.utcTimestamp(end.date, end.time),
-      ...(positions.length
-        ? { rrule: utils.toRRuleString(freq, positions) }
-        : {}),
-    }
-  }
+  const toDB = ({ start, end, freq, positions }) => ({
+    start: utils.utcTimestamp(start.date, start.time),
+    end: utils.utcTimestamp(end.date, end.time),
+    ...(positions.length
+      ? { rrule: utils.toRRuleString(freq, positions) }
+      : {}),
+  })
 
   function submit() {
     dispatch('submit', { time: toDB({ positions, start, end, freq }) })
     changeGroup(freq)
+  }
+
+  function reset() {
+    freq = _initial.freq
+    changeGroup(freq, true)
   }
 </script>
 
@@ -96,7 +105,7 @@
 
 <hr class="my-4" />
 
-<form class="inline-flex flex-col" on:submit|preventDefault={submit}>
+<div class="inline-flex flex-col">
   <span>We're meeting...</span>
   {#if !force}
     <div class="mt-2 mb-4">
@@ -153,12 +162,21 @@
         <input type="time" data-cy="end-time" bind:value={end.time} />
       </div>
     {/if}
-    <input
-      type="submit"
-      {disabled}
-      data-cy="add-time"
-      value="Add Meeting Time"
-      class="w-full mx-auto my-4 {disabled ? 'opacity-25 cursor-not-allowed' : ''}
-      px-4 py-2 bg-gray-800 rounded text-white flex justify-center" />
+    <div class="w-full flex items-center justify-between">
+      <button
+        data-cy="reset-rrule-form"
+        class="bg-white border-2 border-gray-800 rounded px-4 py-2"
+        on:click={reset}>
+        Reset
+      </button>
+      <button
+        {disabled}
+        data-cy="add-time"
+        on:click={submit}
+        class="my-4 {disabled ? 'opacity-25 cursor-not-allowed ' : ''}px-4 py-2
+        bg-gray-800 rounded text-white">
+        Add Meeting Time
+      </button>
+    </div>
   </div>
-</form>
+</div>
