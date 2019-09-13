@@ -22,7 +22,7 @@
     state = initialize(location, error)
   }
 
-  reset(true)
+  reset()
 
   $: state = load(searching)
   $: reset(refresh)
