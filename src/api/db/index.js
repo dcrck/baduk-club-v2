@@ -41,6 +41,9 @@ export const execute = async (
     headers: {
       'Content-Type': 'application/json',
       ...(token ? { authorization: `Bearer ${token}` } : {}),
+      ...(process.env.NODE_ENV === 'development'
+        ? { 'x-hasua-admin-secret': process.env.HASURA_ADMIN_SECRET }
+        : {}),
       ...headers,
     },
     body: JSON.stringify({ query: query.replace(/\s+/g, ' '), variables }),
