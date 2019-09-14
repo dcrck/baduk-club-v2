@@ -17,7 +17,7 @@
     right: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255,255,255, 0.75);
+    background: rgba(255, 255, 255, 0.75);
     padding-left: 0.5rem;
   }
 

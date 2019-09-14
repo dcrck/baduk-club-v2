@@ -132,10 +132,10 @@
         on:blur={() => validate('picture', true)} />
     </Validation>
     <div class="italic text-sm text-center">
-    <img
-      src={url}
-      alt="Invalid image location"
-      class="rounded-full w-32 h-32 bg-gray-300 mx-auto relative my-4" />
+      <img
+        src={url}
+        alt="Invalid image location"
+        class="rounded-full w-32 h-32 bg-gray-300 mx-auto relative my-4" />
     </div>
   </label>
 </div>
