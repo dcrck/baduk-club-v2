@@ -1,10 +1,12 @@
 <script>
-  import { createEventDispatcher, onMount } from 'svelte'
+  import { createEventDispatcher } from 'svelte'
   import { debounce } from '/utils/index'
   import Fuse from 'fuse.js'
   import Validation from '/components/input/Validation'
   import check, { initialize, load } from './validate.js'
   export let initial = ''
+  export let refresh = ''
+  export let id = ''
   export let key
   export let errorMessage = 'Please pick an item from the list'
   export let items = []
@@ -17,6 +19,7 @@
 
   $: fuse = new Fuse(items, options)
   $: if (selected && selected[key]) setInput(selected, false)
+  $: reset(refresh)
 
   const error = ({ [key]: value }) => (value ? '' : errorMessage)
 
@@ -29,9 +32,15 @@
     selected = results.find(r => r[key] === query) || {}
   }
 
+  function reset() {
+    query = initial || ''
+    selected = items.find(i => i[key] === query) || {}
+    state = initialize({ [key]: initial }, error)
+  }
+
   function showError() {
     results = undefined
-    state = check(state.status !== 'ok', error, selected)
+    state = check(state.status !== 'ok', error, selected) || state
   }
 
   const debouncedError = debounce(showError, 200)
@@ -45,11 +54,6 @@
     state = check(true, error, selected)
     dispatch('select', { result })
   }
-
-  onMount(() => {
-    query = initial || ''
-    selected = items.find(i => i[key] === query) || {}
-  })
 </script>
 
 <style>
@@ -70,7 +74,7 @@
   <Validation {...state} icon="chevron-down">
     <input
       type="text"
-      data-cy="typeahead"
+      data-cy="typeahead-{id}"
       {placeholder}
       class="border-gray-400 focus:border-gray-800 w-full border rounded py-2
       px-3"
