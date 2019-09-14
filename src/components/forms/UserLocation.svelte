@@ -2,6 +2,7 @@
   import LocationSearch from '/components/input/LocationSearch'
   import Validation from '/components/input/Validation'
   import check, { initialize } from '/components/input/validate'
+  import { createEventDispatcher } from 'svelte'
 
   export let initial = {
     location: { address: '', geolocation: null },
@@ -9,13 +10,12 @@
   }
   let current, state
   let refresh = false
-  reset()
 
-  export let submit = () => Promise.resolve()
-  export let cancel = () => Promise.resolve()
-  function error(v) {
-    return !v ? 'Please enter a description for your meeting place' : ''
-  }
+  const dispatch = createEventDispatcher()
+  const error = v =>
+    !v ? 'Please enter a description for your meeting place' : ''
+
+  reset()
 
   function reset() {
     current = JSON.parse(JSON.stringify(initial))
@@ -40,8 +40,14 @@
   const clearLocation = () =>
     (current.location = { address: '', geolocation: null })
 
-  const clickSubmit = () => submit(current).then(reset)
-  const clickCancel = () => cancel().then(reset)
+  function submit() {
+    dispatch('submit', { data: current })
+    reset()
+  }
+  function cancel() {
+    dispatch('cancel')
+    reset()
+  }
 </script>
 
 <label for="address" class="form-label">
@@ -70,13 +76,13 @@
   <button
     data-cy="cancel-user-location"
     class="bg-white border-2 border-gray-800 rounded px-4 py-2 mr-2"
-    on:click={clickCancel}>
+    on:click={cancel}>
     Cancel
   </button>
   <button
     {disabled}
     data-cy="submit-user-location"
-    on:click={clickSubmit}
+    on:click={submit}
     class="my-4 {disabled ? 'opacity-25 cursor-not-allowed ' : ''}px-4 py-2
     bg-gray-800 rounded text-white">
     Submit
