@@ -7,3 +7,4 @@ yarn-error.log
 *.env
 static/global.css
 /test/
+cypress.env.json

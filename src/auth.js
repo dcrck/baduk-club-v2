@@ -14,14 +14,7 @@ export function validate(req) {
   try {
     return jwt.verify(req.cookies['auth-user'], JWT_SECRET)
   } catch (error) {
-    return dev
-      ? {
-          id: process.env.DEFAULT_USER_ID,
-        }
-      : {
-          unauthorized: true,
-          message: 'Unauthorized',
-        }
+    return { unauthorized: true, message: 'Unauthorized' }
   }
 }
 
@@ -57,7 +50,7 @@ export default app => {
   app.use(passport.initialize())
 
   app.get('/login', (req, res, next) => {
-    const { redir } = req.query
+    const { redir, test } = req.query
     const state = redir
       ? Buffer.from(JSON.stringify({ redir })).toString('base64')
       : undefined
@@ -65,7 +58,11 @@ export default app => {
       scope: 'openid email profile',
       state,
     })
-    auth(req, res, next)
+    if (!dev || !test) auth(req, res, next)
+    else {
+      generateJWTCookie(res, { id: process.env.DEFAULT_USER_ID })
+      return res.redirect('/')
+    }
   })
 
   // Perform the final stage of authentication and redirect
@@ -75,9 +72,8 @@ export default app => {
       if (!user) return res.redirect('/login')
 
       req.login(user, { session: false }, err => {
-        console.log(user)
         if (err) return next(err)
-        const { id, id_token: token } = user
+        let { id, id_token: token } = user
         const { email, email_verified } = user['_json']
         generateJWTCookie(res, { id, token, email, email_verified })
         // extract redirect URL from req
