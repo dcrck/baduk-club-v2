@@ -9,7 +9,7 @@
     "prettier": "prettier --write src/client.js src/server.js 'src/{routes,components}/**/*.{js,css,svelte}' rollup.config.js",
     "start:build": "sapper build --legacy",
     "prep:build": "[ -d \"src/routes/test\" ] && mv -vn src/routes/test test || true",
-    "build:dev": "NODE_ENV=development run-s prep:build start:build",
+    "build:dev": "NODE_ENV=staging run-s prep:build start:build",
     "build": "NODE_ENV=production run-s prep:build start:build",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
