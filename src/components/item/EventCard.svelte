@@ -11,13 +11,23 @@
   $: parsed = parse({ times, address, last_updated })
 </script>
 
-<div
-  data-cy="event-card"
-  class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
-  p-4 pt-3">
-  <h2
-    data-cy="event-card-name"
-    class={expanded ? 'text-5xl font-medium' : 'text-3xl font-semibold'}>
+<style>
+  .event-card {
+    @apply rounded-lg bg-white p-4 pt-3;
+  }
+  .event-card.border {
+    @apply border border-gray-400;
+  }
+  h2.expanded {
+    @apply text-5xl font-medium;
+  }
+  h4.expanded {
+    @apply text-2xl font-semibold;
+  }
+</style>
+
+<div data-cy="event-card" class="event-card" class:border>
+  <h2 data-cy="event-card-name" class="text-3xl font-semibold" class:expanded>
     {name}
   </h2>
   {#if showTime}
@@ -25,7 +35,7 @@
       last updated: {parsed.last_updated} ago
     </p>
   {/if}
-  <div class="{expanded ? 'text-xl' : 'text-lg'} my-5">
+  <div class="text-lg my-5" class:text-xl={expanded}>
     {#each parsed.times as { rrule, start, end }}
       <div data-cy="event-card-time">
         {#if rrule}
@@ -48,7 +58,8 @@
   </div>
   <h4
     data-cy="event-card-address-main"
-    class={expanded ? 'text-2xl font-semibold' : 'text-lg font-medium'}>
+    class="text-lg font-medium"
+    class:expanded>
     {parsed.address.main}
   </h4>
   <p data-cy="event-card-address-rest" class:text-lg={expanded}>

@@ -18,10 +18,19 @@
   $: parsed = parse({ address, last_updated })
 </script>
 
-<div
-  data-cy="user-card"
-  class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
-  p-4 pt-3 flex justify-between {address ? 'items-start' : 'items-center'}">
+<style>
+  .user-card {
+    @apply shadow-xl items-center rounded-lg bg-white p-4 pt-3 flex justify-between;
+  }
+  .user-card.border {
+    @apply border border-gray-400;
+  }
+  .user-card.address {
+    @apply items-start;
+  }
+</style>
+
+<div data-cy="user-card" class:border class:address class="user-card">
   <div class="flex">
     <img
       src={_picture}

@@ -66,7 +66,7 @@
     border: true,
   }
 
-const switchList = ({ detail: {choice} }) => list = choice
+  const switchList = ({ detail: { choice } }) => (list = choice)
 
   onMount(() => activity.set({ users: users.length, events: events.length }))
 </script>
@@ -91,7 +91,7 @@ const switchList = ({ detail: {choice} }) => list = choice
     <h1 class="font-bold text-6xl">The one-stop shop</h1>
     <h1 class="font-bold text-6xl">for in-person Go</h1>
     <p class="text-2xl py-10">
-    Find local Go meetups, tournaments, and players on BadukClub
+      Find local Go meetups, tournaments, and players on BadukClub
     </p>
   </div>
 
@@ -99,14 +99,17 @@ const switchList = ({ detail: {choice} }) => list = choice
     <a
       href="login"
       class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded text-white
-             text-lg font-semibold">
+      text-lg font-semibold">
       Sign Up Now
     </a>
   </div>
 
   <div class="py-10 flex justify-around text-center">
     <div class="flex flex-col justify-center">
-      <h1 class="font-semibold" style="font-size: 4.5rem" data-cy="meetup-count">
+      <h1
+        class="font-semibold"
+        style="font-size: 4.5rem"
+        data-cy="meetup-count">
         {Math.round($activity.events)}
       </h1>
       <p class="text-xl">Meetups</p>
@@ -123,15 +126,15 @@ const switchList = ({ detail: {choice} }) => list = choice
   <div class="py-10 text-center mx-32">
     <h2 class="text-5xl font-semibold">Up-to-date Meetups</h2>
     <p class="text-xl">
-    We perform quality checks frequently to ensure our regular meetups are still
-    active, so you don’t have to worry about outdated information when you show
-    up to an event
+      We perform quality checks frequently to ensure our regular meetups are
+      still active, so you don’t have to worry about outdated information when
+      you show up to an event
     </p>
     <div class="py-10">
       <a
         href="map"
-        class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded text-white
-               text-lg font-semibold ">
+        class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded
+        text-white text-lg font-semibold ">
         Explore Meetups
       </a>
     </div>
@@ -140,8 +143,8 @@ const switchList = ({ detail: {choice} }) => list = choice
   <div class="py-10 text-center mx-32">
     <h2 class="text-5xl font-semibold">Casual Game Tracking</h2>
     <p class="text-xl">
-    Each meetup lets you track game results, so you can record your casual games
-    and get a feeling for how you're progressing
+      Each meetup lets you track game results, so you can record your casual
+      games and get a feeling for how you're progressing
     </p>
   </div>
   <hr />
@@ -151,7 +154,7 @@ const switchList = ({ detail: {choice} }) => list = choice
     <a
       href="login"
       class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded text-white
-             text-lg font-semibold">
+      text-lg font-semibold">
       Sign Up Now
     </a>
   </div>
