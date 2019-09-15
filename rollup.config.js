@@ -3,6 +3,7 @@ import replace from 'rollup-plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
+import json from 'rollup-plugin-json'
 import { terser } from 'rollup-plugin-terser'
 import rootImport from 'rollup-plugin-root-import'
 import dotenv from 'dotenv'
@@ -96,6 +97,7 @@ export default {
         ...envKeys,
       }),
       alias(clientAliases),
+      json(),
       rootImport(imports),
       svelte({
         dev,
@@ -152,6 +154,7 @@ export default {
         ...envKeys,
       }),
       alias(serverAliases),
+      json(),
       rootImport(imports),
       svelte({
         generate: 'ssr',
