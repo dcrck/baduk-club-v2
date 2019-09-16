@@ -70,14 +70,12 @@
     dispatch('submit', { time: toDB({ positions, start, end, freq }) })
     changeGroup(freq)
   }
-
-  function reset() {
-    freq = _initial.freq
-    changeGroup(freq, true)
-  }
 </script>
 
 <style>
+  button.disabled {
+    @apply opacity-25 cursor-not-allowed;
+  }
   .day {
     cursor: pointer;
   }
@@ -165,19 +163,13 @@
         <input type="time" data-cy="end-time" bind:value={end.time} />
       </div>
     {/if}
-    <div class="w-full flex items-center justify-between">
-      <button
-        data-cy="reset-rrule-form"
-        class="bg-white border-2 border-gray-800 rounded px-4 py-2 mr-2"
-        on:click={reset}>
-        Reset
-      </button>
+    <div class="w-full flex items-center">
       <button
         {disabled}
         data-cy="add-time"
         on:click={submit}
-        class="my-4 {disabled ? 'opacity-25 cursor-not-allowed ' : ''}px-4 py-2
-        bg-gray-800 rounded text-white">
+        class="my-4 px-4 py-2 bg-gray-800 rounded text-white w-full"
+        class:disabled >
         Add Meeting Time
       </button>
     </div>

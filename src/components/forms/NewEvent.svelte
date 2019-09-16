@@ -14,7 +14,7 @@
         {
           root: 'events',
           type: 'insert',
-          values: { ...evt, id, organizer_id: user.id },
+          values: { ...evt, id },
         },
         {
           root: 'attendances',

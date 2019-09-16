@@ -44,7 +44,7 @@
         ...rest,
         ...(description
           ? { description: encodeURIComponent(description) }
-          : {}),
+          : { description: '' }),
       },
     })
     if (resetOnSubmit) reset()
