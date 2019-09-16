@@ -13,8 +13,8 @@
 
 <hr />
 <div
-  class="flex text-sm justify-center items-center text-gray-500 py-4"
-  class:flex-col={small}>
+  class="flex text-sm flex-col justify-center items-center text-gray-500 py-4"
+  class:md:flex-row={!small}>
   <p class="text-center">Copyright 2019 BadukClub.</p>
   <p class="text-center" class:-mt-2={small}>All rights reserved.</p>
   <a href="docs/terms-of-service" class="underline hover:text-gray-800">

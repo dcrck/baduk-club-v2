@@ -71,6 +71,16 @@
   onMount(() => activity.set({ users: users.length, events: events.length }))
 </script>
 
+<style>
+  a.button {
+    @apply block mx-auto py-4 px-4 bg-gray-700 rounded text-white text-lg font-semibold;
+  }
+
+  a.button:hover {
+    @apply bg-gray-800;
+  }
+</style>
+
 <svelte:head>
   <title>{user ? 'Directory | BadukClub' : 'Welcome to BadukClub'}</title>
 </svelte:head>
@@ -96,12 +106,7 @@
   </div>
 
   <div class="py-10 text-center">
-    <a
-      href="login"
-      class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded text-white
-      text-lg font-semibold">
-      Sign Up Now
-    </a>
+    <a href="login" class="button w-full md:w-1/2 lg:w-1/4">Sign Up Now</a>
   </div>
 
   <div class="py-10 flex justify-around text-center">
@@ -123,7 +128,7 @@
   </div>
 
   <hr />
-  <div class="py-10 text-center mx-32">
+  <div class="py-10 text-center mx-2 md:mx-10 lg:mx-32">
     <h2 class="text-5xl font-semibold">Up-to-date Meetups</h2>
     <p class="text-xl">
       We perform quality checks frequently to ensure our regular meetups are
@@ -131,16 +136,11 @@
       you show up to an event
     </p>
     <div class="py-10">
-      <a
-        href="map"
-        class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded
-        text-white text-lg font-semibold ">
-        Explore Meetups
-      </a>
+      <a href="map" class="button w-full md:w-1/2 lg:w-1/4">Explore Meetups</a>
     </div>
   </div>
 
-  <div class="py-10 text-center mx-32">
+  <div class="py-10 text-center mx-2 md:mx-10 lg:mx-32">
     <h2 class="text-5xl font-semibold">Casual Game Tracking</h2>
     <p class="text-xl">
       Each meetup lets you track game results, so you can record your casual
@@ -151,11 +151,6 @@
 
   <div class="py-10 text-center">
     <h2 class="text-5xl font-bold pb-10">Join the Club Today!</h2>
-    <a
-      href="login"
-      class="mx-auto py-4 px-24 bg-gray-700 hover:bg-gray-800 rounded text-white
-      text-lg font-semibold">
-      Sign Up Now
-    </a>
+    <a href="login" class="button w-full md:w-1/2 lg:w-1/4">Sign Up Now</a>
   </div>
 {/if}
