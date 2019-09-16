@@ -177,7 +177,8 @@
       .catch(e => alert(e))
   }
 
-  function switchOrganizer() {}
+  // ToDo: implement
+  // function switchOrganizer() {}
 
   const buttonText = (processing, verb, rest) =>
     processing ? `${verb}ing ${rest}...` : `${verb} ${rest}`
@@ -193,7 +194,7 @@
       }
     else if (signedUp && userIsOrganizer)
       return {
-        action: switchOrganizer,
+        action: null,
         actionButton: {
           icon: '',
           label: buttonText(processing, 'Switch', 'Organizer'),
@@ -306,7 +307,7 @@
       {/if}
     </label>
   {/each}
-  {#if user}
+  {#if user && action}
     <button
       on:click={action}
       class="w-full p-8 flex border-t-2 border-b-2 border-gray-800">
@@ -317,7 +318,7 @@
       {/if}
       <span class="font-semibold">{actionButton.label}</span>
     </button>
-  {:else}
+  {:else if !user}
     <a
       href="login?redir=/events/{evt.id}"
       class="block w-full p-8 border-t-2 border-b-2 border-gray-800">
