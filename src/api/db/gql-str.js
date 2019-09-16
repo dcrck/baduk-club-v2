@@ -15,6 +15,7 @@ function field_str(fields) {
 
 function parse_param_val(value) {
   if (Array.isArray(value)) return `[${param_str(value)}]`
+  if (value === null) return 'null'
   if (typeof value === 'object') return `{ ${param_str(value)} }`
   if (typeof value === 'string') return `"${value}"`
   else return `${value}`
