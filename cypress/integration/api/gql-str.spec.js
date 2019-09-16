@@ -85,6 +85,33 @@ describe('query string generator', () => {
     expect(gql_str(input)).to.equal(expected)
   })
 
+  it('generates queries with null parameter values', () => {
+    const params = {
+      id: 'test-test-test',
+      phone: null,
+    }
+
+    const input = {
+      root: 'insert_users',
+      type: 'mutation',
+      params: { objects: [params] },
+      fields: { returning: ['id'] },
+    }
+
+    const expected = `mutation m {
+        insert_users(objects: [{
+          id: "${params.id}",
+          phone: null
+        }]) {
+          returning {
+            id
+          }
+        }
+      }`.replace(/\s+/g, ' ')
+
+    expect(gql_str(input)).to.equal(expected)
+  })
+
   it('supports queries from multiple tables', () => {
     const input = [
       { root: 'events', fields: ['id', 'name'] },
