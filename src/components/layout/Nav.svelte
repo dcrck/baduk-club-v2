@@ -2,11 +2,44 @@
   import Icon from '/components/Icon'
   import Logo from '/components/layout/Logotype'
   import { stores } from '@sapper/app'
+  import { onMount } from 'svelte'
+  import { select, execute, update } from '/api/db/index'
   const { session } = stores()
   let { user, picture, name } = $session ? $session : {}
   let optsVisible = false
 
   const toggleProfileOpts = () => (optsVisible ^= true)
+  // load user picture and name if they're not already 'seeded' in the session,
+  // then store them in the session for future use
+  onMount(() => {
+    if (user && (!picture || !name)) {
+      const gql = query => execute({ query, token: user.token })
+      const auth0Query = select('auth0', { fields: ['picture'] })
+      const profileQuery = select('users', {
+        filters: { where: { id: { _eq: user.id } }, limit: 1 },
+        fields: ['name', 'picture'],
+      })
+      gql(profileQuery)
+        .then(({ users: [u] }) => {
+          name = u.name
+          return u.picture
+            ? Promise.resolve({ auth0: { picture: u.picture }, noUpdate: true })
+            : gql(auth0Query)
+        })
+        .then(({ auth0, noUpdate }) => {
+          picture = auth0.picture
+          session.update(s => ({ ...s, picture, name }))
+          return !noUpdate
+            ? gql(
+                update('users', {
+                  filters: { where: { id: { _eq: user.id } } },
+                  values: { picture },
+                })
+              )
+            : Promise.resolve()
+        })
+    }
+  })
 </script>
 
 <style>
@@ -43,7 +76,8 @@
           <img src={picture} alt={name} class="w-6 h-auto rounded-full" />
           <span class="text-xs {optsVisible ? '' : 'opacity-50'}">{name}</span>
         {:else}
-          <span class="text-xs">User?</span>
+          <div class="w-6 h-6 rounded-full bg-gray-200" />
+          <span class="text-xs">loading...</span>
         {/if}
         <div class="{optsVisible ? '' : 'hidden '}options">
           <a href="profile" class="hover:underline">Profile</a>
