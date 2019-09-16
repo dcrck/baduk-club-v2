@@ -5,6 +5,7 @@
   import { debounce } from '/utils/index'
 
   export let initial = { picture: '', phone: '', name: '' }
+  export let resetOnSubmit = false
   const dispatch = createEventDispatcher()
 
   let current, state, validImage, url
@@ -30,11 +31,12 @@
   }
 
   reset()
+  $: reset(initial)
 
   function submit() {
     if (disabled) return
     dispatch('submit', { data: current })
-    reset()
+    if (resetOnSubmit) reset()
   }
 
   function cancel() {
@@ -48,10 +50,6 @@
       state[k]
   }
 
-  $: disabled = !(
-    JSON.stringify(initial) !== JSON.stringify(current) &&
-    !Object.keys(error).find(k => state[k].status !== 'ok')
-  )
   $: current && validate('name')
 
   $: if (current.picture !== url) {
@@ -74,6 +72,11 @@
     }
     debouncedImageValidation = debounce(validateImageURL, 400)
   })
+
+  $: disabled = !(
+    JSON.stringify(initial) !== JSON.stringify(current) &&
+    !Object.keys(error).find(k => state[k].status !== 'ok')
+  )
 </script>
 
 <style>
