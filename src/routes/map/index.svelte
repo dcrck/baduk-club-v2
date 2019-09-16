@@ -39,7 +39,8 @@
   import Map from './_components/Map.svelte'
   import Marker from './_components/Marker.svelte'
   import Icon from '/components/Icon'
-  //import Modal from '/components/Modal'
+  import Modal from '/components/Modal'
+  import NewEventForm from '/components/forms/NewEvent'
   import EventCard from '/components/item/EventCard'
   import Sidebar from '/components/layout/Sidebar'
   import { fly } from 'svelte/transition'
@@ -94,7 +95,7 @@
     height: calc(100vh - 4rem);
   }
 
-  /*.click {
+  .click {
     position: relative;
     box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.5);
     top: 0;
@@ -104,7 +105,7 @@
   .click:active {
     top: 3px;
     box-shadow: none;
-  }*/
+  }
 </style>
 
 {#if showSidebar}
@@ -115,9 +116,10 @@
         <p class="font-semibold text-lg">{events.length} Meetups</p>
         <p>on the map</p>
       </div>
-      <!--{#if user}
+      {#if user}
         <div class="my-8">
           <button
+            data-cy="add-meetup-button"
             class="bg-gray-700 rounded py-3 px-5 hover:bg-gray-800 flex mx-auto
             click"
             on:click={toggleEventForm}>
@@ -125,7 +127,7 @@
             <span class="ml-2 text-white font-medium">Add Meetup</span>
           </button>
         </div>
-      {/if} -->
+      {/if}
     </Sidebar>
   </div>
 {/if}
@@ -154,8 +156,8 @@
     </button>
   </a>
 {/if}
-<!--{#if showNewEventForm}
+{#if showNewEventForm}
   <Modal on:close={toggleEventForm}>
     <NewEventForm />
   </Modal>
-{/if}-->
+{/if}

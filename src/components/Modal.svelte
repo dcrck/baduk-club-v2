@@ -14,6 +14,7 @@
     overflow-y: scroll;
     max-height: calc(100vh - 4rem);
     max-width: calc(100vw - 4rem);
+    min-width: 50%;
   }
 </style>
 

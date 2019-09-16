@@ -101,9 +101,9 @@
 
 <div class="text-xl opacity-50 relative">
   <span class="absolute italic right-0">Preview</span>
-  <span data-cy="preview">
+  <p data-cy="preview" class="w-10/12">
     {positions.length || freq === 'once' ? preview : 'Please add some days!'}
-  </span>
+  </p>
 </div>
 
 <hr class="my-4" />

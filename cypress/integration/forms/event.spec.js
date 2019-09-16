@@ -1,6 +1,24 @@
+import { execute, del } from '../../../src/api/db/index'
+
+const cyreq = (endpoint, options) =>
+  cy.request({ url: endpoint, ...options, failOnStatusCode: true })
+const headers = {
+  'x-hasura-admin-secret': Cypress.env('HASURA_ADMIN_SECRET'),
+}
+const gql = q =>
+  execute(
+    {
+      query: q,
+      headers,
+      endpoint: Cypress.env('DATABASE_ENDPOINT'),
+      extractJSON: r => r.body,
+    },
+    cyreq
+  )
+
 describe('Event form', () => {
   before(() => {
-    cy.visit('test/EventForm')
+    cy.request('login?test=1').then(() => cy.visit('test/EventForm'))
   })
 
   it('only allows a single meeting time entry for one-time meetups', () => {
@@ -70,7 +88,34 @@ describe('Event form', () => {
     cy.get('#private')
       .click()
       .click()
-    cy.get('[data-cy="submit-event-form"]').should('not.be.disabled')
-    cy.get('[data-cy="cancel-event-form"]').click()
+    cy.get('[data-cy="submit-event-form"]')
+      .should('not.be.disabled')
+      .click()
+  })
+
+  it('allows users to edit an already-created meetup', () => {
+    cy.get('#name').should('have.value', 'Test Meetup')
+    cy.get('[data-cy="submit-event-form"]').should('be.disabled')
+    cy.get('#name').clear()
+    cy.get('[data-cy="submit-event-form"]').should('be.disabled')
+    cy.get('#name').type('Test Meetup ABC')
+    cy.get('[data-cy="submit-event-form"]')
+      .should('not.be.disabled')
+      .click()
+    cy.get('#name').should('have.value', 'Test Meetup ABC')
+  })
+
+  after(() => {
+    gql(
+      del('events', {
+        filters: {
+          where: {
+            address: {
+              _eq: '15198 Hook Hollow Road, Novelty, Ohio 44072, United States',
+            },
+          },
+        },
+      })
+    )
   })
 })

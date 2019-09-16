@@ -42,7 +42,7 @@ export const execute = async (
       'Content-Type': 'application/json',
       ...(token ? { authorization: `Bearer ${token}` } : {}),
       ...(process.env.NODE_ENV === 'development' && !token
-        ? { 'x-hasua-admin-secret': process.env.HASURA_ADMIN_SECRET }
+        ? { 'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET }
         : {}),
       ...headers,
     },

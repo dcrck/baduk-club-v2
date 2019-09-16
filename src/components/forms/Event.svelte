@@ -21,10 +21,10 @@
   }
 
   let current, refresh, state
-  $: disabled = !(
-    JSON.stringify(initial) !== JSON.stringify(current) && state.status === 'ok'
-  )
   reset()
+  $: reset(initial)
+
+  $: current && validate(current.name)
 
   function reset() {
     current = JSON.parse(JSON.stringify(initial))
@@ -45,8 +45,6 @@
     dispatch('cancel')
     reset()
   }
-  $: current && validate(current.name)
-
   const removeTime = i =>
     (current.times = current.times
       .slice(0, i)
@@ -57,6 +55,13 @@
   const selectLocation = ({ detail }) => (current = { ...current, ...detail })
   const clearLocation = () =>
     (current = { ...current, address: '', geolocation: null })
+
+  $: disabled = !(
+    JSON.stringify(initial) !== JSON.stringify(current) &&
+    state.status === 'ok' &&
+    current.geolocation &&
+    current.times.length
+  )
 </script>
 
 <style>
