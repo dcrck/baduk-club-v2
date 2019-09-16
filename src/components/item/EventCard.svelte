@@ -13,10 +13,10 @@
 
 <style>
   .event-card {
-    @apply rounded-lg bg-white p-4 pt-3;
+    @apply rounded-lg bg-white p-4 pt-3 shadow-xl;
   }
   .event-card.border {
-    @apply border border-gray-400;
+    @apply shadow-none border border-gray-400;
   }
   h2.expanded {
     @apply text-5xl font-medium;
