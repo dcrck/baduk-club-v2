@@ -19,6 +19,7 @@
     description: '',
     geolocation: null,
   }
+  export let resetOnSubmit = false
 
   let current, refresh, state
   reset()
@@ -37,8 +38,16 @@
   }
 
   function submit() {
-    dispatch('submit', { data: current })
-    reset()
+    const { description, ...rest } = current
+    dispatch('submit', {
+      data: {
+        ...rest,
+        ...(description
+          ? { description: encodeURIComponent(description) }
+          : {}),
+      },
+    })
+    if (resetOnSubmit) reset()
   }
 
   function cancel() {
