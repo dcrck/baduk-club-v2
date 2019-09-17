@@ -91,7 +91,7 @@
   }
 </style>
 
-<div class="flex flex-col">
+<div class="flex flex-col mb-8">
   <label for="name" class="form-label">
     Name
     <Validation {...state}>

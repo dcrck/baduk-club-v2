@@ -26,9 +26,7 @@
     on:click={close} />
 
   <div class="fixed bg-white content p-8 rounded" style="z-index: 999">
-    <div class="mb-8">
-      <slot />
-    </div>
+    <slot />
     <button
       class="m-2 hover:opacity-100 opacity-50 absolute top-0 right-0"
       data-cy="close-modal"
