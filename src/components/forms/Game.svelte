@@ -127,6 +127,7 @@
     </label>
   </div>
 </div>
+<hr class="my-4" />
 <div class="w-full flex items-center justify-between my-5">
   <button
     on:click={reset}
