@@ -35,7 +35,7 @@
       token: user.token,
     })
       .then(() => {
-        ping({ message: 'Event created successfully!', type: 'success', })
+        ping({ message: 'Event created successfully!', type: 'success' })
         return goto(`events/${id}`)
       })
       .catch(e =>

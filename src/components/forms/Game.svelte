@@ -50,7 +50,7 @@
 
   function submit() {
     dispatch('submit', { game })
-    if(resetOnSubmit) reset()
+    if (resetOnSubmit) reset()
   }
 </script>
 

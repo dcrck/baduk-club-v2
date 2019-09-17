@@ -158,6 +158,6 @@
 {/if}
 {#if showNewEventForm}
   <Modal on:close={toggleEventForm}>
-    <NewEventForm on:cancel={toggleEventForm}/>
+    <NewEventForm on:cancel={toggleEventForm} />
   </Modal>
 {/if}
