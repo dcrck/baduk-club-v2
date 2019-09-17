@@ -3,8 +3,12 @@
   import { merge, execute } from '/api/db/index'
   import { goto, stores } from '@sapper/app'
   import generate from 'nanoid/generate'
+  import { toastKey } from '/utils/index'
+  import { getContext } from 'svelte'
   const { session } = stores()
+
   let { user } = $session
+  const { ping } = getContext(toastKey)
 
   function submit({ detail: { data: evt } }) {
     const id = generate('0123456789abcdefghijklmnopqrstuvwxyz', 10)
@@ -30,8 +34,19 @@
       ]),
       token: user.token,
     })
-      .then(() => goto(`events/${id}`))
-      .catch(e => alert(e))
+      .then(() => {
+        ping({ message: 'Event created successfully!', type: 'success', })
+        return goto(`events/${id}`)
+      })
+      .catch(e =>
+        ping({
+          message:
+            'Oops! Looks like we had trouble adding the event to the database. Please try again or contact support if this issue persists.',
+          debug: e,
+          type: 'danger',
+          duration: 10000,
+        })
+      )
   }
 </script>
 

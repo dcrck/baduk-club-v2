@@ -26,6 +26,8 @@
   import UserForm from '/components/forms/User'
   import Sidebar from '/components/layout/Sidebar'
   import Icon from '/components/Icon'
+  import { toastKey } from '/utils/index'
+  import { getContext } from 'svelte'
   export let user, games, events, currentTab
 
   let tabs = {
@@ -33,6 +35,9 @@
     attendances: { icon: 'calendar', label: 'Attendances', qty: events.length },
     settings: { icon: 'settings', label: 'Settings' },
   }
+
+  const { ping } = getContext(toastKey)
+
   const attendancesProps = {
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
@@ -65,6 +70,7 @@
     }).then(() => {
       user = { ...user, ...data }
       initial = { ...initial, ...data }
+      ping({ message: 'Profile updated successfully', type: 'success' })
     })
   }
 </script>

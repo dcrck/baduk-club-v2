@@ -90,7 +90,8 @@
   import EventForm from '/components/forms/Event'
   import Icon from '/components/Icon'
   import Modal from '/components/Modal'
-  import { onMount } from 'svelte'
+  import { onMount, getContext } from 'svelte'
+  import { toastKey } from '/utils/index'
   import { goto } from '@sapper/app'
   export let evt,
     user,
@@ -101,7 +102,9 @@
     delayedActions
   export let attendances = []
   export let games = []
+
   let orgEmail = ''
+  const { ping } = getContext(toastKey)
 
   onMount(async () => (orgEmail = await delayedActions()))
 
@@ -122,6 +125,7 @@
         },
       }),
     }).then(({ insert_attendances: { returning: [attendance] } }) => {
+      ping({ message: `You're now attending this event!`, type: 'success' })
       attendances = [...attendances, attendance]
       existingAttendance = attendance
     })
@@ -137,6 +141,7 @@
         },
       }),
     }).then(() => {
+      ping({ message: 'You are no longer attending this event', type: 'info' })
       attendances = attendances.filter(a => a.user.id !== user.id)
       existingAttendance = undefined
     })
@@ -161,7 +166,10 @@
           { type: 'delete', root: 'games', filters: thisEvent('event_id') },
           { type: 'delete', root: 'events', filters: thisEvent('id') },
         ]),
-      }).then(() => goto('/'))
+      }).then(() => {
+        ping({ message: 'Event successfully deleted', type: 'info' })
+        goto('/')
+      })
     }
   }
   function updateEvent({ detail: { data: updatedEvt } }) {
@@ -182,8 +190,17 @@
             : {}),
         }
         editing = false
+        ping({ message: 'Event updated successfully!', type: 'success' })
       })
-      .catch(e => alert(e))
+      .catch(e =>
+        ping({
+          message:
+            'Oops! Looks like we had trouble updating the event. Please try again or contact support if this issue persists.',
+          debug: e,
+          type: 'danger',
+          duration: 10000,
+        })
+      )
   }
 
   // ToDo: implement
@@ -268,6 +285,7 @@
         values: { ...rest, black: black.id, white: white.id, event_id: evt.id },
       }),
     }).then(() => {
+      ping({ message: `Game added successfully`, type: 'success' })
       games = [...games, game]
       tabs.games.qty += 1
     })
