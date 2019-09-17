@@ -3,12 +3,25 @@
   import Nav from '/components/layout/Nav'
   import Logo from '/components/layout/Logotype'
   import Footer from '/components/layout/Footer'
+  import Toasts from '/components/layout/Toasts'
   import { stores } from '@sapper/app'
+  import { setContext } from 'svelte'
+  import { toastKey } from '/utils/index'
 
   let { page } = stores()
   let background = 'white'
 
-  let sidebar, nav
+  setContext(toastKey, {
+    ping: ({ message, type, debug, timeout }) => {
+      toasts.show(message, type, timeout)
+      let log = `[${type.toUpperCase()}] ${debug || message}`
+      if (type === 'danger') console.error(log)
+      else if (type === 'warning') console.warn(log)
+      else console.log(log)
+    },
+  })
+
+  let sidebar, nav, toasts
   function setLayout({ path }) {
     sidebar = ['/events/new', '/'].indexOf(path) === -1
     background = sidebar && segment !== 'docs' ? 'gray-200' : 'white'
@@ -53,3 +66,5 @@
     {/if}
   </div>
 </main>
+
+<Toasts bind:this={toasts} />

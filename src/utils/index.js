@@ -34,3 +34,5 @@ export function debounce(callback, wait) {
     timeout = startTimer(next, wait)
   }
 }
+
+export const toastKey = {}
