@@ -8,6 +8,7 @@
   export let types = { singular: 'Item', plural: 'Items' }
   export let placeholder = 'Search...'
   export let border = false
+  export let add
 
   let results = []
   let query = ''
@@ -50,6 +51,13 @@
       <Icon id="search" />
     </div>
   </div>
+  {#if add}
+    <div class="ml-4">
+      <button on:click={add}>
+        <Icon id="plus" />
+      </button>
+    </div>
+  {/if}
 </div>
 
 <div>
