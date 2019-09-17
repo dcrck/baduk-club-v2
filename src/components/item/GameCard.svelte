@@ -1,14 +1,20 @@
 <script>
   import Icon from '/components/Icon'
   export let border = false
-  export let winner, black, white, komi, handicap
-  export let event
+  export let winner, black, white, komi, handicap, id
+  export let event = null
 
   $: players = { black, white }
   const isWinner = p => ('white' === p) === winner
 </script>
 
 <style>
+  .game-card {
+    @apply rounded-lg bg-white p-4 flex flex-wrap justify-center items-center shadow-xl;
+  }
+  .game-card.border {
+    @apply shadow-none border border-gray-400;
+  }
   .stat {
     @apply flex flex-col items-center;
   }
@@ -28,8 +34,9 @@
 
 <div
   data-cy="game-card"
-  class="rounded-lg bg-white {border ? 'border border-gray-400' : 'shadow-xl'}
-  p-4 flex flex-wrap items-center">
+  id="game-card-{id}"
+  class="game-card flex-col md:flex-row"
+  class:border>
   <div class="flex-1 flex flex-col items-center justify-center">
     <div class="flex justify-baseline">
       <div class="flex flex-col justify-center items-center my-4">
