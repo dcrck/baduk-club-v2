@@ -20,7 +20,11 @@
           organizer: ['name', 'id', 'picture', 'rank'],
           ...(user
             ? {
-                games: ['black', 'white', 'winner', 'komi', 'handicap', 'id'],
+                games: {
+                  _: ['winner', 'komi', 'handicap', 'id'],
+                  black_player: ['id', 'name'],
+                  white_player: ['id', 'name'],
+                },
                 attendances: {
                   _: ['email', 'confirmed', 'id'],
                   user: ['id', 'name', 'rank', 'picture'],
@@ -65,7 +69,11 @@
         ? attendances.find(a => a.user.id === uid)
         : null,
       user,
-      games,
+      games: games.map(({ black_player, white_player, ...game }) => ({
+        black: black_player,
+        white: white_player,
+        ...game,
+      })),
       attendances,
       delayedActions: loadOrganizerDetails,
     }
@@ -81,6 +89,7 @@
   import Sidebar from '/components/layout/Sidebar'
   import EventForm from '/components/forms/Event'
   import Icon from '/components/Icon'
+  import Modal from '/components/Modal'
   import { onMount } from 'svelte'
   import { goto } from '@sapper/app'
   export let evt,
@@ -226,7 +235,7 @@
             label: 'Attendees',
             qty: attendances.length,
           },
-          games: { icon: 'go-pieces', label: 'Games' },
+          games: { icon: 'go-pieces', label: 'Games', qty: games.length },
         }
       : {}),
   }
@@ -246,6 +255,24 @@
   /* eslint-disable no-unused-vars */
   const editable = ({ last_updated, id, ...e }) => e
 
+  let showNewGameForm = false
+
+  const toggleNewGameForm = () => (showNewGameForm ^= true)
+
+  function addNewGame({ detail: { game } }) {
+    const { black, white, id, ...rest } = game
+    toggleNewGameForm()
+    execute({
+      token: user.token,
+      query: create('games', {
+        values: { ...rest, black: black.id, white: white.id, event_id: evt.id },
+      }),
+    }).then(() => {
+      games = [...games, game]
+      tabs.games.qty += 1
+    })
+  }
+
   let itemListProps = {
     component: UserCard,
     items: attendances.map(a => ({
@@ -259,11 +286,14 @@
 
   let gameListProps = {
     component: GameCard,
-    items: games,
     options: { keys: ['black.name', 'white.name'] },
     types: { singular: 'Game', plural: 'Games' },
     placeholder: 'Search games by player name',
   }
+
+  $: gameListProps.add =
+    attendances.length > 1 && user ? toggleNewGameForm : undefined
+  $: gameListProps.items = games
 </script>
 
 <style>
@@ -364,5 +394,14 @@
     <ItemList {...itemListProps} />
   {:else}
     <ItemList {...gameListProps} />
+    {#if showNewGameForm}
+      <Modal on:close={toggleNewGameForm}>
+        <GameForm
+          resetOnSubmit
+          on:submit={addNewGame}
+          on:cancel={toggleNewGameForm}
+          players={attendances.map(a => a.user)} />
+      </Modal>
+    {/if}
   {/if}
 </div>
