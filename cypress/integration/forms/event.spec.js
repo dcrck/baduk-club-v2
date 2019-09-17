@@ -35,6 +35,19 @@ describe('Event form', () => {
     cy.get('[data-cy="cancel-event-form"]').click()
   })
 
+  it('only allows recurring meeting times for recurring meetups', () => {
+    cy.get('label[for="__weekly__"]')
+      .wait(500)
+      .click()
+      .click()
+    cy.get('[data-cy="start-time"]').type('17:00')
+    cy.get('[data-cy="end-time"]').type('19:00')
+    cy.get('[data-cy="add-time"]')
+      .should('not.be.disabled')
+      .click()
+    cy.get('label[for="__once__"]').should('not.exist')
+  })
+
   it('prevents no name', () => {
     cy.get('#name').clear()
     cy.get('[data-cy="submit-event-form"]').should('be.disabled')
@@ -70,7 +83,7 @@ describe('Event form', () => {
     cy.get('[data-cy="cancel-event-form"]').click()
   })
 
-  it('allows a user to create a meetup', () => {
+  it('allows a user to create and edit a meetup', () => {
     cy.get('#address')
       .clear()
       .type('15198 Hook Hollow Road, Novelty')
@@ -91,9 +104,6 @@ describe('Event form', () => {
     cy.get('[data-cy="submit-event-form"]')
       .should('not.be.disabled')
       .click()
-  })
-
-  it('allows users to edit an already-created meetup', () => {
     cy.get('#name').should('have.value', 'Test Meetup')
     cy.get('[data-cy="submit-event-form"]').should('be.disabled')
     cy.get('#name').clear()

@@ -32,21 +32,13 @@
   }
 
   export let initial = null
+  export let force = Object.keys(defaults)
 
+  let fallback = force[0] || 'weekly'
   let _initial = initial
     ? { ...initial }
-    : { ...defaults.weekly, freq: 'weekly' }
+    : { ...defaults[fallback], freq: fallback }
   let { positions, start, end, freq } = _initial
-
-  $: disabled = !(
-    (freq === 'once' || positions.length) &&
-    start.time &&
-    end.time &&
-    (freq !== 'once' || (start.date && end.date)) &&
-    utils.utcTimestamp(start.date, start.time) <
-      utils.utcTimestamp(end.date, end.time)
-  )
-  let force = false
 
   const shouldShow = (n, pos) => !!pos.find(p => p.startsWith(n))
 
@@ -70,6 +62,14 @@
     dispatch('submit', { time: toDB({ positions, start, end, freq }) })
     changeGroup(freq)
   }
+  $: disabled = !(
+    (freq === 'once' || positions.length) &&
+    start.time &&
+    end.time &&
+    (freq !== 'once' || (start.date && end.date)) &&
+    utils.utcTimestamp(start.date, start.time) <
+      utils.utcTimestamp(end.date, end.time)
+  )
 </script>
 
 <style>
@@ -108,12 +108,9 @@
 
 <div class="inline-flex flex-col">
   <span>We're meeting...</span>
-  {#if !force}
+  {#if force.length !== 1}
     <div class="mt-2 mb-4">
-      <Segments
-        choices={Object.keys(defaults)}
-        on:change={setGroup}
-        initial={freq} />
+      <Segments choices={force} on:change={setGroup} initial={freq} />
     </div>
   {/if}
 
@@ -155,11 +152,11 @@
         </div>
       {/each}
       <div class="w-full flex justify-between items-baseline my-4">
-        <span>starting at</span>
+        <span class="mr-2">starting at</span>
         <input type="time" data-cy="start-time" bind:value={start.time} />
       </div>
       <div class="w-full flex justify-between items-baseline my-4">
-        <span>and ending at</span>
+        <span class="mr-2">and ending at</span>
         <input type="time" data-cy="end-time" bind:value={end.time} />
       </div>
     {/if}
@@ -169,7 +166,7 @@
         data-cy="add-time"
         on:click={submit}
         class="my-4 px-4 py-2 bg-gray-800 rounded text-white w-full"
-        class:disabled >
+        class:disabled>
         Add Meeting Time
       </button>
     </div>

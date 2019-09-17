@@ -65,6 +65,10 @@
   const clearLocation = () =>
     (current = { ...current, address: '', geolocation: null })
 
+  $: forceTimes =
+    current.times.length && current.times[0].rrule
+      ? ['weekly', 'monthly']
+      : ['weekly', 'monthly', 'once']
   $: disabled = !(
     JSON.stringify(initial) !== JSON.stringify(current) &&
     state.status === 'ok' &&
@@ -127,7 +131,7 @@
 
   {#if current.times.length !== 1 || !current.times.length || current.times[0].rrule}
     <div class="flex-0">
-      <TimeForm on:submit={addTime} />
+      <TimeForm on:submit={addTime} force={forceTimes} />
     </div>
   {/if}
 

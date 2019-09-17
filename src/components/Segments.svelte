@@ -8,7 +8,7 @@
   const dispatch = createEventDispatcher()
   $: group = initial
 
-  choices = choices.map(c => ({
+  $: choices = choices.map(c => ({
     _id: `__${c.name || c}__`,
     id: c.name || c,
     icon: c.icon || '',
