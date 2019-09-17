@@ -14,6 +14,7 @@
     id: 'new',
   }
   export let players = []
+  export let resetOnSubmit = false
 
   let game, refresh
 
@@ -22,6 +23,7 @@
     refresh ^= true
   }
   reset()
+  $: reset(initial)
 
   let playerSelectProps = {
     errorMessage: 'Please select a player from the list',
@@ -41,9 +43,14 @@
     JSON.stringify(initial) !== JSON.stringify(game)
   )
 
+  function cancel() {
+    dispatch('cancel')
+    reset()
+  }
+
   function submit() {
     dispatch('submit', { game })
-    reset()
+    if(resetOnSubmit) reset()
   }
 </script>
 
@@ -130,10 +137,10 @@
 <hr class="my-4" />
 <div class="w-full flex items-center justify-between my-5">
   <button
-    on:click={reset}
+    on:click={cancel}
     data-cy="game-form-reset"
     class="px-4 py-2 border-2 border-gray-800 rounded">
-    Reset
+    Cancel
   </button>
   <button
     on:click={submit}
