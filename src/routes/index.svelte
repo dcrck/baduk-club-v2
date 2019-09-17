@@ -136,7 +136,7 @@
       you show up to an event
     </p>
     <div class="py-10">
-      <a href="map" class="button w-full md:w-1/2 lg:w-1/4">Explore Meetups</a>
+      <a href="map" class="button w-full md:w-1/2 lg:w-1/3">Explore Meetups</a>
     </div>
   </div>
 
