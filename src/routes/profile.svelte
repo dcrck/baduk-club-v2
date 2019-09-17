@@ -87,6 +87,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>Your Profile | BadukClub</title>
+</svelte:head>
+
 <Sidebar>
   <div class="flex flex-col items-center">
     <img src={user.picture} alt={user.name} class="w-24 h-24 rounded-full" />

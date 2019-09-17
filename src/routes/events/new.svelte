@@ -9,4 +9,8 @@
   import { goto } from '@sapper/app'
 </script>
 
+<svelte:head>
+  <title>Create a new Meetup | BadukClub</title>
+</svelte:head>
+
 <NewEventForm on:cancel={() => goto('/')} />

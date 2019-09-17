@@ -1,7 +1,7 @@
 <script context="module">
   import { select, execute } from '/api/db/index'
 
-  export async function preload({ query: { bounds } }, { user }) {
+  export async function preload({ query: { bounds, code } }, { user }) {
     const eventQuery = select('events', {
       fields: [
         'address',
@@ -22,6 +22,7 @@
     const checkLat = n => !isNaN(n) && n >= -90 && n <= 90
     const checkLon = n => !isNaN(n) && n >= -180 && n <= 180
     if (bounds) bounds = checkBounds(bounds.split(',').map(n => +n))
+    if (code) code = code.length === 3 ? code : undefined
 
     return {
       user,
@@ -31,6 +32,7 @@
         ...e,
       })),
       bounds,
+      code,
     }
   }
 </script>
@@ -47,7 +49,8 @@
 
   export let events = [],
     user = {},
-    bounds
+    bounds,
+    code
 
   let options = bounds
     ? { bounds }
@@ -107,6 +110,23 @@
     box-shadow: none;
   }
 </style>
+
+<svelte:head>
+  {#if code}
+    <title>Where to Play Go in {code} | BadukClub</title>
+    <meta name="keywords" content="go,baduk,meetup,event,weiqi,map,{code}" />
+    <meta
+      name="description"
+      content="Never again wonder where to play Go in {code}! Search the
+      definitive map of Go meetups that always stays up-to-date." />
+  {:else}
+    <title>Where to Play Go | BadukClub</title>
+    <meta
+      name="description"
+      content="Never again wonder where to play Go! Search the definitive map of
+      Go meetups that always stays up-to-date." />
+  {/if}
+</svelte:head>
 
 {#if showSidebar}
   <div class="fixed left-0 z-50 top-0" transition:fly={{ x: -200 }}>

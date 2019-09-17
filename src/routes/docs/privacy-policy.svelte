@@ -46,6 +46,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>Privacy Policy | BadukClub</title>
+</svelte:head>
+
 <Sidebar>
   <ol class="p-4">
     {#each contents as { id, title }}

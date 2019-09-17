@@ -8,7 +8,7 @@ export async function get(req, res) {
       sw: { lat: s, lon: w },
       ne: { lat: n, lon: e },
     } = countries[result]
-    res.redirect(`/map?bounds=${w},${s},${e},${n}`)
+    res.redirect(`/map?code=${country}&bounds=${w},${s},${e},${n}`)
   } catch (e) {
     res.redirect('/map')
   }

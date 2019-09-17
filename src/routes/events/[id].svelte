@@ -326,6 +326,14 @@
   }
 </style>
 
+<svelte:head>
+  <title>{evt.name} on BadukClub</title>
+  <meta
+    name="description"
+    content="Play Go in person at {evt.address}, or search the definitive map of
+    Go meetups that always stays up-to-date." />
+</svelte:head>
+
 <Sidebar>
   <h4 class="text-2xl font-semibold mb-6 text-center">{evt.name}</h4>
   <a

@@ -57,6 +57,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>Terms of Service | BadukClub</title>
+</svelte:head>
+
 <Sidebar>
   <ol class="p-4">
     {#each contents as { id, title }}
