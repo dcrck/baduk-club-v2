@@ -149,14 +149,20 @@
       </div>
       {#if user}
         <div class="my-8">
-          <button
-            data-cy="add-meetup-button"
-            class="bg-gray-700 rounded py-3 px-5 hover:bg-gray-800 flex mx-auto
-            click"
-            on:click={toggleEventForm}>
-            <Icon id="map-pin" color="white" />
-            <span class="ml-2 text-white font-medium">Add Meetup</span>
-          </button>
+          {#if user.email_verified}
+            <button
+              data-cy="add-meetup-button"
+              class="bg-gray-700 rounded py-3 px-5 hover:bg-gray-800 flex
+              mx-auto click"
+              on:click={toggleEventForm}>
+              <Icon id="map-pin" color="white" />
+              <span class="ml-2 text-white font-medium">Add Meetup</span>
+            </button>
+          {:else}
+            <div class="py-3 px-3 text-center">
+              Please verify your email address to create meetups
+            </div>
+          {/if}
         </div>
       {/if}
     </Sidebar>
