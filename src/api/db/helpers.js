@@ -1,4 +1,19 @@
-import { merge } from '/api/db/index'
+import { merge, create } from '/api/db/index'
+
+export const newAttendance = ({ id: user_id }, { id: event_id }) =>
+  create('attendances', {
+    values: {
+      user_id,
+      event_id,
+      paid: false,
+      notify: true,
+      confirmed: true,
+    },
+    fields: {
+      _: ['email', 'confirmed', 'id'],
+      user: ['id', 'name', 'rank'],
+    },
+  })
 
 export const profileData = id =>
   merge([
