@@ -13,7 +13,6 @@
 
   let icons = { confirmed: 'check', paid: 'dollar-sign', checked_in: 'map-pin' }
 
-  $: _rank = rank < 0 ? '' + rank * -1 + 'k' : rank + 'd'
   $: _picture = picture ? picture : 'default.png'
   $: parsed = parse({ address, last_updated })
 </script>
@@ -76,7 +75,7 @@
   </div>
   {#if rank}
     <div class="flex flex-col items-center mr-6" data-cy="user-card-rank">
-      <span class="text-2xl">{_rank}</span>
+      <span class="text-2xl">{rank}</span>
       <span class="text-sm">rank</span>
     </div>
   {/if}

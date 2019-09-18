@@ -59,7 +59,12 @@
     })),
   }
 
-  let initial = { picture: user.picture, phone: user.phone, name: user.name }
+  let initial = {
+    picture: user.picture,
+    phone: user.phone,
+    name: user.name,
+    rank: user.rank,
+  }
 
   function editUser({ detail: { data } }) {
     execute({

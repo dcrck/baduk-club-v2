@@ -5,6 +5,7 @@
     picture: '',
     phone: '',
     name: '',
+    rank: '',
   }
 </script>
 

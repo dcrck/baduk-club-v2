@@ -4,7 +4,7 @@
   import check, { initialize, load } from '/components/input/validate'
   import { debounce } from '/utils/index'
 
-  export let initial = { picture: '', phone: '', name: '' }
+  export let initial = { picture: '', phone: '', name: '', rank: '' }
   export let resetOnSubmit = false
   const dispatch = createEventDispatcher()
 
@@ -14,6 +14,7 @@
 
   let error = {
     name: n => (!n ? 'Please enter your name' : ''),
+    rank: r => (!r ? 'Please enter your rank (default: 25k)' : ''),
     picture: () => (!validImage ? 'Please enter a valid image URL' : ''),
   }
 
@@ -50,7 +51,10 @@
       state[k]
   }
 
-  $: current && validate('name')
+  $: if (current) {
+    validate('name')
+    validate('rank')
+  }
 
   $: if (current.picture !== url) {
     state.picture = load(true)
@@ -106,6 +110,21 @@
         class="form-input w-full"
         bind:value={current.name}
         on:blur={() => validate('name', true)} />
+    </Validation>
+  </label>
+</div>
+
+<div class="mt-4 mb-8">
+  <label for="rank" class="form-label">
+    Rank
+    <Validation {...state.rank}>
+      <input
+        type="text"
+        id="rank"
+        data-cy="rank-input"
+        class="form-input w-full"
+        bind:value={current.rank}
+        on:blur={() => validate('rank', true)} />
     </Validation>
   </label>
 </div>

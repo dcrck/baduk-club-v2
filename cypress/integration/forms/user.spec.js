@@ -11,12 +11,27 @@ describe('User Form', () => {
     cy.get('#name')
       .type('Derek')
       .blur()
+    cy.get('#rank')
+      .type('25k')
+      .blur()
+    cy.get('[data-cy="submit-user-fields"]').should('be.disabled')
+    cy.get('[data-cy="cancel-user-fields"]').click()
+  })
+
+  it('requires rank', () => {
+    cy.get('#name')
+      .type('Derek')
+      .blur()
+    cy.get('#picture').type('https://cdn.auth0.com/avatars/dm.png')
     cy.get('[data-cy="submit-user-fields"]').should('be.disabled')
     cy.get('[data-cy="cancel-user-fields"]').click()
   })
 
   it('requires name', () => {
     cy.get('#picture').type('https://cdn.auth0.com/avatars/dm.png')
+    cy.get('#rank')
+      .type('25k')
+      .blur()
     cy.get('[data-cy="submit-user-fields"]').should('be.disabled')
     cy.get('[data-cy="cancel-user-fields"]').click()
   })
@@ -24,6 +39,7 @@ describe('User Form', () => {
   it('allows submission when name, phone, and picture are valid', () => {
     cy.get('#name').type('Derek')
     cy.get('#picture').type('https://cdn.auth0.com/avatars/dm.png')
+    cy.get('#rank').type('25k')
     cy.get('#phone')
       .type('4406224096')
       .wait(500)
