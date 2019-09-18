@@ -34,6 +34,8 @@
   import UserCard from '/components/item/UserCard'
   import EventCard from '/components/item/EventCard'
   import ItemList from '/components/item/List'
+  import NewEventForm from '/components/forms/NewEvent'
+  import Modal from '/components/Modal'
   export let users, events
 
   export let user
@@ -48,10 +50,14 @@
     { icon: 'users', name: 'players' },
   ]
 
+  let showEventForm = false
+  const toggleEventForm = () => (showEventForm ^= true)
+
   const meetupProps = {
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
     items: events,
+    add: user && user.email_verified ? toggleEventForm : null,
     click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     placeholder: 'Search all public meetups...',
@@ -94,6 +100,11 @@
 
   {#if list === 'meetups'}
     <ItemList {...meetupProps} />
+    {#if showEventForm}
+      <Modal on:close={toggleEventForm}>
+        <NewEventForm on:cancel={toggleEventForm} />
+      </Modal>
+    {/if}
   {:else if list === 'players'}
     <ItemList {...userProps} />
   {/if}
