@@ -52,11 +52,12 @@
     </div>
   </div>
   {#if add}
-    <div class="ml-4">
-      <button on:click={add}>
-        <Icon id="plus" />
-      </button>
-    </div>
+    <button on:click={add} class="ml-4  px-3 py-2 bg-gray-700 hover:bg-gray-800 flex items-center rounded-sm">
+      <div class="mr-1">
+        <Icon id="plus" color="white" size="20" />
+      </div>
+      <span class="text-sm md:text-base font-semibold text-white">New</span>
+    </button>
   {/if}
 </div>
 
