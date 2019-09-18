@@ -109,6 +109,17 @@
     top: 3px;
     box-shadow: none;
   }
+
+  @media screen and (max-width: 640px) {
+    .popup {
+      left: 0;
+      transform: none;
+    }
+    .popup:hover {
+      left: 0;
+      transform: translateY(-10px);
+    }
+  }
 </style>
 
 <svelte:head>
@@ -166,7 +177,7 @@
 {#if selected}
   <a
     href="events/{selected.id}"
-    class="fixed z-30 w-1/2 hover:shadow-2xl popup"
+    class="fixed z-30 md:w-1/2 hover:shadow-2xl popup"
     transition:fly={{ y: 200, duration: 500 }}>
     <EventCard {...selected} showTime={true} />
     <button

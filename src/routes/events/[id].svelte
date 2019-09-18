@@ -383,7 +383,7 @@
   {/if}
 </Sidebar>
 
-<div class="m-4 w-full">
+<div class="md:m-4 w-full">
   {#if currentTab === 'details'}
     <div class="relative">
       {#if !editing}

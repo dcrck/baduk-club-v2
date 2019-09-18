@@ -39,6 +39,15 @@
   main.sidebar {
     @apply ml-56 p-8;
   }
+
+  @media screen and (max-width: 640px) {
+    main {
+      @apply p-2;
+    }
+    main.sidebar {
+      @apply ml-0 p-2;
+    }
+  }
 </style>
 
 {#if nav}
