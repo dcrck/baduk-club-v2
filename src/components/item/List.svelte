@@ -40,6 +40,10 @@
   .clickable:hover {
     transform: translateY(-0.5rem);
   }
+
+  .clickable.b:hover {
+    @apply shadow-xl;
+  }
 </style>
 
 <div class="flex justify-between items-center my-6">
@@ -76,7 +80,7 @@
   {/if}
   {#each results as result}
     {#if click}
-      <a href={click(result)} class="block mb-8 clickable">
+      <a href={click(result)} class="block mb-8 clickable" class:b={border}>
         <svelte:component this={component} {...result} {border} />
       </a>
     {:else}
