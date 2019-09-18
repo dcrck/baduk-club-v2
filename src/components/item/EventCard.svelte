@@ -65,7 +65,7 @@
   <p data-cy="event-card-address-rest" class:text-lg={expanded}>
     {parsed.address.rest}
   </p>
-  {#if expanded}
+  {#if expanded && description}
     <hr class="my-6" />
     <div data-cy="event-card-description">
       {#each description.split('\n') as d}
