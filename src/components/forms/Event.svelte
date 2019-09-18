@@ -89,6 +89,14 @@
   .form-input:focus {
     @apply border-gray-800;
   }
+
+  button:disabled {
+    @apply cursor-not-allowed opacity-25;
+  }
+
+  input:disabled {
+    @apply cursor-not-allowed;
+  }
 </style>
 
 <div class="flex flex-col mb-8">
@@ -154,6 +162,22 @@
     This meetup is invite-only
   </label>
 
+  <label class="mt-4 inline-block w-full flex items-center" for="organizer">
+    <input
+      type="checkbox"
+      id="organizer"
+      disabled
+      checked
+      class="-mt-px mr-2" />
+    I am the organizer of this meetup
+  </label>
+  <p class="text-sm ml-5 mb-4 text-gray-600 italic">
+    {#if !initial.name}
+      For now, only organizers should add meetups. If you're not this meetup's
+      organizer, please ask him or her to add it to BadukClub.
+    {/if}
+  </p>
+
   <div class="flex items-center justify-between">
     <button
       data-cy="cancel-event-form"
@@ -165,8 +189,7 @@
       {disabled}
       data-cy="submit-event-form"
       on:click={submit}
-      class="my-4 {disabled ? 'opacity-25 cursor-not-allowed ' : ''}px-4 py-2
-      bg-gray-800 rounded text-white">
+      class="my-4 px-4 py-2 bg-gray-800 rounded text-white">
       Submit
     </button>
   </div>
