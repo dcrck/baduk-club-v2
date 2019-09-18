@@ -40,7 +40,7 @@
 </style>
 
 <div class="sidebar" class:visible>
-  <div class="relative flex flex-col justify-between">
+  <div class="relative h-full flex flex-col justify-between">
     <div>
       <slot />
     </div>
