@@ -5,7 +5,9 @@ export const profileData = id =>
     {
       root: 'games',
       type: 'select',
-      filters: { where: { _or: { black: { _eq: id }, white: { _eq: id } } } },
+      filters: {
+        where: { _or: [{ black: { _eq: id } }, { white: { _eq: id } }] },
+      },
       fields: {
         _: ['komi', 'winner', 'handicap'],
         black_player: ['name', 'rank', 'id'],

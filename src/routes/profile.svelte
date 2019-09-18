@@ -42,6 +42,7 @@
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
     placeholder: "Search all the events you've attended",
+    click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     items: events,
   }
@@ -49,7 +50,7 @@
   const gamesProps = {
     component: GameCard,
     types: { singular: 'Games', plural: 'Games' },
-    placeholder: "Search all games you've played by opponent",
+    placeholder: "Search all games you've played by opponent name...",
     options: { keys: ['black.name', 'white.name'] },
     items: games.map(({ black_player, white_player, ...g }) => ({
       black: black_player,

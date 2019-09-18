@@ -62,4 +62,10 @@ describe('Item List', () => {
       .find('[data-cy="list-text-search"]')
       .clear()
   })
+
+  it('allows hovering and clicking on event list items', () => {
+    cy.get('[data-cy="event-list"]')
+      .find('a[href="events/1"]')
+      .should('have.length', 1)
+  })
 })

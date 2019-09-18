@@ -69,11 +69,13 @@
         ? attendances.find(a => a.user.id === uid)
         : null,
       user,
-      games: games.map(({ black_player, white_player, ...game }) => ({
-        black: black_player,
-        white: white_player,
-        ...game,
-      })),
+      games: games
+        ? games.map(({ black_player, white_player, ...game }) => ({
+            black: black_player,
+            white: white_player,
+            ...game,
+          }))
+        : [],
       attendances,
       delayedActions: loadOrganizerDetails,
     }
@@ -136,7 +138,10 @@
       query: del('attendances', {
         filters: {
           where: {
-            _and: { user_id: { _eq: user.id }, event_id: { _eq: evt.id } },
+            _and: [
+              { user_id: { _eq: user.id } },
+              { event_id: { _eq: evt.id } },
+            ],
           },
         },
       }),
@@ -299,14 +304,14 @@
     })),
     options: { keys: ['user.name'] },
     types: { singular: 'Attendee', plural: 'Attendees' },
-    placeholder: 'Search attendees by name',
+    placeholder: 'Search all attendees by name...',
   }
 
   let gameListProps = {
     component: GameCard,
     options: { keys: ['black.name', 'white.name'] },
     types: { singular: 'Game', plural: 'Games' },
-    placeholder: 'Search games by player name',
+    placeholder: 'Search games by player name...',
   }
 
   $: gameListProps.add =

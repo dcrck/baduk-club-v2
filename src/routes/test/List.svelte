@@ -69,6 +69,7 @@
     types: { singular: 'Event', plural: 'Events' },
     placeholder: 'Search Events...',
     options: { keys: ['name', 'address'] },
+    click: ({ id }) => `events/${id}`,
     items: [
       {
         name: 'Test Event Name',
@@ -84,7 +85,7 @@
       },
       {
         name: 'Other Go Club',
-        id: 1,
+        id: 2,
         address: '15198 Main St, Columbus, OH USA',
         times: [
           {

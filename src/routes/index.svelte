@@ -45,13 +45,14 @@
   let list = 'meetups'
   let lists = [
     { icon: 'calendar', name: 'meetups' },
-    { icon: 'users', name: 'users' },
+    { icon: 'users', name: 'players' },
   ]
 
   const meetupProps = {
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
     items: events,
+    click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     placeholder: 'Search all public meetups...',
     border: true,
@@ -59,10 +60,10 @@
 
   const userProps = {
     component: UserCard,
-    types: { singular: 'User', plural: 'Users' },
+    types: { singular: 'Player', plural: 'Players' },
     items: users,
     options: { keys: ['name'] },
-    placeholder: 'Search all users by name...',
+    placeholder: 'Search all players by name...',
     border: true,
   }
 
@@ -93,7 +94,7 @@
 
   {#if list === 'meetups'}
     <ItemList {...meetupProps} />
-  {:else if list === 'users'}
+  {:else if list === 'players'}
     <ItemList {...userProps} />
   {/if}
 {:else}

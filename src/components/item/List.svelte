@@ -9,6 +9,7 @@
   export let placeholder = 'Search...'
   export let border = false
   export let add = null
+  export let click = null
 
   let results = []
   let query = ''
@@ -29,9 +30,15 @@
     transform: translateY(-50%);
     opacity: 0.5;
   }
-
   input:focus + .inset-icon {
     opacity: 1;
+  }
+  .clickable {
+    transition: 200ms;
+    transform: none;
+  }
+  .clickable:hover {
+    transform: translateY(-0.5rem);
   }
 </style>
 
@@ -51,24 +58,32 @@
       <Icon id="search" />
     </div>
   </div>
-  {#if add}
-    <button
-      on:click={add}
-      class="ml-4 px-3 py-2 bg-gray-700 hover:bg-gray-800 flex items-center
-      rounded-sm">
-      <div class="mr-1">
-        <Icon id="plus" color="white" size="20" />
-      </div>
-      <span class="text-sm md:text-base font-semibold text-white">New</span>
-    </button>
-  {/if}
 </div>
 
 <div>
+  {#if add}
+    <button
+      on:click={add}
+      class="w-full my-4 px-6 py-4 bg-gray-700 hover:bg-gray-800 flex
+      items-center rounded-lg justify-center">
+      <div class="mr-1">
+        <Icon id="plus" color="white" size="28" />
+      </div>
+      <span class="md:text-lg font-semibold text-white">
+        Add New {types.singular}
+      </span>
+    </button>
+  {/if}
   {#each results as result}
-    <div class="mb-8">
-      <svelte:component this={component} {...result} {border} />
-    </div>
+    {#if click}
+      <a href={click(result)} class="block mb-8 clickable">
+        <svelte:component this={component} {...result} {border} />
+      </a>
+    {:else}
+      <div class="mb-8">
+        <svelte:component this={component} {...result} {border} />
+      </div>
+    {/if}
   {:else}
     <slot name="no-results">
       <p class="text-center text-gray-500 text-2xl">No results</p>
