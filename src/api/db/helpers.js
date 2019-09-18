@@ -9,7 +9,7 @@ export const profileData = id =>
         where: { _or: [{ black: { _eq: id } }, { white: { _eq: id } }] },
       },
       fields: {
-        _: ['komi', 'winner', 'handicap'],
+        _: ['komi', 'winner', 'handicap', 'recorded'],
         black_player: ['name', 'rank', 'id'],
         white_player: ['name', 'rank', 'id'],
         event: ['name', 'id'],

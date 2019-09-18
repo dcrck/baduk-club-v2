@@ -1,10 +1,12 @@
 <script>
   import Icon from '/components/Icon'
+  import parse from './parsing'
   export let border = false
-  export let winner, black, white, komi, handicap, id
+  export let winner, black, white, komi, handicap, id, recorded
   export let event = null
 
   $: players = { black, white }
+  $: parsed = parse({ recorded })
   const isWinner = p => ('white' === p) === winner
 </script>
 
@@ -83,15 +85,16 @@
       <span class="label -ml-3">handicap</span>
     </div>
   </div>
-  {#if event}
-    <div class="w-full" data-cy="event-link">
-      <hr class="mt-2 mb-4" />
-      <p class="text-sm text-center">
+  <div class="w-full" data-cy="event-link">
+    <hr class="mt-2 mb-4" />
+    <p class="text-sm text-center text-gray-500 italic">
+      played {parsed.recorded} ago
+      {#if event}
         at
         <a href="events/{event.id}" class="hover:underline text-blue-500">
           {event.name}
         </a>
-      </p>
-    </div>
-  {/if}
+      {/if}
+    </p>
+  </div>
 </div>

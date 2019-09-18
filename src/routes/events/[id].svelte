@@ -21,7 +21,7 @@
           ...(user
             ? {
                 games: {
-                  _: ['winner', 'komi', 'handicap', 'id'],
+                  _: ['winner', 'komi', 'handicap', 'id', 'recorded'],
                   black_player: ['id', 'name'],
                   white_player: ['id', 'name'],
                 },
@@ -291,7 +291,7 @@
       }),
     }).then(() => {
       ping({ message: `Game added successfully`, type: 'success' })
-      games = [...games, game]
+      games = [...games, { ...game, recorded: new Date() }]
       tabs.games.qty += 1
     })
   }
