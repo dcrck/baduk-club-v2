@@ -6,7 +6,7 @@ import { validate } from '/auth'
 export async function get(req, res) {
   const user = validate(req)
   const { code } = req.params
-  if (user.unauthorized) return res.redirect(302, `login?redir=/${code}`)
+  if (user.unauthorized) return res.redirect(302, `/login?redir=/i/${code}`)
   const gql = q => execute({ query: q, token: user.token }, fetch)
   const { invites } = await gql(
     select('invites', {
@@ -30,5 +30,5 @@ export async function get(req, res) {
     })
   )
   if (!attendances.length) await gql(newAttendance(user, { id: event_id }))
-  return res.redirect(302, `events/${event_id}`)
+  return res.redirect(302, `/events/${event_id}`)
 }

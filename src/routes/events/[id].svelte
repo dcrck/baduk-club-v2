@@ -414,7 +414,7 @@
             type="text"
             readonly
             id="invite"
-            value="{process.env.APP_DOMAIN}/{code}" />
+            value="{process.env.APP_DOMAIN}/i/{code}" />
           <div>
             <button on:click={() => generateNewLink(code)}>Reset Link</button>
             <button on:click={copyLink}>Copy Link</button>
