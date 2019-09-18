@@ -1,6 +1,6 @@
 import gql_str from './gql-str'
 
-const tables = ['events', 'attendances', 'users', 'games', 'auth0']
+const tables = ['events', 'attendances', 'users', 'games', 'auth0', 'invites']
 
 const to_gql_str_object = ({ root, type, filters, values, fields }) =>
   !type || type === 'select'

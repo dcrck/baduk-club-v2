@@ -94,7 +94,9 @@
   import Modal from '/components/Modal'
   import { onMount, getContext } from 'svelte'
   import { toastKey } from '/utils/index'
+  import { newAttendance } from '/api/db/helpers'
   import { goto } from '@sapper/app'
+  import nanoid from 'nanoid'
   export let evt,
     user,
     existingAttendance,
@@ -107,29 +109,58 @@
 
   let orgEmail = ''
   const { ping } = getContext(toastKey)
+  let codeLoader = loadInviteCode(existingAttendance)
 
   onMount(async () => (orgEmail = await delayedActions()))
+
+  async function loadInviteCode(attending) {
+    if (!attending) return Promise.resolve('')
+    return await execute({
+      token: user.token,
+      query: select('invites', {
+        filters: { where: { event_id: { _eq: evt.id } }, limit: 1 },
+        fields: ['code'],
+      }),
+    })
+      .then(({ invites }) => (invites.length ? invites[0].code : ''))
+      .catch(() => '')
+  }
+
+  async function generateCode(currentCode) {
+    const code = nanoid()
+    return await execute({
+      token: user.token,
+      query: currentCode
+        ? update('invites', {
+            filters: { where: { event_id: { _eq: evt.id } } },
+            values: { code },
+          })
+        : create('invites', { values: { event_id: evt.id, code } }),
+    }).then(() => {
+      ping({ message: 'New invite link generated', type: 'info' })
+      return code
+    })
+  }
+
+  const generateNewLink = code => (codeLoader = generateCode(code))
+  const createLink = () => generateNewLink('')
+
+  function copyLink() {
+    const copyText = document.getElementById('invite')
+    copyText.select()
+    document.execCommand('copy')
+    ping({ message: 'Invite link copied to clipboard', type: 'info' })
+  }
 
   function signUp() {
     execute({
       token: user.token,
-      query: create('attendances', {
-        values: {
-          user_id: user.id,
-          paid: false,
-          notify: true,
-          confirmed: true,
-          event_id: evt.id,
-        },
-        fields: {
-          _: ['email', 'confirmed', 'id'],
-          user: ['id', 'name', 'rank'],
-        },
-      }),
+      query: newAttendance(user, evt),
     }).then(({ insert_attendances: { returning: [attendance] } }) => {
       ping({ message: `You're now attending this event!`, type: 'success' })
       attendances = [...attendances, attendance]
       existingAttendance = attendance
+      codeLoader = loadInviteCode(existingAttendance)
     })
   }
   function cancelAttendance() {
@@ -149,6 +180,7 @@
       ping({ message: 'You are no longer attending this event', type: 'info' })
       attendances = attendances.filter(a => a.user.id !== user.id)
       existingAttendance = undefined
+      codeLoader = loadInviteCode(existingAttendance)
     })
   }
 
@@ -329,6 +361,26 @@
   label:not(.current):hover {
     @apply bg-gray-100;
   }
+
+  .invite-link {
+    @apply ml-8 flex flex-col mb-8 mr-4;
+  }
+
+  .invite-link input {
+    @apply px-3 py-2 font-mono text-gray-600 mb-1 border rounded border-gray-400;
+  }
+
+  .invite-link div {
+    @apply flex text-xs justify-between;
+  }
+
+  .invite-buttons button {
+    @apply text-blue-500;
+  }
+
+  .invite-buttons button:hover {
+    @apply underline;
+  }
 </style>
 
 <svelte:head>
@@ -343,12 +395,34 @@
   <h4 class="text-2xl font-semibold mb-6 text-center">{evt.name}</h4>
   <a
     href="mailto:{orgEmail}"
-    class="flex items-center hover:underline text-blue-500 w-full mb-8 pl-8">
-    <div class="mr-4">
-      <Icon id="mail" color="#4299e1" />
-    </div>
-    <span>Contact Organizers</span>
+    class="flex justify-center hover:underline text-blue-500 w-full mb-8">
+    Contact Organizers
   </a>
+  {#if existingAttendance}
+    <div class="invite-link invite-buttons">
+      <span class="mb-2">Invite Link</span>
+      {#await codeLoader}
+        <input type="text" readonly value="loading..." />
+      {:then code}
+        {#if !code}
+          <input type="text" readonly value="no code" />
+          <div>
+            <button on:click={createLink}>Reset Link</button>
+          </div>
+        {:else}
+          <input
+            type="text"
+            readonly
+            id="invite"
+            value="{process.env.APP_DOMAIN}/{code}" />
+          <div>
+            <button on:click={() => generateNewLink(code)}>Reset Link</button>
+            <button on:click={copyLink}>Copy Link</button>
+          </div>
+        {/if}
+      {/await}
+    </div>
+  {/if}
   {#each Object.entries(tabs) as [tab, { icon, label, qty }]}
     <label for={tab} data-cy="{tab}-tab" class:current={currentTab === tab}>
       <input
@@ -423,7 +497,41 @@
     </div>
   {:else if currentTab === 'attendees'}
     <ItemList {...itemListProps} />
+    {#if existingAttendance}
+      {#await codeLoader then code}
+        <div class="bg-white rounded-lg shadow-xl p-4">
+          <h2 class="text-4xl font-bold">Invite your friends to play!</h2>
+          <ol class="text-lg list-decimal">
+            <li class="ml-5 p-2 invite-buttons">
+              {#if !code}
+                <button on:click={createLink}>Create the invite link</button>
+              {:else}
+                <button on:click={copyLink}>Copy the invite link</button>
+              {/if}
+            </li>
+            <li class="ml-5 p-2">Share the link with your friends</li>
+            <li class="ml-5 p-2">???</li>
+            <li class="ml-5 p-2">Profit!</li>
+          </ol>
+        </div>
+      {/await}
+    {/if}
   {:else}
+    {#if existingAttendance && attendances.length < 2}
+      {#await codeLoader then code}
+        <div class="bg-white rounded-lg shadow-xl p-4 invite-buttons">
+          <h2 class="text-2xl font-bold mb-4">It takes two to play...</h2>
+          <p>
+            {#if !code}
+              <button on:click={createLink}>Create the invite link</button>
+            {:else}
+              <button on:click={copyLink}>Copy the invite link</button>
+            {/if}
+            and send it to your friends to start recording games.
+          </p>
+        </div>
+      {/await}
+    {/if}
     <ItemList {...gameListProps} />
     {#if showNewGameForm}
       <Modal on:close={toggleNewGameForm}>
