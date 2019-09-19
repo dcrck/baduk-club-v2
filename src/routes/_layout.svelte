@@ -56,7 +56,7 @@
   <div
     class="fixed top-0 z-20 w-screen bg-white flex justify-center items-center
     h-16 border-grey-400 border-b">
-    <a href="." class="w-56" id="logo">
+    <a href="." rel="prefetch" class="w-56" id="logo">
       <Logo />
     </a>
   </div>

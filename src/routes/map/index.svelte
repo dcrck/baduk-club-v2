@@ -191,6 +191,7 @@
 {#if selected}
   <a
     href="events/{selected.id}"
+    rel="prefetch"
     class="fixed z-30 md:w-1/2 hover:shadow-2xl popup"
     transition:fly={{ y: 200, duration: 500 }}>
     <EventCard {...selected} showTime={true} />

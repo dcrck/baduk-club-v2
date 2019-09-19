@@ -49,6 +49,7 @@
             </div>
             <a
               href="users/{players[player].id}"
+              rel="prefetch"
               target="_blank"
               class="text-xl hover:underline">
               {players[player].name}
@@ -96,7 +97,10 @@
       played {parsed.recorded} ago
       {#if event}
         at
-        <a href="events/{event.id}" class="hover:underline text-blue-500">
+        <a
+          rel="prefetch"
+          href="events/{event.id}"
+          class="hover:underline text-blue-500">
           {event.name}
         </a>
       {/if}

@@ -92,7 +92,11 @@
         </button>
       {/if}
       {#if click}
-        <a href={click(result)} class="block mb-8 clickable" class:b={border}>
+        <a
+          href={click(result)}
+          rel="prefetch"
+          class="block mb-8 clickable"
+          class:b={border}>
           <svelte:component this={component} {...result} {...itemProps} />
         </a>
       {:else}

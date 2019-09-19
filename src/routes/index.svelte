@@ -131,7 +131,9 @@
       Find meetups, tournaments, and new friends on BadukClub
     </p>
     <div class="py-10">
-      <a href="map" class="button w-full md:w-1/2 lg:w-1/3">Explore the Map</a>
+      <a href="map" rel="prefetch" class="button w-full md:w-1/2 lg:w-1/3">
+        Explore the Map
+      </a>
     </div>
   </div>
 

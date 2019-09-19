@@ -57,12 +57,13 @@
 <nav
   class="fixed top-0 z-20 w-screen bg-white flex justify-between items-center
   h-16 border-grey-400 border-b">
-  <a href="." class="w-56" id="logo">
+  <a href="." rel="prefetch" class="w-56" id="logo">
     <Logo />
   </a>
   <div class="flex items-center justify-around w-40">
     <a
       href="map"
+      rel="prefetch"
       class="flex flex-col items-center opacity-50 hover:opacity-100">
       <Icon id="map" />
       <span class="text-xs" style="margin-top: -2px">Explore</span>
@@ -80,8 +81,10 @@
           <span class="text-xs">loading...</span>
         {/if}
         <div class="{optsVisible ? '' : 'hidden '}options">
-          <a href="profile" class="hover:underline">Profile</a>
-          <a href="profile?tab=settings" class="hover:underline">Settings</a>
+          <a href="profile" rel="prefetch" class="hover:underline">Profile</a>
+          <a href="profile?tab=settings" rel="prefetch" class="hover:underline">
+            Settings
+          </a>
           <a href="logout" data-cy="logout" class="hover:underline">Log Out</a>
         </div>
       </div>
