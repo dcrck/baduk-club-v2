@@ -7,12 +7,13 @@
   export let component = false
   export let types = { singular: 'Item', plural: 'Items' }
   export let placeholder = 'Search...'
-  export let border = false
+  export let itemProps = {}
   export let add = null
   export let click = null
 
   let results = []
   let query = ''
+  let { border } = itemProps
 
   const setResults = (fuse, query, items) =>
     (results = query ? fuse.search(query) : items)
@@ -81,11 +82,11 @@
   {#each results as result}
     {#if click}
       <a href={click(result)} class="block mb-8 clickable" class:b={border}>
-        <svelte:component this={component} {...result} {border} />
+        <svelte:component this={component} {...result} {...itemProps} />
       </a>
     {:else}
       <div class="mb-8">
-        <svelte:component this={component} {...result} {border} />
+        <svelte:component this={component} {...result} {...itemProps} />
       </div>
     {/if}
   {:else}

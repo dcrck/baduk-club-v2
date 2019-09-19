@@ -11,6 +11,7 @@
   div.sidebar {
     @apply fixed w-56 bg-white left-0 pt-12 z-50;
     top: 4rem;
+    overflow-y: scroll;
     height: calc(100vh - 4rem);
     transition: 200ms;
   }

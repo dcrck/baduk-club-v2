@@ -61,7 +61,10 @@
     click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     placeholder: 'Search all public meetups...',
-    border: true,
+    itemProps: {
+      border: true,
+      showTime: true,
+    },
   }
 
   const userProps = {
@@ -70,7 +73,9 @@
     items: users,
     options: { keys: ['name'] },
     placeholder: 'Search all players by name...',
-    border: true,
+    itemProps: {
+      border: true,
+    },
   }
 
   const switchList = ({ detail: { choice } }) => (list = choice)

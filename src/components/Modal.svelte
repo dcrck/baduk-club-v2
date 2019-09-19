@@ -1,5 +1,5 @@
 <script>
-  import Icon from './Icon.svelte'
+  //import Icon from './Icon.svelte'
   import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
 
@@ -27,11 +27,11 @@
 
   <div class="fixed bg-white content p-8 rounded" style="z-index: 999">
     <slot />
-    <button
+    <!--<button
       class="m-2 hover:opacity-100 opacity-50 absolute top-0 right-0"
       data-cy="close-modal"
       on:click={close}>
       <Icon id="x" />
-    </button>
+    </button>-->
   </div>
 </div>

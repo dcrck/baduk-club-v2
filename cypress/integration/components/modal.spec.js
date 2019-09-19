@@ -9,12 +9,12 @@ describe('Modal component', () => {
     cy.get('[data-cy="card"]').should('exist')
   })
 
-  it('modal disappers when X is clicked', () => {
+  /*it('modal disappers when X is clicked', () => {
     cy.get('[data-cy="close-modal"]')
       .should('exist')
       .click()
     cy.get('[data-cy="modal"]').should('not.exist')
-  })
+  })*/
 
   it('disappers when background is clicked', () => {
     cy.get('[data-cy="modal-background"]')
