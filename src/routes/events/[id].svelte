@@ -94,7 +94,7 @@
   import Modal from '/components/Modal'
   import { onMount, getContext } from 'svelte'
   import { toastKey } from '/utils/index'
-  import { newAttendance } from '/api/db/helpers'
+  import initialize, { send, buttonConfig } from './_attendance'
   import { goto } from '@sapper/app'
   import nanoid from 'nanoid'
   export let evt,
@@ -110,6 +110,19 @@
   let orgEmail = ''
   const { ping } = getContext(toastKey)
   let codeLoader = loadInviteCode(existingAttendance)
+
+  let buttons = buttonConfig(canCheckIn)
+
+  let { state, actions } = initialize(
+    userIsOrganizer ? 'organizer' : existingAttendance ? 'attendee' : 'visitor',
+    user
+      ? {
+          user_id: user.id,
+          event_id: evt.id,
+          token: user.token,
+        }
+      : {}
+  )
 
   onMount(async () => (orgEmail = await delayedActions()))
 
@@ -152,39 +165,25 @@
     ping({ message: 'Invite link copied to clipboard', type: 'info' })
   }
 
-  function signUp() {
-    execute({
-      token: user.token,
-      query: newAttendance(user, evt),
-    }).then(({ insert_attendances: { returning: [attendance] } }) => {
+  const updateUI = {
+    SIGN_UP: attendance => {
       ping({ message: `You're now attending this event!`, type: 'success' })
       attendances = [...attendances, attendance]
       existingAttendance = attendance
+      tabs.attendees.qty += 1
       codeLoader = loadInviteCode(existingAttendance)
-    })
-  }
-  function cancelAttendance() {
-    execute({
-      token: user.token,
-      query: del('attendances', {
-        filters: {
-          where: {
-            _and: [
-              { user_id: { _eq: user.id } },
-              { event_id: { _eq: evt.id } },
-            ],
-          },
-        },
-      }),
-    }).then(() => {
+    },
+    CANCEL: affected_rows => {
+      if (affected_rows === 0) return
       ping({ message: 'You are no longer attending this event', type: 'info' })
       attendances = attendances.filter(a => a.user.id !== user.id)
       existingAttendance = undefined
+      tabs.attendees.qty -= affected_rows
       codeLoader = loadInviteCode(existingAttendance)
-    })
+    },
+    SWITCH: () => {},
+    CHECK_IN: () => {},
   }
-
-  function checkIn() {}
 
   const thisEvent = k => ({ where: { [k]: { _eq: evt.id } } })
   function deleteEvent() {
@@ -240,46 +239,6 @@
       )
   }
 
-  // ToDo: implement
-  // function switchOrganizer() {}
-
-  const buttonText = (processing, verb, rest) =>
-    processing ? `${verb}ing ${rest}...` : `${verb} ${rest}`
-
-  function setAction(signedUp, canCheckIn, processing) {
-    if (signedUp && canCheckIn)
-      return {
-        action: checkIn,
-        actionButton: {
-          icon: 'map-pin',
-          label: buttonText(processing, 'Check', 'In'),
-        },
-      }
-    else if (signedUp && userIsOrganizer)
-      return {
-        action: null,
-        actionButton: {
-          icon: '',
-          label: buttonText(processing, 'Switch', 'Organizer'),
-        },
-      }
-    else if (signedUp && !userIsOrganizer)
-      return {
-        action: cancelAttendance,
-        actionButton: {
-          icon: 'user-x',
-          label: buttonText(processing, 'Cancel', 'Attendance'),
-        },
-      }
-    else
-      return {
-        action: signUp,
-        actionButton: {
-          icon: 'user-check',
-          label: buttonText(processing, 'Sign', 'Up'),
-        },
-      }
-  }
   let tabs = {
     details: { icon: 'star', label: 'Details' },
     ...(user
@@ -295,16 +254,9 @@
   }
 
   let currentTab = 'details',
-    processing = false,
     editing = false
 
   const toggleEdit = () => (editing ^= true)
-
-  $: ({ action, actionButton } = setAction(
-    !!existingAttendance,
-    canCheckIn,
-    processing
-  ))
 
   /* eslint-disable no-unused-vars */
   const editable = ({ last_updated, id, ...e }) => e
@@ -333,7 +285,7 @@
     execute({
       token: user.token,
       query: del('games', { filters: { where: { id: { _eq: id } } } }),
-    }).then(({ affected_rows }) => {
+    }).then(({ delete_games: { affected_rows } }) => {
       if (affected_rows === 0) return
       ping({ message: `Game removed successfully`, type: 'info' })
       games = games.filter(g => g.id !== id)
@@ -363,7 +315,7 @@
 
   $: gameListProps.add =
     attendances.length > 1 && existingAttendance ? toggleNewGameForm : undefined
-  $: gameListProps.del = existingAttendance ? removeGame : undefined
+  $: gameListProps.del = userIsOrganizer ? removeGame : undefined
   $: gameListProps.items = games
 </script>
 
@@ -458,18 +410,22 @@
       {/if}
     </label>
   {/each}
-  {#if user && action}
-    <button
-      on:click={action}
-      class="w-full p-8 flex border-t-2 border-b-2 border-gray-800">
-      {#if actionButton.icon}
-        <div class="mr-4">
-          <Icon id={actionButton.icon} />
-        </div>
+  {#if user}
+    {#each Object.entries(buttons) as [k, { msg, text, icon }]}
+      {#if k === $state}
+        <button
+          class="w-full p-8 flex border-t-2 border-b-2 border-gray-800"
+          on:click={() => send(state, actions, msg, updateUI[msg])}>
+          {#if icon}
+            <div class="mr-4">
+              <Icon id={icon} />
+            </div>
+          {/if}
+          <span class="font-semibold">{text}</span>
+        </button>
       {/if}
-      <span class="font-semibold">{actionButton.label}</span>
-    </button>
-  {:else if !user}
+    {/each}
+  {:else}
     <a
       href="login?redir=/events/{evt.id}"
       class="block w-full p-8 border-t-2 border-b-2 border-gray-800">
