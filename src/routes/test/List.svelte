@@ -38,29 +38,29 @@
   }
 
   let games = [
-      {
-        black: { name: 'Derek' },
-        white: { name: 'Devin' },
-        winner: true,
-        komi: 15,
-        handicap: 22,
-        recorded: new Date(),
-        id: 1,
+    {
+      black: { name: 'Derek' },
+      white: { name: 'Devin' },
+      winner: true,
+      komi: 15,
+      handicap: 22,
+      recorded: new Date(),
+      id: 1,
+    },
+    {
+      black: { name: 'Rachel' },
+      white: { name: 'Kyle' },
+      winner: false,
+      komi: 0,
+      handicap: 10,
+      recorded: new Date(),
+      id: 2,
+      event: {
+        name: 'Go Event Name',
+        id: '1',
       },
-      {
-        black: { name: 'Rachel' },
-        white: { name: 'Kyle' },
-        winner: false,
-        komi: 0,
-        handicap: 10,
-        recorded: new Date(),
-        id: 2,
-        event: {
-          name: 'Go Event Name',
-          id: '1',
-        },
-      },
-    ]
+    },
+  ]
   let id = 2
 
   let gameListProps = {
@@ -78,14 +78,13 @@
           komi: 15,
           handicap: 22,
           recorded: new Date(),
-          id: ++id
-        }
+          id: ++id,
+        },
       ]
     },
-    del: ({id}) => games = games.filter(g => g.id !== id)
+    del: ({ id }) => (games = games.filter(g => g.id !== id)),
   }
   $: gameListProps.items = games
-
 
   let eventListProps = {
     component: EventCard,
