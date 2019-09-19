@@ -1,7 +1,7 @@
 <script context="module">
   import { execute, update } from '/api/db/index'
   import { profileData } from '/api/db/helpers'
-  export async function preload({ params: { tab } }, { user }) {
+  export async function preload({ query: { tab } }, { user }) {
     if (!user) return this.redirect(302, 'login?redir=/profile')
     const { id, email, token } = user
     const {
