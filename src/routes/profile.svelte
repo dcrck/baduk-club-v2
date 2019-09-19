@@ -24,8 +24,10 @@
   import GameCard from '/components/item/GameCard'
   import ItemList from '/components/item/List'
   import UserForm from '/components/forms/User'
+  import NewEventForm from '/components/forms/NewEvent'
   import Sidebar from '/components/layout/Sidebar'
   import Icon from '/components/Icon'
+  import Modal from '/components/Modal'
   import { toastKey } from '/utils/index'
   import { getContext } from 'svelte'
   export let user, games, events, currentTab
@@ -38,10 +40,14 @@
 
   const { ping } = getContext(toastKey)
 
+  let showEventForm = false
+  const toggleEventForm = () => showEventForm ^= true
+
   const attendancesProps = {
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
     placeholder: "Search all the meetups you've attended",
+    add: toggleEventForm,
     click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     items: events,
@@ -79,6 +85,7 @@
       ping({ message: 'Profile updated successfully', type: 'success' })
     })
   }
+
 </script>
 
 <style>
@@ -126,6 +133,11 @@
   <ItemList {...gamesProps} />
 {:else if currentTab === 'attendances'}
   <ItemList {...attendancesProps} />
+  {#if showEventForm}
+    <Modal on:close={toggleEventForm}>
+      <NewEventForm on:cancel={toggleEventForm} />
+    </Modal>
+  {/if}
 {:else}
   <div class="bg-white rounded shadow-xl p-8">
     <UserForm {initial} on:submit={editUser} />
