@@ -1,6 +1,6 @@
 import { merge, create } from '/api/db/index'
 
-export const newAttendance = ({ id: user_id }, { id: event_id }) =>
+export const newAttendance = (user_id, event_id) =>
   create('attendances', {
     values: {
       user_id,

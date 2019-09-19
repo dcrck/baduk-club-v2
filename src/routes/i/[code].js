@@ -16,7 +16,7 @@ export async function get(req, res) {
   )
   if (!invites.length) return res.redirect(302, '/')
   const [{ event_id }] = invites
-  await gql(newAttendance(user, { id: event_id })).catch(e =>
+  await gql(newAttendance(user.id, event_id)).catch(e =>
     !/duplicate key value violates unique constraint/.test(e.message)
       ? Promise.reject(e)
       : ''
