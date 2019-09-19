@@ -142,7 +142,7 @@
     portability. If you make a request, we have one month to respond to you. If
     you would like to exercise any of these rights, please contact us at our
     email:
-    <a href="mailto:privacy@baduk.club">privacy@baduk.club</a>
+    <a href="mailto:privacy@baduk.club" target="_blank">privacy@baduk.club</a>
     .
   </p>
 </section>
@@ -202,7 +202,7 @@
     If you have any questions about BadukClub’s privacy policy, the data we hold
     on you, or you would like to exercise one of your data protection rights,
     please do not hesitate to contact us at
-    <a href="mailto:privacy@baduk.club">privacy@baduk.club</a>
+    <a href="mailto:privacy@baduk.club" target="_blank">privacy@baduk.club</a>
     .
   </p>
 </section>

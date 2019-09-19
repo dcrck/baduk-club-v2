@@ -147,8 +147,8 @@
         <p class="font-semibold text-lg">{events.length} Meetups</p>
         <p>on the map</p>
       </div>
-      {#if user}
-        <div class="my-8">
+      <div class="my-8">
+        {#if user}
           {#if user.email_verified}
             <button
               data-cy="add-meetup-button"
@@ -163,8 +163,16 @@
               Please verify your email address to create meetups
             </div>
           {/if}
-        </div>
-      {/if}
+        {:else}
+          <a
+            href="login?redir=/map"
+            class="bg-gray-700 rounded py-3 px-5 hover:bg-gray-800 flex
+            justify-center items-center mx-2 click">
+            <Icon id="map-pin" color="white" />
+            <span class="ml-2 text-white font-medium">Add your Meetup</span>
+          </a>
+        {/if}
+      </div>
     </Sidebar>
   </div>
 {/if}

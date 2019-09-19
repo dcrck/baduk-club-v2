@@ -354,6 +354,6 @@
   <p>
     If you have any questions, comments, or concerns about this Terms Of Use,
     please contact us at:
-    <a href="mailto:terms@baduk.club">terms@baduk.club</a>
+    <a href="mailto:terms@baduk.club" target="_blank">terms@baduk.club</a>
   </p>
 </section>

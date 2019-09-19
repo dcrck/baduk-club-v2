@@ -85,7 +85,9 @@
   {#if results}
     <ul class="absolute z-20 w-full bg-white shadow-md">
       {#if query && !results.length}
-        <li class="text-gray-600 italic">No results</li>
+        <li class="text-gray-600 italic text-sm">
+          <slot name="no-results">No results</slot>
+        </li>
       {:else if query}
         {#each results as result}
           <li data-cy="typeahead-result" on:click={() => setInput(result)}>

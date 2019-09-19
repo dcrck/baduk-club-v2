@@ -26,7 +26,7 @@
   $: reset(initial)
 
   let playerSelectProps = {
-    errorMessage: 'Please select a player from the list',
+    errorMessage: 'Please select a meetup attendee from the list',
     key: 'name',
   }
   let lists = { black: players, white: players }
@@ -100,7 +100,9 @@
           on:clear={() => clear(player)}
           initial={initial[player].name}
           items={lists[player]}
-          {...playerSelectProps} />
+          {...playerSelectProps}>
+          <span slot="no-results">No matching meetup attendees</span>
+        </Typeahead>
         <label
           for="{player}-won-{game.id}"
           class:winner={(player === 'white') === game.winner}>

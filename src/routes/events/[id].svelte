@@ -330,14 +330,15 @@
 
   let itemListProps = {
     component: UserCard,
-    items: attendances.map(a => ({
-      ...a.user,
-      isOrganizer: isOrganizer(a.user.id),
-    })),
     options: { keys: ['user.name'] },
     types: { singular: 'Attendee', plural: 'Attendees' },
     placeholder: 'Search all attendees by name...',
   }
+
+  $: itemListProps.items = attendances.map(a => ({
+    ...a.user,
+    isOrganizer: isOrganizer(a.user.id),
+  }))
 
   let gameListProps = {
     component: GameCard,
@@ -347,7 +348,7 @@
   }
 
   $: gameListProps.add =
-    attendances.length > 1 && user ? toggleNewGameForm : undefined
+    attendances.length > 1 && existingAttendance ? toggleNewGameForm : undefined
   $: gameListProps.items = games
 </script>
 
@@ -395,6 +396,7 @@
   <h4 class="text-2xl font-semibold mb-6 text-center">{evt.name}</h4>
   <a
     href="mailto:{orgEmail}"
+    target="_blank"
     class="flex justify-center hover:underline text-blue-500 w-full mb-8">
     Contact Organizers
   </a>
@@ -407,7 +409,7 @@
         {#if !code}
           <input type="text" readonly value="no code" />
           <div>
-            <button on:click={createLink}>Reset Link</button>
+            <button on:click={createLink}>Create Link</button>
           </div>
         {:else}
           <input
@@ -416,7 +418,6 @@
             id="invite"
             value="{process.env.APP_DOMAIN}/i/{code}" />
           <div>
-            <button on:click={() => generateNewLink(code)}>Reset Link</button>
             <button on:click={copyLink}>Copy Link</button>
           </div>
         {/if}

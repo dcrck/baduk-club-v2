@@ -91,6 +91,7 @@
           No results. Is your address missing? please
           <a
             href="mailto:support@baduk.club"
+            target="_blank"
             class="text-blue-500 hover:underline">
             let us know
           </a>
@@ -106,6 +107,7 @@
           Is your address missing? Please
           <a
             href="mailto:support@baduk.club"
+            target="_blank"
             class="text-blue-500 hover:underline">
             let us know
           </a>

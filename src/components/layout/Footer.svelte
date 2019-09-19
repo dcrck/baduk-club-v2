@@ -32,7 +32,10 @@
   <a href="docs/privacy-policy" class="underline hover:text-gray-800">
     Privacy Policy
   </a>
-  <a href="mailto:support@baduk.club" class="underline hover:text-gray-800">
+  <a
+    href="mailto:support@baduk.club"
+    target="_blank"
+    class="underline hover:text-gray-800">
     Support
   </a>
   <a href="https://ko-fi.com/F1F313PRT" target="_blank">
