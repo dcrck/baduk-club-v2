@@ -72,6 +72,7 @@
     component: UserCard,
     types: { singular: 'Player', plural: 'Players' },
     items: users,
+    click: ({ id }) => `users/${id}`,
     options: { keys: ['name'] },
     placeholder: 'Search all players by name...',
     itemProps: {

@@ -47,7 +47,12 @@
             <div class="mr-2">
               <Icon id="circle" fill={player} />
             </div>
-            <span class="text-xl">{players[player].name}</span>
+            <a
+              href="users/{players[player].id}"
+              target="_blank"
+              class="text-xl hover:underline">
+              {players[player].name}
+            </a>
           </div>
           {#if player === 'white'}
             <span class="my-4 flex-1">vs.</span>
