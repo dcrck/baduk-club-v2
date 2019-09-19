@@ -143,7 +143,7 @@
 
 <div class="mt-4 mb-8">
   <label for="picture" class="form-label">
-    Photo
+    Photo URL
     <Validation {...state.picture}>
       <input
         type="url"
