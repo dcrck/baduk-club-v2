@@ -16,19 +16,10 @@ export async function get(req, res) {
   )
   if (!invites.length) return res.redirect(302, '/')
   const [{ event_id }] = invites
-  const { attendances } = await gql(
-    select('attendances', {
-      filters: {
-        where: {
-          _and: [
-            { event_id: { _eq: event_id } },
-            { user_id: { _eq: user.id } },
-          ],
-        },
-      },
-      fields: ['id'],
-    })
+  await gql(newAttendance(user, { id: event_id })).catch(e =>
+    !/duplicate key value violates unique constraint/.test(e.message)
+      ? Promise.reject(e)
+      : ''
   )
-  if (!attendances.length) await gql(newAttendance(user, { id: event_id }))
   return res.redirect(302, `/events/${event_id}`)
 }
