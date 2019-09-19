@@ -43,6 +43,15 @@ describe('Item List', () => {
       .clear()
   })
 
+  it('adds/removes item to/from game list when buttons clicked', () => {
+    cy.get('[data-cy="game-list"]')
+      .find('[data-cy="add-new-Game"]')
+      .click()
+    cy.get('[data-cy="game-card"]').should('have.length', 3)
+    cy.get('[data-cy="del-Game-3"]').click()
+    cy.get('[data-cy="game-card"]').should('have.length', 2)
+  })
+
   it('renders Event List', () => {
     cy.get('[data-cy="event-list"]')
       .should('exist')

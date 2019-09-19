@@ -37,18 +37,15 @@
     ],
   }
 
-  let gameListProps = {
-    component: GameCard,
-    types: { singular: 'Game', plural: 'Games' },
-    placeholder: 'Search Games...',
-    options: { keys: ['black.name', 'white.name'] },
-    items: [
+  let games = [
       {
         black: { name: 'Derek' },
         white: { name: 'Devin' },
         winner: true,
         komi: 15,
         handicap: 22,
+        recorded: new Date(),
+        id: 1,
       },
       {
         black: { name: 'Rachel' },
@@ -56,13 +53,39 @@
         winner: false,
         komi: 0,
         handicap: 10,
+        recorded: new Date(),
+        id: 2,
         event: {
           name: 'Go Event Name',
           id: '1',
         },
       },
-    ],
+    ]
+  let id = 2
+
+  let gameListProps = {
+    component: GameCard,
+    types: { singular: 'Game', plural: 'Games' },
+    placeholder: 'Search Games...',
+    options: { keys: ['black.name', 'white.name'] },
+    add: () => {
+      games = [
+        ...games,
+        {
+          black: { name: 'Derek' },
+          white: { name: 'Devin' },
+          winner: true,
+          komi: 15,
+          handicap: 22,
+          recorded: new Date(),
+          id: ++id
+        }
+      ]
+    },
+    del: ({id}) => games = games.filter(g => g.id !== id)
   }
+  $: gameListProps.items = games
+
 
   let eventListProps = {
     component: EventCard,

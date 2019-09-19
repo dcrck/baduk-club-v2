@@ -41,7 +41,7 @@
   const { ping } = getContext(toastKey)
 
   let showEventForm = false
-  const toggleEventForm = () => showEventForm ^= true
+  const toggleEventForm = () => (showEventForm ^= true)
 
   const attendancesProps = {
     component: EventCard,
@@ -85,7 +85,6 @@
       ping({ message: 'Profile updated successfully', type: 'success' })
     })
   }
-
 </script>
 
 <style>

@@ -10,6 +10,7 @@
   export let itemProps = {}
   export let add = null
   export let click = null
+  export let del = null
 
   let results = []
   let query = ''
@@ -69,6 +70,7 @@
   {#if add}
     <button
       on:click={add}
+      data-cy="add-new-{types.singular}"
       class="w-full my-4 px-6 py-4 bg-gray-700 hover:bg-gray-800 flex
       items-center rounded-lg justify-center">
       <div class="mr-1">
@@ -80,15 +82,25 @@
     </button>
   {/if}
   {#each results as result}
-    {#if click}
-      <a href={click(result)} class="block mb-8 clickable" class:b={border}>
-        <svelte:component this={component} {...result} {...itemProps} />
-      </a>
-    {:else}
-      <div class="mb-8">
-        <svelte:component this={component} {...result} {...itemProps} />
-      </div>
-    {/if}
+    <div class="relative">
+      {#if del}
+        <button
+          data-cy="del-{types.singular}-{result.id}"
+          on:click={() => del(result)}
+          class="absolute left-0 -ml-8 opacity-25 hover:opacity-100">
+          <Icon id="trash-2" />
+        </button>
+      {/if}
+      {#if click}
+        <a href={click(result)} class="block mb-8 clickable" class:b={border}>
+          <svelte:component this={component} {...result} {...itemProps} />
+        </a>
+      {:else}
+        <div class="mb-8">
+          <svelte:component this={component} {...result} {...itemProps} />
+        </div>
+      {/if}
+    </div>
   {:else}
     <slot name="no-results">
       <p class="text-center text-gray-500 text-2xl">No results</p>

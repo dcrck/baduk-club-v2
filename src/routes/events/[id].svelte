@@ -320,11 +320,24 @@
       token: user.token,
       query: create('games', {
         values: { ...rest, black: black.id, white: white.id, event_id: evt.id },
+        fields: ['id'],
       }),
-    }).then(() => {
+    }).then(({ insert_games: { returning: [{ id }] } }) => {
       ping({ message: `Game added successfully`, type: 'success' })
-      games = [...games, { ...game, recorded: new Date() }]
+      games = [...games, { ...game, id, recorded: new Date() }]
       tabs.games.qty += 1
+    })
+  }
+
+  function removeGame({ id }) {
+    execute({
+      token: user.token,
+      query: del('games', { filters: { where: { id: { _eq: id } } } }),
+    }).then(({ affected_rows }) => {
+      if (affected_rows === 0) return
+      ping({ message: `Game removed successfully`, type: 'info' })
+      games = games.filter(g => g.id !== id)
+      tabs.games.qty -= 1
     })
   }
 
@@ -350,6 +363,7 @@
 
   $: gameListProps.add =
     attendances.length > 1 && existingAttendance ? toggleNewGameForm : undefined
+  $: gameListProps.del = existingAttendance ? removeGame : undefined
   $: gameListProps.items = games
 </script>
 
