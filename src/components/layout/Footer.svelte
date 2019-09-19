@@ -20,9 +20,9 @@
   }
 </style>
 
-<hr />
+<hr class="mb-4" />
 <div
-  class="flex text-sm flex-row justify-center items-center text-gray-500 py-4"
+  class="flex text-sm mb-12 flex-row justify-center items-center text-gray-500"
   class:flex-col={small}>
   <p class="text-center">Copyright 2019 BadukClub.</p>
   <p class="text-center" class:-mt-2={small}>All rights reserved.</p>

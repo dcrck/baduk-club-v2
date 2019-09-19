@@ -17,11 +17,8 @@
   }
 
   .show-sidebar {
-    @apply fixed hidden left-0 bottom-0 m-4 w-12 h-12 rounded-full bg-gray-800 z-40;
-  }
-  .sidebar button {
-    @apply absolute right-0 pr-4 pt-4;
-    top: -3rem;
+    @apply fixed hidden left-0 m-4 w-12 h-12 rounded-full bg-gray-800 z-50;
+    bottom: 2rem;
   }
 
   @media screen and (max-width: 640px) {
@@ -36,6 +33,11 @@
 
     .show-sidebar {
       @apply flex shadow-lg justify-center items-center;
+      transition: 200ms;
+      transform: translateX(0);
+    }
+    .sidebar.visible + .show-sidebar {
+      transform: translateX(14rem);
     }
   }
 </style>
@@ -48,14 +50,9 @@
     <div>
       <Footer small />
     </div>
-    <button
-      on:click={toggleSidebar}
-      class="block md:hidden opacity-50 hover:opacity-100">
-      <Icon id="x" />
-    </button>
   </div>
 </div>
 
 <button class="show-sidebar" on:click={toggleSidebar}>
-  <Icon id="chevrons-right" size="32" color="white" />
+  <Icon id="chevrons-{visible ? 'left' : 'right'}" size="32" color="white" />
 </button>

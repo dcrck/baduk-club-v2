@@ -56,7 +56,7 @@
 
 <style>
   label:not(.stat) {
-    @apply opacity-0 rounded-sm bg-gray-300 ml-4 px-3 py-2;
+    @apply rounded-sm bg-gray-300 px-3 py-2;
   }
 
   .player:hover > label:not(.winner):not(:hover) {
@@ -85,26 +85,31 @@
   }
 </style>
 
-<div class="flex items-center w-full">
+<div class="flex flex-col md:flex-row items-center w-full">
   <div class="flex-1 flex flex-col items-center justify-center">
     {#each ['white', 'black'] as player}
-      <div data-cy={player} class="flex items-center my-4 player">
-        <div class="mr-2">
-          <Icon id="circle" fill={player} />
+      <div
+        data-cy={player}
+        class="flex flex-col md:flex-row items-center my-2 md:my-4 player">
+        <div class="flex items-center">
+          <div class="mr-2">
+            <Icon id="circle" fill={player} />
+          </div>
+          <Typeahead
+            placeholder="{player} player name"
+            {refresh}
+            id={player}
+            on:select={e => set(player, e)}
+            on:clear={() => clear(player)}
+            initial={initial[player].name}
+            items={lists[player]}
+            {...playerSelectProps}>
+            <span slot="no-results">No matching meetup attendees</span>
+          </Typeahead>
         </div>
-        <Typeahead
-          placeholder="{player} player name"
-          {refresh}
-          id={player}
-          on:select={e => set(player, e)}
-          on:clear={() => clear(player)}
-          initial={initial[player].name}
-          items={lists[player]}
-          {...playerSelectProps}>
-          <span slot="no-results">No matching meetup attendees</span>
-        </Typeahead>
         <label
           for="{player}-won-{game.id}"
+          class="my-2 w-full md:w-auto md:my-0 md:ml-4 opacity-25 lg:opacity-0"
           class:winner={(player === 'white') === game.winner}>
           <input
             type="radio"
@@ -112,7 +117,7 @@
             class="mr-4 hidden"
             bind:group={game.winner}
             value={player === 'white'} />
-          <span class="text-xs">won the game</span>
+          <span class="text-xs text-center">won the game</span>
         </label>
       </div>
     {/each}

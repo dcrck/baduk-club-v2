@@ -195,7 +195,7 @@
     transition:fly={{ y: 200, duration: 500 }}>
     <EventCard {...selected} showTime={true} />
     <button
-      class="fixed right-0 top-0 p-4 opacity-50 hover:opacity-100"
+      class="absolute right-0 top-0 p-4 opacity-50 hover:opacity-100"
       on:click={hide}>
       <Icon id="x" size="32" />
     </button>

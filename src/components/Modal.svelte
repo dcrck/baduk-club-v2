@@ -16,6 +16,13 @@
     max-width: calc(100vw - 4rem);
     min-width: 50%;
   }
+
+  @media screen and (max-width: 640px) {
+    .content {
+      max-width: none;
+      width: calc(100vw - 1rem);
+    }
+  }
 </style>
 
 <div data-cy="modal">
@@ -25,7 +32,7 @@
     style="z-index: 999"
     on:click={close} />
 
-  <div class="fixed bg-white content p-8 rounded" style="z-index: 999">
+  <div class="fixed bg-white content p-2 md:p-8 rounded" style="z-index: 999">
     <slot />
     <!--<button
       class="m-2 hover:opacity-100 opacity-50 absolute top-0 right-0"
