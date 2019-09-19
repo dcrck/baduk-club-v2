@@ -36,6 +36,7 @@
   import ItemList from '/components/item/List'
   import NewEventForm from '/components/forms/NewEvent'
   import Modal from '/components/Modal'
+  import Icon from '/components/Icon'
   export let users, events
 
   export let user
@@ -91,6 +92,14 @@
   a.button:hover {
     @apply bg-gray-800;
   }
+
+  ul > li {
+    @apply my-4;
+  }
+
+  ul > li em {
+    @apply font-medium not-italic;
+  }
 </style>
 
 <svelte:head>
@@ -118,12 +127,11 @@
     <h1 class="font-bold text-6xl">The one-stop shop</h1>
     <h1 class="font-bold text-6xl">for in-person Go</h1>
     <p class="text-2xl py-10">
-      Find local Go meetups, tournaments, and players on BadukClub
+      Find meetups, tournaments, and new friends on BadukClub
     </p>
-  </div>
-
-  <div class="py-10 text-center">
-    <a href="login" class="button w-full md:w-1/2 lg:w-1/4">Sign Up Now</a>
+    <div class="py-10">
+      <a href="map" class="button w-full md:w-1/2 lg:w-1/3">Explore the Map</a>
+    </div>
   </div>
 
   <div class="py-10 flex justify-around text-center">
@@ -145,24 +153,45 @@
   </div>
 
   <hr />
-  <div class="py-10 text-center mx-2 md:mx-10 lg:mx-32">
-    <h2 class="text-5xl font-semibold">Up-to-date Meetups</h2>
-    <p class="text-xl">
-      We perform quality checks frequently to ensure our regular meetups are
-      still active, so you don’t have to worry about outdated information when
-      you show up to an event
-    </p>
+  <div class="py-10 text-center mx-2 md:mx-10 lg:mx-20">
+    <h2 class="text-5xl font-medium">Organizing a club is tough</h2>
+    <h2 class="text-5xl font-medium mb-8">We make it easier</h2>
+    <ul
+      class="text-lg lg:text-2xl font-light flex flex-col justify-center
+      items-center">
+      <li>Show the world your meetups and one-time events (tournaments)</li>
+      <Icon id="circle" fill="#262621" />
+      <li>Add, edit, and delete information with your own account</li>
+      <Icon id="circle" fill="white" />
+      <li>Easily invite others to your event with a shareable link</li>
+    </ul>
     <div class="py-10">
-      <a href="map" class="button w-full md:w-1/2 lg:w-1/3">Explore Meetups</a>
+      <a href="login?redir=/map" class="button w-full md:w-1/2 lg:w-1/3">
+        Add your Meetup
+      </a>
     </div>
   </div>
 
-  <div class="py-10 text-center mx-2 md:mx-10 lg:mx-32">
-    <h2 class="text-5xl font-semibold">Casual Game Tracking</h2>
-    <p class="text-xl">
-      Each meetup lets you track game results, so you can record your casual
-      games and get a feeling for how you're progressing
-    </p>
+  <div class="py-10 text-center mx-2 md:mx-10 lg:mx-28">
+    <h2 class="text-5xl font-medium">Playing in person is awesome</h2>
+    <h2 class="text-5xl font-medium mb-8">We make it even better</h2>
+    <ul
+      class="text-lg lg:text-2xl font-light flex flex-col justify-center
+      items-center">
+      <li>
+        <em>Never attend an inactive meetup again!</em>
+        See when it was last updated
+      </li>
+      <Icon id="circle" fill="#262621" />
+      <li>Track your casual and tournament games</li>
+      <Icon id="circle" fill="white" />
+      <li>Invite friends to join you at the event</li>
+    </ul>
+    <div class="py-10">
+      <a href="login?redir=/map" class="button w-full md:w-1/2 lg:w-1/3">
+        Find a Meetup
+      </a>
+    </div>
   </div>
   <hr />
 
