@@ -22,8 +22,10 @@ describe('Event form', () => {
   })
 
   it('only allows a single meeting time entry for one-time meetups', () => {
-    cy.get('label[for="__once__"]')
+    cy.get('[data-cy="new-time"]')
+      .click()
       .wait(500)
+    cy.get('label[for="__once__"]')
       .click()
       .click()
     cy.get('[data-cy="start-date"]').type('2019-09-01')
@@ -36,6 +38,7 @@ describe('Event form', () => {
   })
 
   it('only allows recurring meeting times for recurring meetups', () => {
+    cy.get('[data-cy="new-time"]').click()
     cy.get('label[for="__weekly__"]')
       .wait(500)
       .click()
@@ -90,6 +93,7 @@ describe('Event form', () => {
     cy.get('[data-cy="search-result"]')
       .contains('15198 Hook Hollow')
       .click()
+    cy.get('[data-cy="new-time"]').click()
     cy.get('label[for="__weekly__"]').click()
     cy.get('#name').type('Test Meetup')
     cy.get('[data-cy="start-time"]').type('17:00')

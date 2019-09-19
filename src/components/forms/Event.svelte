@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte'
+  import { cubicOut } from 'svelte/easing'
   import LocationSearch from '/components/input/LocationSearch'
   import TimeForm from '/components/forms/RecurrenceRule'
   import Validation from '/components/input/Validation'
@@ -22,6 +23,10 @@
   export let resetOnSubmit = false
 
   let current, refresh, state
+
+  let showRRuleForm = false
+  const toggleRRuleForm = () => (showRRuleForm ^= true)
+
   reset()
   $: reset(initial)
 
@@ -30,6 +35,7 @@
   function reset() {
     current = JSON.parse(JSON.stringify(initial))
     refresh ^= true
+    showRRuleForm = false
     state = initialize(current.name, error)
   }
 
@@ -54,12 +60,16 @@
     dispatch('cancel')
     reset()
   }
+
   const removeTime = i =>
     (current.times = current.times
       .slice(0, i)
       .concat(current.times.slice(i + 1)))
-  const addTime = ({ detail: { time } }) =>
-    (current.times = [...current.times, time])
+
+  const addTime = ({ detail: { time } }) => {
+    current.times = [...current.times, time]
+    toggleRRuleForm()
+  }
 
   const selectLocation = ({ detail }) => (current = { ...current, ...detail })
   const clearLocation = () =>
@@ -75,6 +85,13 @@
     current.geolocation &&
     current.times.length
   )
+
+  const grow = (node, params) => ({
+    delay: params.delay || 0,
+    duration: params.duration || 400,
+    easing: params.easing || cubicOut,
+    css: t => `height: ${t * 400}px; opacity: ${t}`,
+  })
 </script>
 
 <style>
@@ -138,9 +155,23 @@
   {/each}
 
   {#if current.times.length !== 1 || !current.times.length || current.times[0].rrule}
-    <div class="flex-0">
-      <TimeForm on:submit={addTime} force={forceTimes} />
-    </div>
+    {#if !showRRuleForm}
+      <button
+        on:click={toggleRRuleForm}
+        data-cy="new-time"
+        class="px-3 my-2 py-2 flex items-center justify-center bg-gray-700
+        hover:bg-gray-800 rounded">
+        <Icon id="plus" color="white" />
+        <span class="text-white">New Meeting Time</span>
+      </button>
+    {:else}
+      <div class="flex-0" transition:grow>
+        <TimeForm
+          on:submit={addTime}
+          force={forceTimes}
+          on:cancel={toggleRRuleForm} />
+      </div>
+    {/if}
   {/if}
 
   <label class="my-4 inline-block w-full" for="description">

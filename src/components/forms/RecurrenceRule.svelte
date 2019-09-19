@@ -1,6 +1,7 @@
 <script>
   import { tick, createEventDispatcher } from 'svelte'
   import Segments from '/components/Segments'
+  import Icon from '/components/Icon'
   import * as utils from '/utils/rrule'
 
   const dispatch = createEventDispatcher()
@@ -62,6 +63,11 @@
     dispatch('submit', { time: toDB({ positions, start, end, freq }) })
     changeGroup(freq)
   }
+
+  function cancel() {
+    dispatch('cancel')
+    changeGroup(freq)
+  }
   $: disabled = !(
     (freq === 'once' || positions.length) &&
     start.time &&
@@ -94,6 +100,10 @@
   input[type='date']:focus,
   input[type='time']:focus {
     @apply border-gray-800;
+  }
+
+  button.form {
+    @apply rounded my-4 px-4 py-2 border border-gray-800 flex items-center justify-center;
   }
 </style>
 
@@ -160,14 +170,23 @@
         <input type="time" data-cy="end-time" bind:value={end.time} />
       </div>
     {/if}
-    <div class="w-full flex items-center">
+    <div class="w-full flex items-center justify-between">
+      <button data-cy="cancel-time" on:click={cancel} class="form bg-white">
+        <div class="mr-2">
+          <Icon id="x" />
+        </div>
+        <span>Cancel</span>
+      </button>
       <button
         {disabled}
         data-cy="add-time"
         on:click={submit}
-        class="my-4 px-4 py-2 bg-gray-800 rounded text-white w-full"
+        class="form bg-gray-800 text-white"
         class:disabled>
-        Add Meeting Time
+        <div class="mr-2">
+          <Icon id="check" color="white" />
+        </div>
+        <span>Confirm</span>
       </button>
     </div>
   </div>
