@@ -41,7 +41,7 @@
   const attendancesProps = {
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
-    placeholder: "Search all the events you've attended",
+    placeholder: "Search all the meetups you've attended",
     click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     items: events,
