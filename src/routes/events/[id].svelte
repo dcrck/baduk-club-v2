@@ -490,6 +490,9 @@
       {/await}
     {/if}
   {:else}
+    <h1 class="text-3xl font-semibold md:text-5xl md:font-black">
+      Recorded Games
+    </h1>
     {#if existingAttendance && attendances.length < 2}
       {#await codeLoader then code}
         <div class="bg-white rounded-lg shadow-xl p-4 invite-buttons">
@@ -505,9 +508,6 @@
         </div>
       {/await}
     {/if}
-    <h1 class="text-3xl font-semibold md:text-5xl md:font-black">
-      Recorded Games
-    </h1>
     <ItemList {...gameListProps} />
     {#if showNewGameForm}
       <Modal on:close={toggleNewGameForm}>
