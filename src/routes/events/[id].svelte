@@ -295,7 +295,7 @@
 
   let itemListProps = {
     component: UserCard,
-    options: { keys: ['user.name'] },
+    options: { keys: ['name'] },
     click: ({ id }) => `users/${id}`,
     types: { singular: 'Attendee', plural: 'Attendees' },
     placeholder: 'Search all attendees by name...',
