@@ -48,8 +48,10 @@
   }
 </style>
 
-<div class="flex justify-between items-center my-6">
-  <span class="font-bold mr-6">
+<div
+  class="flex flex-col md:flex-row md:justify-between md:items-center my-2
+  md:my-6">
+  <span class="font-bold md:mr-6">
     {results.length} {results.length === 1 ? types.singular : types.plural}
   </span>
   <div class="relative flex-grow">

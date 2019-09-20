@@ -468,6 +468,7 @@
       {/if}
     </div>
   {:else if currentTab === 'attendees'}
+    <h1 class="text-3xl font-semibold md:text-5xl md:font-black">Attendees</h1>
     <ItemList {...itemListProps} />
     {#if existingAttendance}
       {#await codeLoader then code}
@@ -504,6 +505,9 @@
         </div>
       {/await}
     {/if}
+    <h1 class="text-3xl font-semibold md:text-5xl md:font-black">
+      Recorded Games
+    </h1>
     <ItemList {...gameListProps} />
     {#if showNewGameForm}
       <Modal on:close={toggleNewGameForm}>

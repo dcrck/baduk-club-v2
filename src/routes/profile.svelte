@@ -129,8 +129,22 @@
   {/each}
 </Sidebar>
 {#if currentTab === 'statistics'}
+  <div class="flex items-center mb-4 md:mb-12">
+    <h1 class="text-3xl font-semibold md:text-5xl md:font-black mr-5">
+      Statistics
+    </h1>
+    <span
+      class="text-sm rounded-full py-2 px-3 bg-gray-300 uppercase tracking-wider
+      font-mono">
+      Coming Soon
+    </span>
+  </div>
+  <h1 class="text-3xl font-semibold md:text-5xl md:font-black">Your Games</h1>
   <ItemList {...gamesProps} />
 {:else if currentTab === 'attendances'}
+  <h1 class="text-2xl font-semibold md:text-5xl md:font-black">
+    Meetups You're Attending
+  </h1>
   <ItemList {...attendancesProps} />
   {#if showEventForm}
     <Modal on:close={toggleEventForm}>
