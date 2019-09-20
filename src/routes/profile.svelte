@@ -153,6 +153,9 @@
   {/if}
 {:else}
   <div class="bg-white rounded shadow-xl p-8">
-    <UserForm {initial} on:submit={editUser} />
+    <UserForm
+      {initial}
+      on:submit={editUser}
+      on:cancel={() => (currentTab = 'statistics')} />
   </div>
 {/if}
