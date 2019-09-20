@@ -74,8 +74,8 @@
 
 <Sidebar>
   <div class="flex flex-col items-center">
-    <img src={user.picture} alt={user.name} class="w-24 h-24 rounded-full" />
-    <h4 class="text-2xl font-semibold my-6">{user.name}</h4>
+    <img src={user.picture || 'default.png'} alt={user.name} class="w-24 h-24 rounded-full" />
+    <h4 class="text-2xl font-semibold my-6 text-center">{user.name}</h4>
   </div>
   {#each Object.entries(tabs) as [tab, { icon, label, qty }]}
     <label for={tab} data-cy="{tab}-tab" class:current={currentTab === tab}>

@@ -3,13 +3,13 @@
   import { profileData } from '/api/db/helpers'
   export async function preload({ query: { tab } }, { user }) {
     if (!user) return this.redirect(302, 'login?redir=/profile')
-    const { id, email, token } = user
+    const { id, email, token, email_verified } = user
     const {
       games,
       users: [{ attendances, events, ...u }],
     } = await execute({ query: profileData(id), token }, this.fetch)
     return {
-      user: { id, email, token, ...u },
+      user: { id, email, token, email_verified, ...u },
       games,
       events: events.concat(
         attendances.map(a => a.event).filter(e => e.organizer_id !== id)
@@ -47,7 +47,7 @@
     component: EventCard,
     types: { singular: 'Meetup', plural: 'Meetups' },
     placeholder: "Search all the meetups you've attended",
-    add: toggleEventForm,
+    add: user.email_verified ? toggleEventForm : null,
     click: ({ id }) => `events/${id}`,
     options: { keys: ['name'] },
     items: events,
@@ -106,7 +106,7 @@
 <Sidebar>
   <div class="flex flex-col items-center">
     <img src={user.picture} alt={user.name} class="w-24 h-24 rounded-full" />
-    <h4 class="text-2xl font-semibold my-6">{user.name}</h4>
+    <h4 class="text-2xl font-semibold my-6 text-center">{user.name}</h4>
   </div>
   {#each Object.entries(tabs) as [tab, { icon, label, qty }]}
     <label for={tab} data-cy="{tab}-tab" class:current={currentTab === tab}>
