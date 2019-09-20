@@ -78,7 +78,7 @@
           <span class="text-xs {optsVisible ? '' : 'opacity-50'}">{name}</span>
         {:else}
           <div class="w-6 h-6 rounded-full bg-gray-200" />
-          <span class="text-xs">loading...</span>
+          <span class="text-xs opacity-50">loading...</span>
         {/if}
         <div class="{optsVisible ? '' : 'hidden '}options">
           <a href="profile" rel="prefetch" class="hover:underline">Profile</a>
