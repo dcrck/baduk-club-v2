@@ -194,12 +194,13 @@
       execute({
         token: user.token,
         query: merge([
+          { type: 'delete', root: 'invites', filters: thisEvent('event_id') },
+          { type: 'delete', root: 'games', filters: thisEvent('event_id') },
           {
             type: 'delete',
             root: 'attendances',
             filters: thisEvent('event_id'),
           },
-          { type: 'delete', root: 'games', filters: thisEvent('event_id') },
           { type: 'delete', root: 'events', filters: thisEvent('id') },
         ]),
       }).then(() => {
