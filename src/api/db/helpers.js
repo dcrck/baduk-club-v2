@@ -11,7 +11,7 @@ export const newAttendance = (user_id, event_id) =>
     },
     fields: {
       _: ['email', 'confirmed', 'id'],
-      user: ['id', 'name', 'rank'],
+      user: ['id', 'name', 'rank', 'picture'],
     },
   })
 
