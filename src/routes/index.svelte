@@ -154,7 +154,7 @@
       <h1 class="font-semibold" style="font-size: 4.5rem" data-cy="user-count">
         {Math.round($activity.users)}
       </h1>
-      <p class="text-xl">Users</p>
+      <p class="text-xl">Go Players</p>
     </div>
   </div>
 
