@@ -127,13 +127,25 @@
     <title>Where to Play Go in {code} | BadukClub</title>
     <meta name="keywords" content="go,baduk,meetup,event,weiqi,map,{code}" />
     <meta
+      property="og:title"
+      content="Where to Play Go in {code} | BadukClub" />
+    <meta
       name="description"
+      content="Never again wonder where to play Go in {code}! Search the
+      definitive map of Go meetups that always stays up-to-date." />
+    <meta
+      property="og:description"
       content="Never again wonder where to play Go in {code}! Search the
       definitive map of Go meetups that always stays up-to-date." />
   {:else}
     <title>Where to Play Go | BadukClub</title>
+    <meta property="og:title" content="Where to Play Go | BadukClub" />
     <meta
       name="description"
+      content="Never again wonder where to play Go! Search the definitive map of
+      Go meetups that always stays up-to-date." />
+    <meta
+      property="og:description"
       content="Never again wonder where to play Go! Search the definitive map of
       Go meetups that always stays up-to-date." />
   {/if}

@@ -105,6 +105,9 @@
 
 <svelte:head>
   <title>{user ? 'Directory | BadukClub' : 'Welcome to BadukClub'}</title>
+  <meta
+    property="og:title"
+    content={user ? 'Directory | BadukClub' : 'Welcome to BadukClub'} />
 </svelte:head>
 
 {#if user}

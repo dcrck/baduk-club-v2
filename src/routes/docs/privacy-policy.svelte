@@ -48,6 +48,7 @@
 
 <svelte:head>
   <title>Privacy Policy | BadukClub</title>
+  <meta property="og:title" content="Privacy Policy | BadukClub" />
 </svelte:head>
 
 <Sidebar>

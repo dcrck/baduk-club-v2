@@ -70,6 +70,7 @@
 
 <svelte:head>
   <title>{user.name} | BadukClub</title>
+  <meta property="og:title" content="{user.name} | BadukClub" />
 </svelte:head>
 
 <Sidebar>

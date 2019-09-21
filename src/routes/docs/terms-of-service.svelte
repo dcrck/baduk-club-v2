@@ -59,6 +59,7 @@
 
 <svelte:head>
   <title>Terms of Service | BadukClub</title>
+  <meta property="og:title" content="Terms of Service | BadukClub" />
 </svelte:head>
 
 <Sidebar>
