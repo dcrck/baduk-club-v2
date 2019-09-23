@@ -8,6 +8,9 @@
   let { user, picture, name } = $session ? $session : {}
   let optsVisible = false
 
+  $: first = name ? name.split(' ')[0] : ''
+  $: displayName = first.length > 14 ? first.slice(0, 14) + '...' : first
+
   const toggleProfileOpts = () => (optsVisible ^= true)
   // load user picture and name if they're not already 'seeded' in the session,
   // then store them in the session for future use
@@ -44,7 +47,7 @@
 
 <style>
   .options {
-    @apply absolute bg-white border-gray-400 rounded-sm p-2 border;
+    @apply absolute bg-white border-gray-400 rounded-sm p-2 border flex-col;
     top: 32px;
     right: 0;
   }
@@ -75,12 +78,14 @@
         class="relative flex flex-col items-center cursor-pointer profile">
         {#if picture}
           <img src={picture} alt={name} class="w-6 h-auto rounded-full" />
-          <span class="text-xs {optsVisible ? '' : 'opacity-50'}">{name}</span>
+          <span class="text-xs text-center" class:opacity-50={!optsVisible}>
+            {displayName}
+          </span>
         {:else}
           <div class="w-6 h-6 rounded-full bg-gray-200" />
           <span class="text-xs opacity-50">loading...</span>
         {/if}
-        <div class="{optsVisible ? '' : 'hidden '}options">
+        <div class="options flex" class:hidden={!optsVisible}>
           <a href="profile" rel="prefetch" class="hover:underline">Profile</a>
           <a href="profile?tab=settings" rel="prefetch" class="hover:underline">
             Settings
