@@ -1,5 +1,6 @@
 <script>
   export let small = false
+  import DcrckLogo from '/components/layout/dcrck'
 </script>
 
 <style>
@@ -22,7 +23,8 @@
 
 <hr class="mb-4" />
 <div
-  class="flex text-sm mb-12 flex-row justify-center items-center text-gray-500"
+  class="flex flex-wrap text-sm mb-12 flex-row justify-center items-center
+  text-gray-500"
   class:flex-col={small}>
   <p class="text-center">Copyright 2019 BadukClub.</p>
   <p class="text-center" class:-mt-2={small}>All rights reserved.</p>
@@ -36,14 +38,19 @@
     href="mailto:support@baduk.club"
     target="_blank"
     class="underline hover:text-gray-800">
-    Support
+    Need Help?
   </a>
-  <a href="https://ko-fi.com/F1F313PRT" target="_blank">
-    <img
-      height="36"
-      style="border:0px;height:36px;"
-      src="https://az743702.vo.msecnd.net/cdn/kofi5.png?v=2"
-      border="0"
-      alt="Buy Me a Coffee at ko-fi.com" />
+  <a
+    href="https://dcrck.cc"
+    target="_blank"
+    style="transition: .2s"
+    class="flex items-center font-semibold px-2 py-1 border-2 rounded-sm
+    text-gray-800 border-gray-800 opacity-50 hover:opacity-100 mt-2 xl:mt-0">
+    Made with
+    <span class="font-mono mx-1 text-xl">&#10084;</span>
+    by
+    <span class="ml-1">
+      <DcrckLogo />
+    </span>
   </a>
 </div>
