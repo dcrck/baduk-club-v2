@@ -1,6 +1,6 @@
 <script context="module">
   import { merge, select, execute, create, del, update } from '/api/db/index'
-  export async function preload({ params: { id } }, { user }) {
+  export async function preload({ path, params: { id } }, { user }) {
     const gql = q =>
       execute({ query: q, token: user ? user.token : '' }, this.fetch)
 
@@ -78,6 +78,7 @@
         : [],
       attendances,
       delayedActions: loadOrganizerDetails,
+      path,
     }
   }
 </script>
@@ -94,6 +95,7 @@
   import Modal from '/components/Modal'
   import { onMount, getContext } from 'svelte'
   import { toastKey } from '/utils/index'
+  import setupGraphs, { graph } from '/utils/simple-analytics'
   import initialize, { send, buttonConfig } from './_attendance'
   import { goto } from '@sapper/app'
   import nanoid from 'nanoid'
@@ -103,7 +105,8 @@
     canCheckIn,
     isOrganizer,
     userIsOrganizer,
-    delayedActions
+    delayedActions,
+    path
   export let attendances = []
   export let games = []
 
@@ -124,7 +127,11 @@
       : {}
   )
 
-  onMount(async () => (orgEmail = await delayedActions()))
+  onMount(async () => {
+    const dismount = setupGraphs()
+    orgEmail = await delayedActions()
+    return dismount
+  })
 
   async function loadInviteCode(attending) {
     if (!attending) return Promise.resolve('')
@@ -434,7 +441,7 @@
     {/each}
   {:else}
     <a
-      href="login?redir=/events/{evt.id}"
+      href="login?redir={path}"
       class="block w-full p-8 border-t-2 border-b-2 border-gray-800">
       Log in
     </a>
@@ -447,12 +454,12 @@
       {#if !editing}
         <EventCard {...evt} expanded />
         {#if userIsOrganizer}
-          <div class="absolute right-0 top-0 p-6 flex">
+          <div class="absolute right-0 top-0 p-2 md:p-6 flex md:flex-col">
             <button
               on:click={toggleEdit}
               data-cy="edit-button"
-              class="pr-4 opacity-75 hover:opacity-100 flex flex-col
-              items-center">
+              class="pr-4 md:pr-0 md:pb-4 opacity-75 hover:opacity-100 flex
+              flex-col items-center">
               <Icon id="edit-2" />
               <span class="text-xs">edit</span>
             </button>
@@ -463,6 +470,34 @@
               <Icon id="trash-2" />
               <span class="text-xs">delete</span>
             </button>
+          </div>
+          <div class="my-6">
+            <h1 class="text-3xl font-semibold md:text-5xl md:font-black">
+              Statistics
+            </h1>
+            <div class="rounded-lg bg-white shadow-xl p-4">
+              <p class="text-xl md:text-2xl py-2 mb-4">
+                Your meetup's page has
+                <span id="pageviews" class="font-mono">...</span>
+                views in the last month.
+              </p>
+              <div
+                use:graph={{ path, params: { color: '718096' } }}
+                data-sa-page-views-selector="#pageviews">
+                <p class="text-2xl font-semibold mb-4">Loading...</p>
+                <p class="bg-yellow-100 py-3 px-4 italic font-medium">
+                  If the graph doesn't load after a few seconds, please try
+                  disabling your ad blocker, and
+                  <a
+                    href="mailto:support@baduk.club"
+                    _target="blank"
+                    class="text-blue-500 hover:underline">
+                    let us know
+                  </a>
+                  if you still don't see the graph.
+                </p>
+              </div>
+            </div>
           </div>
         {/if}
       {:else}
