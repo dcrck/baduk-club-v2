@@ -18,16 +18,24 @@
   .event-card.border {
     @apply shadow-none border border-gray-400;
   }
-  h2.expanded {
-    @apply text-5xl font-medium;
-  }
   h4.expanded {
     @apply text-2xl font-semibold;
+  }
+  h2 {
+    @apply text-3xl font-semibold;
+  }
+  @media screen and (min-width: 1024px) {
+    h2.expanded {
+      @apply text-5xl font-medium;
+    }
   }
 </style>
 
 <div data-cy="event-card" class="event-card" class:border>
-  <h2 data-cy="event-card-name" class="text-3xl font-semibold" class:expanded>
+  <h2
+    data-cy="event-card-name"
+    class="w-3/4 md:w-10/12 lg:w-11/12"
+    class:expanded>
     {name}
   </h2>
   {#if showTime}
