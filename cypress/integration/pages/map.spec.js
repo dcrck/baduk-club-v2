@@ -54,8 +54,16 @@ describe('Map page', () => {
 
   it('shows add meetup button on log in', () => {
     cy.request('login?test=1').then(() => cy.visit('map'))
-    cy.wait(5000)
+    cy.wait(10000)
       .get('[data-cy="add-meetup-button"]')
+      .should('exist')
+      .click()
+  })
+
+  it('shows "add yourself" button on log in', () => {
+    cy.request('login?test=1').then(() => cy.visit('map'))
+    cy.wait(10000)
+      .get('[data-cy="add-user-location-button"]')
       .should('exist')
       .click()
   })

@@ -60,7 +60,10 @@ export default app => {
     })
     if (!dev || !test) auth(req, res, next)
     else {
-      generateJWTCookie(res, { id: process.env.DEFAULT_USER_ID })
+      generateJWTCookie(res, {
+        id: process.env.DEFAULT_USER_ID,
+        email_verified: true,
+      })
       return res.redirect('/')
     }
   })

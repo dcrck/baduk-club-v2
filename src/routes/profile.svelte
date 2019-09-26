@@ -24,6 +24,7 @@
   import GameCard from '/components/item/GameCard'
   import ItemList from '/components/item/List'
   import UserForm from '/components/forms/User'
+  import UserLocationForm from '/components/forms/UserLocation'
   import NewEventForm from '/components/forms/NewEvent'
   import Sidebar from '/components/layout/Sidebar'
   import Icon from '/components/Icon'
@@ -72,6 +73,11 @@
     rank: user.rank,
   }
 
+  let initialLocation = {
+    location: { geolocation: user.geolocation, address: user.address },
+    show_location: user.show_location,
+  }
+
   function editUser({ detail: { data } }) {
     execute({
       token: user.token,
@@ -83,6 +89,27 @@
       user = { ...user, ...data }
       initial = { ...initial, ...data }
       ping({ message: 'Profile updated successfully', type: 'success' })
+    })
+  }
+
+  function editUserLocation({ detail: { data } }) {
+    execute({
+      query: update('users', {
+        filters: { where: { id: { _eq: user.id } } },
+        values: { ...data, last_updated: 'now()' },
+        fields: ['geolocation', 'address', 'show_location'],
+      }),
+      token: user.token,
+    }).then(({ update_users: { returning: [u] } }) => {
+      user = { ...user, ...u }
+      initialLocation = {
+        location: { geolocation: u.geolocation, address: u.address },
+        show_location: u.show_location,
+      }
+      ping({
+        message: 'Personal location updated successfully',
+        type: 'success',
+      })
     })
   }
 </script>
@@ -152,10 +179,13 @@
     </Modal>
   {/if}
 {:else}
-  <div class="bg-white rounded shadow-xl p-8">
+  <div class="bg-white rounded shadow-xl p-4">
     <UserForm
       {initial}
       on:submit={editUser}
       on:cancel={() => (currentTab = 'statistics')} />
+  </div>
+  <div class="bg-white rounded shadow-xl p-4 mt-8">
+    <UserLocationForm initial={initialLocation} on:submit={editUserLocation} />
   </div>
 {/if}

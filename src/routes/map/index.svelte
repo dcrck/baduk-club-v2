@@ -1,19 +1,59 @@
 <script context="module">
-  import { select, execute } from '/api/db/index'
+  import { merge, select, execute, update } from '/api/db/index'
 
   export async function preload({ query: { bounds, code } }, { user }) {
-    const eventQuery = select('events', {
-      fields: [
-        'address',
-        'description',
-        'geolocation',
-        'id',
-        'name',
-        'times',
-        'last_updated',
-      ],
-    })
-    const { events } = await execute({ query: eventQuery }, this.fetch)
+    const eventQuery = merge([
+      {
+        root: 'events',
+        fields: [
+          'address',
+          'description',
+          'geolocation',
+          'id',
+          'name',
+          'times',
+          'last_updated',
+        ],
+      },
+      {
+        root: 'users',
+        filters: { where: { show_location: { _eq: true } } },
+        fields: [
+          'id',
+          'name',
+          'geolocation',
+          'show_location',
+          'last_updated',
+          'name',
+          'rank',
+          'picture',
+        ],
+      },
+    ])
+
+    const gql = q => execute({ query: q }, this.fetch)
+
+    let { events, users } = await gql(eventQuery)
+    if (user) {
+      const currentUserQuery = select('users', {
+        filters: { where: { id: { _eq: user.id } } },
+        fields: [
+          'id',
+          'name',
+          'address',
+          'geolocation',
+          'show_location',
+          'last_updated',
+          'name',
+          'rank',
+          'picture',
+        ],
+      })
+      let {
+        users: [current],
+      } = await gql(currentUserQuery)
+      users = [...users.filter(u => u.id !== user.id), current]
+    }
     const parse = x => (typeof x === 'string' ? JSON.parse(x) : x)
     const checkBounds = ([w, s, e, n]) =>
       checkLon(w) && checkLat(s) && checkLon(e) && checkLat(n) && s < n && w < e
@@ -26,11 +66,20 @@
 
     return {
       user,
-      events: events.map(({ geolocation, times, ...e }) => ({
-        geolocation: parse(geolocation),
-        times: parse(times),
-        ...e,
-      })),
+      markers: events
+        .map(({ geolocation, times, ...e }) => ({
+          geolocation: parse(geolocation),
+          times: parse(times),
+          ...e,
+          type: 'event',
+        }))
+        .concat(
+          users.map(({ geolocation, ...u }) => ({
+            geolocation: parse(geolocation),
+            ...u,
+            type: 'user',
+          }))
+        ),
       bounds,
       code,
     }
@@ -43,11 +92,15 @@
   import Icon from '/components/Icon'
   import Modal from '/components/Modal'
   import NewEventForm from '/components/forms/NewEvent'
+  import UserLocationForm from '/components/forms/UserLocation'
   import EventCard from '/components/item/EventCard'
+  import UserCard from '/components/item/UserCard'
   import Sidebar from '/components/layout/Sidebar'
   import { fly } from 'svelte/transition'
+  import { toastKey } from '/utils/index'
+  import { getContext } from 'svelte'
 
-  export let events = [],
+  export let markers = [],
     user = {},
     bounds,
     code
@@ -58,16 +111,74 @@
         center: [-84, 35],
         zoom: 3.5,
       }
-  let selected
-  function toggle(id) {
+  let selected, selectedEmail, selectedType
+
+  const { ping } = getContext(toastKey)
+
+  const fetchUserEmail = id =>
+    execute({
+      query: select('auth0', { filters: { id }, fields: 'email' }),
+    }).then(({ auth0 }) => auth0.email)
+
+  function getCurrentUserLocation(user) {
+    if (!user.id) return null
+    const u = markers.find(u => u.id === user.id)
+    if (!u)
+      return {
+        location: { address: '', geolocation: null },
+        show_location: false,
+      }
+    const { geolocation, address, show_location } = u
+    return { location: { geolocation, address }, show_location }
+  }
+
+  function editUserLocation({ detail: { data } }) {
+    execute({
+      query: update('users', {
+        filters: { where: { id: { _eq: user.id } } },
+        values: { ...data, last_updated: 'now()' },
+        fields: [
+          'id',
+          'name',
+          'address',
+          'geolocation',
+          'last_updated',
+          'name',
+          'rank',
+          'picture',
+          'show_location',
+        ],
+      }),
+      token: user.token,
+    }).then(({ update_users: { returning: [u] } }) => {
+      toggleLocationForm()
+      if (selected && u.id === selected.id) toggle(u.id)
+      markers = [
+        ...markers.filter(m => m.id !== user.id),
+        { ...u, type: 'user' },
+      ]
+      ping({
+        message: 'Personal location updated successfully',
+        type: 'success',
+      })
+    })
+  }
+
+  async function toggle(id) {
     if (selected)
       document.getElementById(selected.id).classList.toggle('selected')
     if ((selected && selected.id !== id) || !selected)
       document.getElementById(id).classList.toggle('selected')
-    selected =
+    let { type, ...rest } =
       selected && selected.id === id
-        ? undefined
-        : events.find(ev => ev.id === id)
+        ? { type: '' }
+        : markers.find(m => m.id === id)
+
+    selected = Object.keys(rest).length ? rest : null
+    selectedType = type
+
+    selectedEmail =
+      type === 'user' && selected ? await fetchUserEmail(selected.id) : null
   }
 
   function hide(e) {
@@ -76,9 +187,11 @@
   }
 
   const toggleEventForm = () => (showNewEventForm ^= true)
+  const toggleLocationForm = () => (showUserLocationForm ^= true)
 
   let showSidebar = false
   let showNewEventForm = false
+  let showUserLocationForm = false
 </script>
 
 <style>
@@ -156,22 +269,36 @@
     <Sidebar>
       <div class="text-center">
         <p>There are</p>
-        <p class="font-semibold text-lg">{events.length} Meetups</p>
+        <p class="font-semibold text-lg">
+          {markers.filter(m => m.type === 'event').length} Meetups
+        </p>
+        <p>and</p>
+        <p class="font-semibold text-lg">
+          {markers.filter(m => m.show_location).length} Go Players
+        </p>
         <p>on the map</p>
       </div>
-      <div class="my-8">
+      <div class="my-4">
         {#if user}
           {#if user.email_verified}
             <button
               data-cy="add-meetup-button"
               class="bg-gray-700 rounded py-3 px-5 hover:bg-gray-800 flex
-              mx-auto click"
+              mx-auto click my-4"
               on:click={toggleEventForm}>
               <Icon id="map-pin" color="white" />
               <span class="ml-2 text-white font-medium">Add Meetup</span>
             </button>
+            <button
+              data-cy="add-user-location-button"
+              class="bg-white rounded py-3 px-5 hover:bg-gray-200 flex mx-auto
+              click border-2 border-gray-700 my-4"
+              on:click={toggleLocationForm}>
+              <Icon id="user-plus" />
+              <span class="ml-2 font-medium">Add Yourself</span>
+            </button>
           {:else}
-            <div class="py-3 px-3 text-center">
+            <div class="py-3 px-3 text-center bg-gray-300">
               Please verify your email address to create meetups
             </div>
           {/if}
@@ -191,10 +318,11 @@
 
 <div class="fixed w-screen left-0 map">
   <Map {options} on:ready={() => (showSidebar = true)}>
-    {#each events as { geolocation, name, id }}
+    {#each markers.filter(m => m.show_location || m.type === 'event') as { geolocation, name, id, type }}
       <Marker
         location={geolocation}
         label={name}
+        color={type === 'event' ? '#262621' : 'white'}
         {id}
         on:click={() => toggle(id)} />
     {/each}
@@ -202,20 +330,35 @@
 </div>
 {#if selected}
   <a
-    href="events/{selected.id}"
+    href={selectedType === 'event' ? `events/${selected.id}` : `users/${selected.id}`}
     rel="prefetch"
     class="fixed z-30 md:w-1/2 hover:shadow-2xl popup"
     transition:fly={{ y: 200, duration: 500 }}>
-    <EventCard {...selected} showTime={true} />
+    {#if selectedType === 'event'}
+      <EventCard {...selected} showTime={true} />
+    {:else}
+      <UserCard {...selected} email={selectedEmail} />
+    {/if}
     <button
-      class="absolute right-0 top-0 p-4 opacity-50 hover:opacity-100"
+      class="absolute right-0 top-0 p-2 opacity-50 hover:opacity-100"
       on:click={hide}>
-      <Icon id="x" size="32" />
+      <Icon id="x" />
     </button>
   </a>
 {/if}
 {#if showNewEventForm}
   <Modal on:close={toggleEventForm}>
     <NewEventForm on:cancel={toggleEventForm} />
+  </Modal>
+{/if}
+{#if showUserLocationForm}
+  <Modal on:close={toggleLocationForm}>
+    <p class="text-xl font-medium mb-4">
+      No club near you? Open to games outside of a meetup?
+    </p>
+    <UserLocationForm
+      initial={getCurrentUserLocation(user)}
+      on:submit={editUserLocation}
+      on:cancel={toggleLocationForm} />
   </Modal>
 {/if}

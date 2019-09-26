@@ -1,38 +1,29 @@
 <script>
   import LocationSearch from '/components/input/LocationSearch'
-  import Validation from '/components/input/Validation'
-  import check, { initialize } from '/components/input/validate'
   import { createEventDispatcher } from 'svelte'
 
   export let initial = {
     location: { address: '', geolocation: null },
-    bio: '',
+    show_location: false,
   }
-  let current, state
+
+  export let resetOnSubmit = false
+  let current
   let refresh = false
 
   const dispatch = createEventDispatcher()
-  const error = v =>
-    !v ? 'Please enter a description for your meeting place' : ''
 
-  reset()
+  $: reset(initial)
 
   function reset() {
     current = JSON.parse(JSON.stringify(initial))
-    state = initialize(current.bio, error)
     refresh ^= true
   }
-
-  const validate = (n, first = false) =>
-    (state = check(first || state.status !== 'initial', error, n) || state)
-
-  $: validate(current.bio)
 
   $: disabled = !(
     current &&
     JSON.stringify(current) !== JSON.stringify(initial) &&
-    current.bio &&
-    current.location.geolocation
+    (!current.show_location || current.location.geolocation)
   )
 
   const onSelect = ({ detail }) => (current.location = { ...detail })
@@ -40,9 +31,30 @@
   const clearLocation = () =>
     (current.location = { address: '', geolocation: null })
 
+  const helpText = {
+    true:
+      'You can remove yourself from the map at any time from your profile settings',
+    false:
+      'By checking this, I understand the risks with sharing my approximate location publicly',
+  }
+
+  const fix = x =>
+    typeof x === 'string' ? parseFloat(x).toFixed(2) : x.toFixed(2)
+  const truncate = ({ lat, lng }) => ({ lat: fix(lat), lng: fix(lng) })
+
   function submit() {
-    dispatch('submit', { data: current })
-    reset()
+    const {
+      location: { geolocation, address },
+      show_location,
+    } = current
+    dispatch('submit', {
+      data: {
+        geolocation: geolocation ? truncate(geolocation) : null,
+        address,
+        show_location,
+      },
+    })
+    if (resetOnSubmit) reset()
   }
   function cancel() {
     dispatch('cancel')
@@ -50,6 +62,46 @@
   }
 </script>
 
+<style>
+  input + div {
+    @apply bg-gray-500 absolute inset-0 cursor-pointer rounded-full;
+    transition: 0.4s;
+  }
+  input + div:before {
+    @apply absolute rounded-full bg-white;
+    content: '';
+    top: 0.125rem;
+    left: 0.125rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    transition: 0.4s;
+    transform: translateX(0);
+  }
+  input:checked + div {
+    @apply bg-blue-500;
+  }
+  input:checked + div:before {
+    transform: translateX(2rem);
+  }
+</style>
+
+<div class="mb-4">
+  <p class="mb-2">Show my approximate location and contact info publicly:</p>
+  <div class="flex items-center justify-between mb-1">
+    <span>{current.show_location ? 'Yes' : 'No'}</span>
+    <label for="show-location" class="inline-block relative w-16 h-8">
+      <input
+        type="checkbox"
+        bind:checked={current.show_location}
+        id="show-location"
+        class="hidden" />
+      <div />
+    </label>
+  </div>
+  <p class="text-xs italic" class:font-semibold={!current.show_location}>
+    {helpText[current.show_location]}
+  </p>
+</div>
 <label for="address" class="form-label">
   Address
   <LocationSearch
@@ -60,18 +112,9 @@
     {refresh}
     placeholder="Where are you meeting? (start typing!)" />
 </label>
-<label class="my-4 inline-block w-full" for="description">
-  Description
-  <Validation {...state}>
-    <textarea
-      bind:value={current.bio}
-      id="description"
-      class="border-gray-400 w-full border focus:border-gray-800 rounded py-2
-      px-3"
-      placeholder="How can people set up a time to play Go with you?"
-      on:blur={() => validate(current.bio, true)} />
-  </Validation>
-</label>
+<p class="text-xs italic my-4">
+  We only use your approximate location on the map, never your specific address
+</p>
 <div class="flex items-center justify-between">
   <button
     data-cy="cancel-user-location"

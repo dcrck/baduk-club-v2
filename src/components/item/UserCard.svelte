@@ -4,17 +4,18 @@
   export let name, rank, id
   export let attendance = {}
   export let last_updated = ''
-  export let bio = ''
-  export let picture = ''
-  export let geolocation = {}
   export let address = ''
+  export let picture = ''
+  export let geolocation = null
+  export let show_location = false
   export let isOrganizer = false
   export let border = false
+  export let email = ''
 
   let icons = { confirmed: 'check', paid: 'dollar-sign', checked_in: 'map-pin' }
 
   $: _picture = picture ? picture : 'default.png'
-  $: parsed = parse({ address, last_updated })
+  $: parsed = parse({ last_updated })
 </script>
 
 <style>
@@ -29,7 +30,11 @@
   }
 </style>
 
-<div data-cy="user-card" class:border class:address class="user-card">
+<div
+  data-cy="user-card"
+  class:border
+  class:address={!!geolocation}
+  class="user-card">
   <div class="flex">
     <img
       src={_picture}
@@ -46,14 +51,13 @@
           Organizer
         </span>
       {/if}
-      {#if address}
-        <h4 data-cy="user-card-address" class="text-lg font-medium mt-4">
-          {parsed.address.main}
-        </h4>
-        <p data-cy="user-card-address">{parsed.address.rest}</p>
-      {/if}
-      {#if bio}
-        <p class="mt-4" data-cy="user-card-bio">{bio}</p>
+      {#if geolocation}
+        <a
+          href="mailto:{email}"
+          target="_blank"
+          class="text-blue-500 hover:underline">
+          Contact
+        </a>
       {/if}
       {#if attendance}
         <div class="flex">

@@ -7,7 +7,10 @@
       games,
       users: [{ attendances, events, ...u }],
     } = await execute(
-      { query: profileData(id), token: user ? user.token : null },
+      {
+        query: profileData(id, !!user, false),
+        token: user ? user.token : null,
+      },
       this.fetch
     )
     return {
@@ -48,11 +51,13 @@
     types: { singular: 'Games', plural: 'Games' },
     placeholder: `Search all games ${user.name} has played by opponent name...`,
     options: { keys: ['black.name', 'white.name'] },
-    items: games.map(({ black_player, white_player, ...g }) => ({
-      black: black_player,
-      white: white_player,
-      ...g,
-    })),
+    items: games
+      ? games.map(({ black_player, white_player, ...g }) => ({
+          black: black_player,
+          white: white_player,
+          ...g,
+        }))
+      : [],
   }
 </script>
 
@@ -115,7 +120,17 @@
   <h1 class="text-3xl font-semibold md:text-5xl md:font-black">
     {user.name}'s Games
   </h1>
-  <ItemList {...gamesProps} />
+  {#if games}
+    <ItemList {...gamesProps} />
+  {:else}
+    <p class="bg-gray-400 px-5 py-4 my-4 text-center">
+      Please
+      <a href="login?redir={user.id}" class="text-blue-500 hover:underline">
+        login
+      </a>
+      to see {user.name}'s games.
+    </p>
+  {/if}
 {:else}
   <h1 class="text-2xl font-semibold md:text-5xl md:font-black">
     {user.name}'s Attended Meetups

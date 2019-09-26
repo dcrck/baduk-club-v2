@@ -3,6 +3,7 @@
   import Icon from '/components/Icon'
 
   export let location, label, id
+  export let color = '#262621'
   export let size = 20
 </script>
 
@@ -17,9 +18,8 @@
     @apply z-10;
   }
   .marker > div {
-    @apply absolute w-full h-full top-0 left-0;
+    @apply absolute w-full h-full top-0 left-0 rounded-full;
     z-index: -1;
-    border-radius: 50%;
     transition: box-shadow 0.2s ease;
     box-shadow: none;
   }
@@ -37,6 +37,6 @@
   title={label}
   {id}
   on:click>
-  <Icon id="circle" fill="#262621" color="#cbd5e0" />
+  <Icon id="circle" fill={color} color="#cbd5e0" />
   <div />
 </button>

@@ -8,4 +8,4 @@ yarn-error.log
 static/global.css
 /test/
 cypress.env.json
-/cypress/integration/__image_snapshots__/
+/cypress/integration/pages/__image_snapshots__/
