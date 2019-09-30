@@ -192,6 +192,11 @@
       <li>Track your casual and tournament games</li>
       <Icon id="circle" fill="white" />
       <li>Invite friends to join you at the event</li>
+      <Icon id="circle" fill="#262621" />
+      <li>
+        No club near you?
+        <em>Add yourself to the map!</em>
+      </li>
     </ul>
     <div class="py-10">
       <a href="login?redir=/map" class="button w-full md:w-1/2 lg:w-1/3">
