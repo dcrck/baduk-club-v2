@@ -60,8 +60,8 @@
     items: events,
     add: user && user.email_verified ? toggleEventForm : null,
     click: ({ id }) => `events/${id}`,
-    options: { keys: ['name'] },
-    placeholder: 'Search all public meetups...',
+    options: { keys: ['name', 'address'] },
+    placeholder: 'Search all public meetups by name or location',
     itemProps: {
       border: true,
       showTime: true,
@@ -74,7 +74,7 @@
     items: users,
     click: ({ id }) => `users/${id}`,
     options: { keys: ['name'] },
-    placeholder: 'Search all players by name...',
+    placeholder: 'Search all players by name',
     itemProps: {
       border: true,
     },

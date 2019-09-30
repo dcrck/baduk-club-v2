@@ -1,6 +1,7 @@
 <script>
   import Icon from '/components/Icon'
   import parse from './parsing'
+  import { fade } from 'svelte/transition'
   export let name, rank, id
   export let attendance = {}
   export let last_updated = ''
@@ -51,10 +52,13 @@
           Organizer
         </span>
       {/if}
-      {#if geolocation}
+      {#if geolocation && !email}
+        <span class="text-blue-500">...</span>
+      {:else if geolocation}
         <a
           href="mailto:{email}"
           target="_blank"
+          in:fade={{ duration: 200 }}
           class="text-blue-500 hover:underline">
           Contact
         </a>

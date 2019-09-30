@@ -23,7 +23,7 @@
 
   let sidebar, nav, toasts
   function setLayout({ path }) {
-    sidebar = ['/events/new', '/'].indexOf(path) === -1
+    sidebar = ['/events/new', '/', '/about'].indexOf(path) === -1
     background = sidebar && segment !== 'docs' ? 'gray-200' : 'white'
     nav = ['/events/new'].indexOf(path) === -1
   }

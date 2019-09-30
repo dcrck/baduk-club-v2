@@ -69,7 +69,7 @@
       rel="prefetch"
       class="flex flex-col items-center opacity-50 hover:opacity-100">
       <Icon id="map" />
-      <span class="text-xs" style="margin-top: -2px">Explore</span>
+      <span class="text-xs" style="margin-top: -2px">Map</span>
     </a>
     {#if user}
       <div

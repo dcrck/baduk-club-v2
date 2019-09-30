@@ -34,6 +34,7 @@
   <a href="docs/privacy-policy" class="underline hover:text-gray-800">
     Privacy Policy
   </a>
+  <a href="/about" class="underline hover:text-gray-800">About Us</a>
   <a
     href="mailto:support@baduk.club"
     target="_blank"

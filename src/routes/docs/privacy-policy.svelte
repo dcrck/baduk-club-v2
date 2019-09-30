@@ -61,9 +61,52 @@
   </ol>
 </Sidebar>
 <h1 class="text-5xl font-black my-2">Privacy Policy</h1>
-<span class="text-gray-500 mb-6">Last Updated: July 25th, 2019</span>
+<span class="text-gray-500 mb-6">Last Updated: October 1st, 2019</span>
+<p>
+  We believe that privacy is a human right and that you own your data. To that
+  end, our site does not collect more information than we need to provide the
+  services we offer.
+</p>
+
+<p>
+  One tool we are really proud to use is
+  <a
+    href="https://simpleanalytics.com/?ref=baduk.club"
+    target="_blank"
+    rel="noopener">
+    SimpleAnalytics.
+  </a>
+  It allows us to gain insights into how our site is being used while being able
+  to fully respect our users privacy. It also allows us to share those insights
+  with clubs to empower organizing efforts.
+</p>
+
+<p>
+  However, unlike questionable “free” solutions, SimpleAnalytics costs money.
+  So, if you also have a website and are looking for an ethical and beautiful
+  analytics solution, please consider using
+  <a
+    href="https://referral.simpleanalytics.com/devin-fraze"
+    target="_blank"
+    rel="noopener">
+    this referral link
+  </a>
+  to sign up and we’ll both receive one month free!
+</p>
 <section id="what-we-collect">
   <h2>Which Information We Collect</h2>
+  <p>
+    <em>Non-Identifying Information.</em>
+    When you visit the website, our third-party analytics tool SimpleAnalytics
+    collects some non-identifying information. However, this information is not
+    tied to you in any way. You can read more about it
+    <a
+      href="https://docs.simpleanalytics.com/what-we-collect"
+      rel="noopener"
+      target="_blank">
+      from the SimpleAnalytics website.
+    </a>
+  </p>
   <p>
     <em>Personal Identification Information.</em>
     When you register for a BadukClub account, we request your email address.

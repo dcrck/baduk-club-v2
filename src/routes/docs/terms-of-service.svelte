@@ -77,8 +77,8 @@
 <p>
   All users are subject to the following terms and conditions of use. By
   accessing or using this website, you agree that you have read, understood, and
-  agree to be bound by these Terms of Use. We’ve tried to write this document as
-  plainly as possible but some legalese is unfortunately necessary.
+  agree to be bound by these Terms of Service. We’ve tried to write this
+  document as plainly as possible but some legalese is unfortunately necessary.
 </p>
 <section id="use">
   <h2>Use of this Website</h2>
@@ -284,8 +284,9 @@
     development or maintenance of this website, or the delivery of products or
     services through the website, from and against any and all liabilities,
     expenses, damages and costs, including reasonable attorney’s fees, arising
-    from any violation by you of these Terms of Use or your use of this website,
-    or of any products, services or information obtained from this website.
+    from any violation by you of these Terms of Service or your use of this
+    website, or of any products, services or information obtained from this
+    website.
   </p>
 </section>
 <section id="comments-and-submissions">
@@ -324,10 +325,10 @@
   <h2>Termination</h2>
   <p>
     The administrators of BadukClub also reserve the right to terminate access
-    to this website and refuse service to users who violate these Terms of Use
-    or who we reasonably believe are not intending to use the platform for its
-    intended purpose, and to pursue legal remedies against persistent or serious
-    offenders.
+    to this website and refuse service to users who violate these Terms of
+    Service or who we reasonably believe are not intending to use the platform
+    for its intended purpose, and to pursue legal remedies against persistent or
+    serious offenders.
   </p>
 </section>
 <section id="provisions">
@@ -347,14 +348,14 @@
     provisions shall remain in full force and effect.
   </p>
   <p>
-    BadukClub may modify these Terms of Use at any time without notice by
+    BadukClub may modify these Terms of Service at any time without notice by
     posting this amended and dated document to the website. You should check
     back periodically to see if anything has changed. Your continued use of the
-    website indicates your acceptance of the revised Terms of Use.
+    website indicates your acceptance of the revised Terms of Service.
   </p>
   <p>
-    If you have any questions, comments, or concerns about this Terms Of Use,
-    please contact us at:
+    If you have any questions, comments, or concerns about this Terms Of
+    Service, please contact us at:
     <a href="mailto:terms@baduk.club" target="_blank">terms@baduk.club</a>
   </p>
 </section>
