@@ -95,7 +95,7 @@
   import Modal from '/components/Modal'
   import { onMount, getContext } from 'svelte'
   import { toastKey } from '/utils/index'
-  import setupGraphs, { graph } from '/utils/simple-analytics'
+  import { graph, resize, message } from '/utils/simple-analytics'
   import initialize, { send, buttonConfig } from './_attendance'
   import { goto } from '@sapper/app'
   import nanoid from 'nanoid'
@@ -447,6 +447,10 @@
     </a>
   {/if}
 </Sidebar>
+
+<svelte:window
+  on:message={userIsOrganizer ? message : () => {}}
+  on:resize={userIsOrganizer ? resize : () => {}} />
 
 <div class="md:m-4 w-full">
   {#if currentTab === 'details'}
