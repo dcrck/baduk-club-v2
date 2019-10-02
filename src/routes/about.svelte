@@ -107,7 +107,7 @@
 </p>
 
 <p>
-  We're promise never to sell your personal data or fill your screen with ads.
+  We promise never to sell your personal data or fill your screen with ads.
   So if you also believe in our work, please consider supporting us in any small
   way you can. And if you have nothing to spare, that's okay; we're still here
   for you too. Thank you.
