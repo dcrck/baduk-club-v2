@@ -192,6 +192,9 @@
       bind:value={current.is_private} />
     This meetup is invite-only
   </label>
+  <p class="text-sm ml-5 mb-4 text-gray-600 italic">
+    Checking this will {initial.name ? 'remove the meetup from' : 'keep the meetup off'} the map
+  </p>
 
   <label class="mt-4 inline-block w-full flex items-center" for="organizer">
     <input
