@@ -8,6 +8,8 @@
   export let expanded = false
   export let showTime = false
 
+  $: gmapsLink = `https://maps.google.com/?q=${address}`
+
   $: parsed = parse({ times, address, last_updated })
 </script>
 
@@ -18,7 +20,7 @@
   .event-card.border {
     @apply shadow-none border border-gray-400;
   }
-  h4.expanded {
+  a.expanded {
     @apply text-2xl font-semibold;
   }
   h2 {
@@ -64,12 +66,14 @@
       </div>
     {/each}
   </div>
-  <h4
-    data-cy="event-card-address-main"
-    class="text-lg font-medium"
-    class:expanded>
+  <a href={gmapsLink}
+     target="_blank"
+     rel="noopener"
+     data-cy="event-card-address-main"
+     class="text-lg font-medium text-blue-600 hover:underline"
+     class:expanded>
     {parsed.address.main}
-  </h4>
+  </a>
   <p data-cy="event-card-address-rest" class:text-lg={expanded}>
     {parsed.address.rest}
   </p>
