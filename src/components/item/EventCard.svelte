@@ -1,5 +1,6 @@
 <script>
   import parse from './parsing'
+  import Icon from '/components/Icon'
   export let name, times, address, id
   export let geolocation = null
   export let last_updated = null
@@ -7,6 +8,7 @@
   export let border = false
   export let expanded = false
   export let showTime = false
+  export let clickable = false
 
   $: gmapsLink = `https://maps.google.com/?q=${address}`
 
@@ -83,6 +85,12 @@
       {#each description.split('\n') as d}
         <p>{d}</p>
       {/each}
+    </div>
+  {/if}
+  {#if clickable}
+    <div class="flex items-center mt-4">
+      <span class="mr-2 text-blue-600">More details</span>
+      <Icon id="chevrons-right" size="16" color="#4299e1" />
     </div>
   {/if}
 </div>

@@ -225,12 +225,14 @@
 
   @media screen and (max-width: 640px) {
     .popup {
-      left: 0;
+      @apply mx-1 left-0;
+      top: 4.25rem;
       transform: none;
+      bottom: auto;
     }
     .popup:hover {
       left: 0;
-      transform: translateY(-10px);
+      transform: none;
     }
   }
 </style>
@@ -335,7 +337,7 @@
     class="fixed z-30 md:w-1/2 hover:shadow-2xl popup"
     transition:fly={{ y: 200, duration: 500 }}>
     {#if selectedType === 'event'}
-      <EventCard {...selected} showTime={true} />
+      <EventCard {...selected} showTime={true} clickable />
     {:else}
       <UserCard {...selected} email={selectedEmail} />
     {/if}
