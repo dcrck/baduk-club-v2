@@ -127,11 +127,7 @@
       : {}
   )
 
-  onMount(async () => {
-    const dismount = setupGraphs()
-    orgEmail = await delayedActions()
-    return dismount
-  })
+  onMount(async () => orgEmail = await delayedActions())
 
   async function loadInviteCode(attending) {
     if (!attending) return Promise.resolve('')
