@@ -1,7 +1,7 @@
 <script context="module">
   import { merge, select, execute, update } from '/api/db/index'
 
-  export async function preload({ query: { bounds, code } }, { user }) {
+  export async function preload({ query: { bounds, code, name } }, { user }) {
     const eventQuery = merge([
       {
         root: 'events',
@@ -61,8 +61,16 @@
         : undefined
     const checkLat = n => !isNaN(n) && n >= -90 && n <= 90
     const checkLon = n => !isNaN(n) && n >= -180 && n <= 180
+    const addArticle = name =>
+      name.includes('Islands') ||
+      name.includes('Republic') ||
+      name.includes('States') ||
+      name.includes('Kingdom')
+        ? 'the ' + name
+        : name
     if (bounds) bounds = checkBounds(bounds.split(',').map(n => +n))
     if (code) code = code.length === 3 ? code : undefined
+    if (name) name = addArticle(decodeURIComponent(name))
 
     return {
       user,
@@ -82,6 +90,7 @@
         ),
       bounds,
       code,
+      name,
     }
   }
 </script>
@@ -103,7 +112,8 @@
   export let markers = [],
     user = {},
     bounds,
-    code
+    code,
+    name
 
   let options = bounds
     ? { bounds }
@@ -239,18 +249,18 @@
 
 <svelte:head>
   {#if code}
-    <title>Where to Play Go in {code} | BadukClub</title>
-    <meta name="keywords" content="go,baduk,meetup,event,weiqi,map,{code}" />
+    <title>Where to Play Go in {name} | BadukClub</title>
+    <meta name="keywords" content="go,baduk,meetup,event,weiqi,map,{code},{name}" />
     <meta
       property="og:title"
-      content="Where to Play Go in {code} | BadukClub" />
+      content="Where to Play Go in {name} | BadukClub" />
     <meta
       name="description"
-      content="Never again wonder where to play Go in {code}! Search the
+      content="Never again wonder where to play Go in {name}! Search the
       definitive map of Go meetups that always stays up-to-date." />
     <meta
       property="og:description"
-      content="Never again wonder where to play Go in {code}! Search the
+      content="Never again wonder where to play Go in {name}! Search the
       definitive map of Go meetups that always stays up-to-date." />
   {:else}
     <title>Where to Play Go | BadukClub</title>
