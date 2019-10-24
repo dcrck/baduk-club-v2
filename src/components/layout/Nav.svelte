@@ -49,7 +49,7 @@
   .options {
     @apply absolute bg-white border-gray-400 rounded-sm p-2 border flex-col;
     top: 32px;
-    right: 0;
+    right: -24px;
   }
 
   .profile:hover > span {
@@ -59,6 +59,7 @@
 
 <nav
   class:flex-col={!user}
+  class:h-16={user}
   class="fixed top-0 z-20 w-screen bg-white flex md:flex-row justify-between items-center
          md:h-16 border-grey-400 border-b">
   <a href="." rel="prefetch" class="w-56 my-2 md:my-0" id="logo">
