@@ -1,6 +1,9 @@
 <script>
   import Footer from '/components/layout/Footer'
   import Icon from '/components/Icon'
+  import { stores } from '@sapper/app'
+  let { session } = stores()
+  let { user } = $session
 
   let visible = false
 
@@ -27,6 +30,10 @@
       transform: translateX(-100%);
     }
 
+    div.sidebar.nouser {
+      top: 5.75rem;
+    }
+
     div.sidebar.visible {
       transform: translateX(0%);
     }
@@ -42,7 +49,7 @@
   }
 </style>
 
-<div class="sidebar" class:visible>
+<div class="sidebar" class:visible class:nouser={!user}>
   <div class="relative h-full flex flex-col justify-between">
     <div>
       <slot />

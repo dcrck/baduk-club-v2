@@ -8,8 +8,9 @@
   import { setContext } from 'svelte'
   import { toastKey } from '/utils/index'
 
-  let { page } = stores()
+  let { session, page } = stores()
   let background = 'white'
+  let { user } = $session
 
   setContext(toastKey, {
     ping: ({ message, type, debug, timeout }) => {
@@ -47,6 +48,9 @@
     main.sidebar {
       @apply ml-0 p-2;
     }
+    main.nouser {
+      margin-top: 5.75rem;
+    }
   }
 </style>
 
@@ -65,7 +69,7 @@
 {#if sidebar}
   <div class="fixed inset-0 w-screen h-screen bg-gray-200" />
 {/if}
-<main class:sidebar class="bg-{background}">
+<main class:sidebar class:nouser={!user} class="bg-{background}">
   <div class="{sidebar ? 'max-w-xl' : 'max-w-2xl mx-auto'} xl:max-w-4xl">
     <slot />
     {#if !sidebar}
