@@ -58,12 +58,13 @@
 </style>
 
 <nav
-  class="fixed top-0 z-20 w-screen bg-white flex justify-between items-center
-  h-16 border-grey-400 border-b">
-  <a href="." rel="prefetch" class="w-56" id="logo">
+  class:flex-col={!user}
+  class="fixed top-0 z-20 w-screen bg-white flex md:flex-row justify-between items-center
+         md:h-16 border-grey-400 border-b">
+  <a href="." rel="prefetch" class="w-56 my-2 md:my-0" id="logo">
     <Logo />
   </a>
-  <div class="flex items-center">
+  <div class="flex items-center px-2 my-2 md:my-0">
     {#if user}
       <a
         href="map"
@@ -94,9 +95,9 @@
         </div>
       </div>
     {:else}
-      <a href="map" data-cy="map" class="hover:underline mr-8">Explore the Map</a>
-      <a href="about" data-cy="about" class="hover:underline mr-8">About Us</a>
-      <a href="login" data-cy="login" class="hover:underline mr-4">Login</a>
+      <a href="map" data-cy="map" class="hover:underline md:mr-4">Map</a>
+      <a href="about" data-cy="about" class="hover:underline mx-8 md:mr-4 md:ml-0">About Us</a>
+      <a href="login" data-cy="login" class="hover:underline md:mr-4">Login</a>
     {/if}
   </div>
 </nav>
