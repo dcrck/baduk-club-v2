@@ -63,19 +63,19 @@
   <a href="." rel="prefetch" class="w-56" id="logo">
     <Logo />
   </a>
-  <div class="flex items-center justify-around w-40">
-    <a
-      href="map"
-      rel="prefetch"
-      class="flex flex-col items-center opacity-50 hover:opacity-100">
-      <Icon id="map" />
-      <span class="text-xs" style="margin-top: -2px">Map</span>
-    </a>
+  <div class="flex items-center">
     {#if user}
+      <a
+        href="map"
+        rel="prefetch"
+        class="flex flex-col items-center opacity-50 hover:opacity-100 mr-8">
+        <Icon id="map" />
+        <span class="text-xs" style="margin-top: -2px">Map</span>
+      </a>
       <div
         on:click={toggleProfileOpts}
         data-cy="profile-opts"
-        class="relative flex flex-col items-center cursor-pointer profile">
+        class="relative flex flex-col items-center cursor-pointer profile mr-8">
         {#if picture}
           <img src={picture} alt={name} class="w-6 h-auto rounded-full" />
           <span class="text-xs text-center" class:opacity-50={!optsVisible}>
@@ -94,12 +94,9 @@
         </div>
       </div>
     {:else}
-      <a
-        href="login"
-        data-cy="login"
-        class="block bg-blue-400 text-white py-2 px-4 hover:bg-blue-500">
-        Login
-      </a>
+      <a href="map" data-cy="map" class="hover:underline mr-8">Explore the Map</a>
+      <a href="about" data-cy="about" class="hover:underline mr-8">About Us</a>
+      <a href="login" data-cy="login" class="hover:underline mr-4">Login</a>
     {/if}
   </div>
 </nav>
