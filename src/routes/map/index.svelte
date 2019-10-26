@@ -240,6 +240,9 @@
       transform: none;
       bottom: auto;
     }
+    .popup.nouser {
+      top: 6rem;
+    }
     .popup:hover {
       left: 0;
       transform: none;
@@ -344,6 +347,7 @@
   <a
     href={selectedType === 'event' ? `events/${selected.id}` : `users/${selected.id}`}
     rel="prefetch"
+    class:nouser={!user}
     class="fixed z-30 md:w-1/2 hover:shadow-2xl popup"
     transition:fly={{ y: 200, duration: 500 }}>
     {#if selectedType === 'event'}
