@@ -10,7 +10,9 @@ export async function get(req, res) {
   if (!code) return res.redirect(`/events/${id}`)
 
   if (user.unauthorized) {
-    const redirectLink = encodeURIComponent(`/events/id/refresh?code=${code}`)
+    const redirectLink = encodeURIComponent(
+      `/events/${id}/refresh?code=${code}`
+    )
     console.log('no user, redirecting...')
     return res.redirect(`/login?redir=${redirectLink}`)
   }

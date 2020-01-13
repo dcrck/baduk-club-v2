@@ -52,7 +52,9 @@ export default app => {
   app.get('/login', (req, res, next) => {
     const { redir, test } = req.query
     const state = redir
-      ? Buffer.from(JSON.stringify({ redir })).toString('base64')
+      ? Buffer.from(
+          JSON.stringify({ redir: decodeURIComponent(redir) })
+        ).toString('base64')
       : undefined
     const auth = passport.authenticate('auth0', {
       scope: 'openid email profile',
