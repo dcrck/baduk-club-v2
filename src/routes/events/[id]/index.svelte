@@ -1,6 +1,6 @@
 <script context="module">
   import { merge, select, execute, create, del, update } from '/api/db/index'
-  export async function preload({ path, params: { id } }, { user }) {
+  export async function preload({ path, query: { refresh }, params: { id } }, { user }) {
     const gql = q =>
       execute({ query: q, token: user ? user.token : '' }, this.fetch)
 
@@ -69,6 +69,7 @@
         ? attendances.find(a => a.user.id === uid)
         : null,
       user,
+      refreshed: !!refresh,
       games: games
         ? games.map(({ black_player, white_player, ...game }) => ({
             black: black_player,
@@ -109,6 +110,7 @@
     path
   export let attendances = []
   export let games = []
+  export let refreshed = false
 
   let orgEmail = ''
   const { ping } = getContext(toastKey)
@@ -127,7 +129,12 @@
       : {}
   )
 
-  onMount(async () => orgEmail = await delayedActions())
+  onMount(async () => {
+    if (refreshed)
+      ping({ message: 'Thank you! Your meetup is now marked up-to-date', type: 'success' })
+
+    orgEmail = await delayedActions()
+  })
 
   async function loadInviteCode(attending) {
     if (!attending) return Promise.resolve('')
