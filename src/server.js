@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser'
 import './tailwind.css'
 
 import setupAuth, { validate } from './auth'
+import { setupMail } from './mailer'
+import { scheduleTasks } from './scheduler'
 
 const { PORT, NODE_ENV } = process.env
 const dev = NODE_ENV === 'development'
@@ -45,6 +47,8 @@ app.use(
 )
 
 setupAuth(app)
+setupMail()
+scheduleTasks()
 
 app
   .use(
