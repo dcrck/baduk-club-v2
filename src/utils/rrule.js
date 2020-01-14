@@ -1,4 +1,5 @@
 import addMinutes from 'date-fns/addMinutes'
+import isBefore from 'date-fns/isBefore'
 
 export const weekdays = [
   { full: 'Sunday', two: 'SU', one: 'S' },
@@ -60,6 +61,12 @@ const localeString = (d, tz) =>
     month: 'long',
     day: 'numeric',
   })
+
+export function isUpcoming({ rrule, end }) {
+  const now = new Date(),
+    date = new Date(end)
+  return !!rrule || isBefore(now, addMinutes(date, date.getTimezoneOffset()))
+}
 
 export function parse({ rrule, start, end }, tz) {
   const rruleString = rrule ? toText(rrule) : rrule

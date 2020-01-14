@@ -7,7 +7,7 @@ const address = a => address_object(a.split(', '))
 const last_updated = t => fromNow(new Date(t))
 const recorded = t => fromNow(new Date(t))
 const stringish = x => (typeof x === 'string' ? JSON.parse(x) : x)
-const times = ts => stringish(ts).map(parse)
+const times = ts => stringish(ts).map(t => parse(t, !t.rrule))
 
 export const parsers = {
   address,

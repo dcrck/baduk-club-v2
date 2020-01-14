@@ -1,5 +1,6 @@
 <script context="module">
   import { merge, select, execute, update } from '/api/db/index'
+  import { isUpcoming } from '/utils/rrule'
 
   export async function preload({ query: { bounds, code, name } }, { user }) {
     const eventQuery = merge([
@@ -81,6 +82,7 @@
           ...e,
           type: 'event',
         }))
+        .filter(({ times }) => times.length && isUpcoming(times[0]))
         .concat(
           users.map(({ geolocation, ...u }) => ({
             geolocation: parse(geolocation),
