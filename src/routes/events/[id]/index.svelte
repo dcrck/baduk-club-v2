@@ -224,7 +224,7 @@
       token: user.token,
       query: update('events', {
         filters: thisEvent('id'),
-        values: { last_updated: 'now()', ...updatedEvt },
+        values: { last_updated: 'now()', confirm_code: null, ...updatedEvt },
       }),
     })
       .then(() => {

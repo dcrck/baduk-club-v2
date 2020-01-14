@@ -22,7 +22,7 @@ export function scheduleTasks() {
   // Send 6-month reminder emails, if any, at 4am daily
   cron.schedule('0 4 * * *', async () => {
     const today = new Date()
-    const months = 1
+    const months = 6
     const staleEventTimeLimit = sub(today, { months })
     // fetch all old events
     const events = await sudo(
