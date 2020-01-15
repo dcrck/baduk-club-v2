@@ -75,20 +75,21 @@
 
     return {
       user,
-      markers: events
-        .map(({ geolocation, times, ...e }) => ({
+      markers: users
+        .map(({ geolocation, ...u }) => ({
           geolocation: parse(geolocation),
-          times: parse(times),
-          ...e,
-          type: 'event',
+          ...u,
+          type: 'user',
         }))
-        .filter(({ times }) => times.length && isUpcoming(times[0]))
         .concat(
-          users.map(({ geolocation, ...u }) => ({
-            geolocation: parse(geolocation),
-            ...u,
-            type: 'user',
-          }))
+          events
+            .map(({ geolocation, times, ...e }) => ({
+              geolocation: parse(geolocation),
+              times: parse(times),
+              ...e,
+              type: 'event',
+            }))
+            .filter(({ times }) => times.length && isUpcoming(times[0]))
         ),
       bounds,
       code,
