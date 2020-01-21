@@ -21,5 +21,5 @@ export const getCountry = (f = fetch) =>
       accept: 'application/json',
     },
   })
-    .then(r => r.json())
+    .then(r => (r.ok ? r.json() : { country: null }))
     .then(({ country }) => country)

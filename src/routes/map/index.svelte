@@ -1,6 +1,7 @@
 <script context="module">
   import { merge, select, execute, update } from '/api/db/index'
   import { isUpcoming } from '/utils/rrule'
+  import { checkBounds, addArticle } from '/utils/location'
 
   export async function preload({ query: { bounds, code, name } }, { user }) {
     const eventQuery = merge([
@@ -56,19 +57,7 @@
       users = [...users.filter(u => u.id !== user.id), current]
     }
     const parse = x => (typeof x === 'string' ? JSON.parse(x) : x)
-    const checkBounds = ([w, s, e, n]) =>
-      checkLon(w) && checkLat(s) && checkLon(e) && checkLat(n) && s < n && w < e
-        ? [w, s, e, n]
-        : undefined
-    const checkLat = n => !isNaN(n) && n >= -90 && n <= 90
-    const checkLon = n => !isNaN(n) && n >= -180 && n <= 180
-    const addArticle = name =>
-      name.includes('Islands') ||
-      name.includes('Republic') ||
-      name.includes('States') ||
-      name.includes('Kingdom')
-        ? 'the ' + name
-        : name
+
     if (bounds) bounds = checkBounds(bounds.split(',').map(n => +n))
     if (code) code = code.length === 3 ? code : undefined
     if (name) name = addArticle(decodeURIComponent(name))
@@ -118,12 +107,8 @@
     code,
     name
 
-  let options = bounds
-    ? { bounds }
-    : {
-        center: [-84, 35],
-        zoom: 3.5,
-      }
+  let options = bounds ? { bounds } : {}
+
   let selected, selectedEmail, selectedType
 
   const { ping } = getContext(toastKey)
@@ -336,7 +321,11 @@
 {/if}
 
 <div class="fixed w-screen left-0 map">
-  <Map {options} on:ready={() => (showSidebar = true)}>
+  <Map
+    {options}
+    centerOnUser={!bounds}
+    on:ready={() => (showSidebar = true)}
+  >
     {#each markers.filter(m => m.show_location || m.type === 'event') as { geolocation, name, id, type }}
       <Marker
         location={geolocation}

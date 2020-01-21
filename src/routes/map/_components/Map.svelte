@@ -1,11 +1,14 @@
 <script>
   import { onMount, createEventDispatcher, setContext } from 'svelte'
   import { key } from '../_mapbox.js'
+  import { getCountry, getBoundingBox } from '/api/location/index'
 
   export let options
+  export let centerOnUser = false
   export let style = 'mapbox://styles/mapbox/light-v10'
 
   const dispatch = createEventDispatcher()
+  const USA_BOUNDS = [-125.0011,24.9493,-66.9326,49.5904]
   let container, map, mapbox
 
   setContext(key, {
@@ -17,6 +20,11 @@
     /* eslint-disable-line */
     const mbgl = await import('mapbox-gl')
     mapbox = mbgl.default
+    if (centerOnUser && !options.bounds) {
+      const country = await getCountry()
+      const data = getBoundingBox(country)
+      if (data) options.bounds = data.bounds
+    }
     mapbox.accessToken = process.env.MAPBOX_ACCESS_TOKEN
     const link = document.createElement('link')
     link.rel = 'stylesheet'
@@ -26,6 +34,7 @@
       el = new mapbox.Map({
         container,
         style,
+        bounds: USA_BOUNDS,
         ...options,
       })
       el.on('load', () => {
