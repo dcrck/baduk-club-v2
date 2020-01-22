@@ -189,7 +189,7 @@
       type="checkbox"
       id="private"
       class="-mt-px mr-2"
-      bind:value={current.is_private} />
+      bind:checked={current.is_private} />
     This meetup is invite-only
   </label>
   <p class="text-sm ml-5 mb-4 text-gray-600 italic">
