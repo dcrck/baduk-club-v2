@@ -1,6 +1,5 @@
 <script>
   export let small = false
-  import DcrckLogo from '/components/layout/dcrck'
 </script>
 
 <style>
@@ -40,18 +39,5 @@
     target="_blank"
     class="underline hover:text-gray-800">
     Need Help?
-  </a>
-  <a
-    href="https://dcrck.cc"
-    target="_blank"
-    style="transition: .2s"
-    class="flex items-center font-semibold px-2 py-1 border-2 rounded-sm
-    text-gray-800 border-gray-800 opacity-50 hover:opacity-100 mt-2 xl:mt-0">
-    Made with
-    <span class="font-mono mx-1 text-xl">&#10084;</span>
-    by
-    <span class="ml-1">
-      <DcrckLogo />
-    </span>
   </a>
 </div>
