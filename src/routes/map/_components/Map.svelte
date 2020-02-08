@@ -97,8 +97,7 @@
       <ul class="text-sm md:text-base">
         <li>Refreshing/restarting the browser</li>
         <li>Clearing your browser's cache</li>
-        <li>Checking the <a target="_blank" rel="noopener" href="https://github.com/mapbox/mapbox-gl-js/issues">MapBox Issues</a> page</li>
-        <li>Contacting <a target="_blank" rel="noopener" href="https://support.mapbox.com/hc/en-us/requests/new?ticket_form_id=360000291231">MapBox Support</a></li>
+        <li>Reporting the problem to Mapbox on <a target="_blank" rel="noopener" href="https://github.com/mapbox/mapbox-gl-js/issues">GitHub</a> or through the <a target="_blank" rel="noopener" href="https://support.mapbox.com/hc/en-us/requests/new?ticket_form_id=360000291231">MapBox support page</a></li>
       </ul>
       <span class="text-sm md:text-base">This is the best we can suggest at this time, since we cannot reproduce the issue on our end. Thank you!</span>
     </div>
