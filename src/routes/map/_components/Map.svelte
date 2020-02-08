@@ -51,26 +51,56 @@
 </script>
 
 <style>
-  div {
+  .map {
     width: 100%;
     height: 100%;
   }
 
-  p {
+  .placeholder {
     position: absolute;
-    text-align: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+  .placeholder > p {
+    text-align: center;
+    margin-bottom: 1em;
     font-size: 2em !important;
     font-family: sans-serif !important;
   }
+
+  .placeholder a {
+    @apply text-blue-600;
+  }
+
+  .placeholder a:hover {
+    @apply underline;
+  }
+
+  .placeholder ul {
+    list-style: circle;
+  }
+
+  .placeholder li {
+    margin: 0.5em 0;
+  }
+
 </style>
 
-<div bind:this={container}>
+<div class="map" bind:this={container}>
   {#if map}
     <slot />
   {:else}
-    <p>Loading map...</p>
+    <div class="placeholder w-5/6 md:w-auto">
+      <p>Loading map...</p>
+      <span class="text-sm md:text-base">If this map doesn't load after a few seconds, try:</span>
+      <ul class="text-sm md:text-base">
+        <li>Refreshing/restarting the browser</li>
+        <li>Clearing your browser's cache</li>
+        <li>Checking the <a target="_blank" rel="noopener" href="https://github.com/mapbox/mapbox-gl-js/issues">MapBox Issues</a> page</li>
+        <li>Contacting <a target="_blank" rel="noopener" href="https://support.mapbox.com/hc/en-us/requests/new?ticket_form_id=360000291231">MapBox Support</a></li>
+      </ul>
+      <span class="text-sm md:text-base">This is the best we can suggest at this time, since we cannot reproduce the issue on our end. Thank you!</span>
+    </div>
   {/if}
 </div>
