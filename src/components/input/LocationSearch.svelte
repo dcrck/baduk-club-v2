@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte'
   import { debounce } from '/utils/index'
-  import * as mapbox from '/api/mapbox'
+  import * as gmaps from '/api/gmaps'
   import Validation from '/components/input/Validation'
   import check, { initialize, load } from './validate'
   export let id = 'location'
@@ -30,7 +30,7 @@
   function search() {
     dispatch('clear')
     location.geolocation = null
-    mapbox.search(location.address).then(r => {
+    gmaps.search(location.address).then(r => {
       searching = false
       results = r
     })
@@ -49,10 +49,15 @@
     return searching ? debouncedSearch() : (results = undefined)
   }
 
-  function setInput({ place_name, center: [lng, lat] }) {
-    location = { address: place_name, geolocation: { lat, lng } }
+  function setInput({ description }) {
+    location = { address: description, geolocation: {} }
     results = undefined
-    dispatch('select', location)
+    gmaps
+      .geocode(description)
+      .then(({ lat, lng }) => {
+        location.geolocation = { lat, lng }
+        dispatch('select', location)
+      })
   }
 </script>
 
@@ -100,7 +105,7 @@
       {:else if location.address}
         {#each results as result}
           <li data-cy="search-result" on:click={() => setInput(result)}>
-            {result.place_name}
+            {result.description}
           </li>
         {/each}
         <li class="text-gray-600 italic text-sm">
