@@ -23,3 +23,4 @@ export const getCountry = (f = fetch) =>
   })
     .then(r => (r.ok ? r.json() : { country: null }))
     .then(({ country }) => country)
+    .catch(() => 'US')
