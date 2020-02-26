@@ -3,7 +3,7 @@
   import { key } from '../_mapbox.js'
   import { getCountry, getBoundingBox } from '/api/location/index'
 
-  export let options
+  export let options = {}
   export let centerOnUser = false
   export let style = 'mapbox://styles/mapbox/light-v10'
 
@@ -20,11 +20,13 @@
     /* eslint-disable-line */
     const mbgl = await import('mapbox-gl')
     mapbox = mbgl.default
-    if (centerOnUser && !options.bounds) {
-      const country = await getCountry()
-      const data = getBoundingBox(country)
-      if (data) options.bounds = data.bounds
-    }
+    try {
+      if (centerOnUser && !options.bounds) {
+        const country = await getCountry()
+        const data = getBoundingBox(country)
+        if (data) options.bounds = data.bounds
+      }
+    } catch (e) {}
     mapbox.accessToken = process.env.MAPBOX_ACCESS_TOKEN
     const link = document.createElement('link')
     link.rel = 'stylesheet'
