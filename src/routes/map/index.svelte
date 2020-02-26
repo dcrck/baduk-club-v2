@@ -245,7 +245,7 @@
     <meta
       property="og:title"
       content="Where to Play Go in {name} | BadukClub" />
-    <meta property="og:image" content="{process.env.APP_DOMAIN}/countries/{code}.png" >
+    <meta property="og:image" content="https://cdn.statically.io/gl/dcrck/flags/master/countries/{code}.png" >
     <meta
       name="description"
       content="Never again wonder where to play Go in {name}! Search the
